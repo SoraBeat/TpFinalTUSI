@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tpfinaltusi.R;
-import com.example.tpfinaltusi.db.IntegrationDB;
 
 import java.sql.Connection;
 
@@ -21,34 +21,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Obtener una referencia a la Action Bar
+        ActionBar actionBar = getSupportActionBar();
 
-        // Realizar la conexión a la base de datos en un hilo secundario
-        new ConnectToDatabaseTask().execute();
-    }
-
-    private class ConnectToDatabaseTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            // Llamar a la función testConnection de IntegrationDB en segundo plano
-            return IntegrationDB.testConnection();
+        // Verificar si la Action Bar no es nula y ocultarla
+        if (actionBar != null) {
+            actionBar.hide();
         }
 
-        @Override
-        protected void onPostExecute(Boolean isConnected) {
-            if (isConnected) {
-                // La conexión a la base de datos es exitosa, puedes continuar con otras acciones
-                // ...
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Este código se ejecutará después del tiempo especificado (SPLASH_TIMEOUT)
 
-                // Mostrar un comentario de conexión exitosa en el logcat
-                System.out.println("Conexión exitosa a la base de datos.");
-            } else {
-                // La conexión a la base de datos ha fallado, puedes manejarlo aquí
-                Toast.makeText(getApplicationContext(), "Error de conexión a la base de datos", Toast.LENGTH_SHORT).show();
+                // Iniciar la nueva Activity
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
 
-                // Mostrar un comentario de conexión fallida en el logcat
-                System.out.println("Error de conexión a la base de datos.");
+                // Asegurarse de que la MainActivity no esté en la pila de actividades (opcional)
+                finish();
             }
-        }
+        }, SPLASH_TIMEOUT);
     }
+
 }

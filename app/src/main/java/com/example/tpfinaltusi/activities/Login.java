@@ -15,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tpfinaltusi.R;
-import com.example.tpfinaltusi.db.IntegrationDB;
+import com.example.tpfinaltusi.db.DatabaseConnector;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements DatabaseConnector.ConnectionListener{
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
@@ -61,6 +63,8 @@ public class Login extends AppCompatActivity {
         comportamientoBotonRegistrarse();
         comportamientoBotonOlvidasteContrasenia();
         comportamientoBotonLogin();
+
+        DatabaseConnector.connectInBackground(this);
 
     }
 
@@ -116,6 +120,28 @@ public class Login extends AppCompatActivity {
                 }else{
                     ///////ACA PROGRAMAR LOGIN
                 }
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionSuccess() {
+        // La conexión a la base de datos fue exitosa, puedes realizar acciones adicionales aquí
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Actualiza la UI si es necesario
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionError(String error) {
+        // Hubo un error en la conexión, muestra un mensaje de error o realiza acciones de manejo de errores
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Login.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
