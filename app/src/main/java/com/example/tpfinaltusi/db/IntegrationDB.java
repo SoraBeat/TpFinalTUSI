@@ -28,4 +28,13 @@ public class IntegrationDB {
             }
         }
     }
+
+    public static boolean testConnection() {
+        Connection connection = connect();
+        if (connection != null) {
+            disconnect(connection);
+            return true;
+        }
+        return false;
+    }
 }

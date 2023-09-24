@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.db.IntegrationDB;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +61,7 @@ public class Login extends AppCompatActivity {
         comportamientoBotonRegistrarse();
         comportamientoBotonOlvidasteContrasenia();
         comportamientoBotonLogin();
+
     }
 
     private void comportamientoMostrarOcultarContrasenia(){
