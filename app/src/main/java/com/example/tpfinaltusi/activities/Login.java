@@ -4,9 +4,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,15 +16,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tpfinaltusi.DAO.UsuarioDAO;
 import com.example.tpfinaltusi.R;
-import com.example.tpfinaltusi.db.DatabaseConnector;
+import com.example.tpfinaltusi.db.PostgreSQLConnection;
+import com.example.tpfinaltusi.entidades.Usuario;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.regex.Matcher;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 
-public class Login extends AppCompatActivity implements DatabaseConnector.ConnectionListener{
+public class Login extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
@@ -30,6 +35,8 @@ public class Login extends AppCompatActivity implements DatabaseConnector.Connec
     private TextView btnOlvidasteContraseña;
     private TextView btnRegistrarse;
     boolean passwordVisible = true;
+
+    private CountDownLatch connectionLatch = new CountDownLatch(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +71,29 @@ public class Login extends AppCompatActivity implements DatabaseConnector.Connec
         comportamientoBotonOlvidasteContrasenia();
         comportamientoBotonLogin();
 
-        DatabaseConnector.connectInBackground(this);
+        // Ejecutar la tarea en segundo plano para obtener usuarios
+        new FetchUsuariosTask().execute();
+    }
+    private class FetchUsuariosTask extends AsyncTask<Void, Void, List<Usuario>> {
 
+        @Override
+        protected List<Usuario> doInBackground(Void... voids) {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            return usuarioDAO.traerTodosLosUsuarios();
+        }
+
+        @Override
+        protected void onPostExecute(List<Usuario> usuarios) {
+            super.onPostExecute(usuarios);
+
+            // Mostrar los usuarios por consola
+            for (Usuario usuario : usuarios) {
+                Log.d("Usuario", "Alias: " + usuario.getAlias());
+                Log.d("Usuario", "DNI: " + usuario.getDni());
+                Log.d("Usuario", "Email: " + usuario.getEmail());
+                // Agrega más campos según tus necesidades
+            }
+        }
     }
 
     private void comportamientoMostrarOcultarContrasenia(){
@@ -124,25 +152,4 @@ public class Login extends AppCompatActivity implements DatabaseConnector.Connec
         });
     }
 
-    @Override
-    public void onConnectionSuccess() {
-        // La conexión a la base de datos fue exitosa, puedes realizar acciones adicionales aquí
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // Actualiza la UI si es necesario
-            }
-        });
-    }
-
-    @Override
-    public void onConnectionError(String error) {
-        // Hubo un error en la conexión, muestra un mensaje de error o realiza acciones de manejo de errores
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(Login.this, error, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
