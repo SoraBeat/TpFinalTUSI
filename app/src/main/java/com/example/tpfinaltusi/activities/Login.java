@@ -152,7 +152,25 @@ public class Login extends AppCompatActivity {
                 }else if(etPassword.getText().toString().equals("")){
                     etPassword.setError("Campo requerido");
                 }else{
-                    ///////ACA PROGRAMAR LOGIN
+                    String email = etEmail.getText().toString();
+                    String password = etPassword.getText().toString();
+
+                    // Realizar el inicio de sesión en un hilo o AsyncTask
+                    new Thread(() -> {
+                        boolean loginExitoso = UsuarioNegocio.login(email, password);
+
+                        // Mostrar el resultado en el hilo principal
+                        runOnUiThread(() -> {
+                            if (loginExitoso) {
+                                // Inicio de sesión exitoso
+                                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivity(i);
+                            } else {
+                                // Inicio de sesión fallido
+                                Toast.makeText(getApplicationContext(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }).start();
                 }
             }
         });

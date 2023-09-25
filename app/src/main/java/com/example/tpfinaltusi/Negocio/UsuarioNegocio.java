@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UsuarioNegocio {
 
-    private UsuarioDAO usuarioDAO;
+    private static UsuarioDAO usuarioDAO;
 
     public UsuarioNegocio() {
         usuarioDAO = new UsuarioDAO();
@@ -75,6 +75,9 @@ public class UsuarioNegocio {
         void onError(String error);
 
         void onUsuarioLoaded(Usuario usuario);
+    }
+    public static boolean login(String email, String password) {
+        return usuarioDAO.verificarCredenciales(email, password);
     }
 
     public interface UsuariosCallback {

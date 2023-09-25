@@ -49,7 +49,7 @@ public class UsuarioDAO {
     // Crear un nuevo usuario
     public boolean crearUsuario(Usuario usuario) {
         esperarConexion();
-        String sql = "INSERT INTO usuarios (Alias, DNI, Email, Password, CantPuntos, FechaAlta, FechaBaja) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (alias, dni, email, password, cantpuntos, fechaalta, fechabaja) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getAlias());
             statement.setString(2, usuario.getDni());
@@ -69,7 +69,7 @@ public class UsuarioDAO {
     // Editar un usuario existente
     public boolean editarUsuario(Usuario usuario) {
         esperarConexion();
-        String sql = "UPDATE usuarios SET DNI=?, Email=?, Password=?, CantPuntos=?, FechaAlta=?, FechaBaja=? WHERE Alias=?";
+        String sql = "UPDATE usuarios SET dni=?, email=?, password=?, cantpuntos=?, fechaalta=?, fechabaja=? WHERE alias=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getDni());
             statement.setString(2, usuario.getEmail());
@@ -89,7 +89,7 @@ public class UsuarioDAO {
     // Borrar un usuario por Alias
     public boolean borrarUsuario(String alias) {
         esperarConexion();
-        String sql = "DELETE FROM usuarios WHERE Alias=?";
+        String sql = "DELETE FROM usuarios WHERE alias=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, alias);
             int filasAfectadas = statement.executeUpdate();
@@ -103,7 +103,7 @@ public class UsuarioDAO {
     // Traer un usuario por Alias
     public Usuario traerUsuarioPorAlias(String alias) {
         esperarConexion();
-        String sql = "SELECT * FROM usuarios WHERE Alias=?";
+        String sql = "SELECT * FROM usuarios WHERE alias=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, alias);
             ResultSet resultSet = statement.executeQuery();
@@ -134,13 +134,31 @@ public class UsuarioDAO {
 
     // Método auxiliar para crear un objeto Usuario desde un ResultSet
     private Usuario crearUsuarioDesdeResultSet(ResultSet resultSet) throws SQLException {
-        String alias = resultSet.getString("Alias");
-        String dni = resultSet.getString("DNI");
-        String email = resultSet.getString("Email");
-        String password = resultSet.getString("Password");
-        int cantPuntos = resultSet.getInt("CantPuntos");
-        Date fechaAlta = resultSet.getDate("FechaAlta");
-        Date fechaBaja = resultSet.getDate("FechaBaja");
+        String alias = resultSet.getString("alias");
+        String dni = resultSet.getString("dni");
+        String email = resultSet.getString("email");
+        String password = resultSet.getString("password");
+        int cantPuntos = resultSet.getInt("cantpuntos");
+        Date fechaAlta = resultSet.getDate("fechaalta");
+        Date fechaBaja = resultSet.getDate("fechabaja");
         return new Usuario(alias, dni, email, password, cantPuntos, fechaAlta, fechaBaja);
     }
+    // Verificar las credenciales del usuario
+    public boolean verificarCredenciales(String email, String password) {
+        esperarConexion();
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE Email = ? AND Password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0; // Si count es mayor que 0, las credenciales son válidas
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
