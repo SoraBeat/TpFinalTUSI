@@ -2,12 +2,15 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,9 +18,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tpfinaltusi.DAO.UsuarioDAO;
+import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.db.PostgreSQLConnection;
+import com.example.tpfinaltusi.entidades.Usuario;
 
-import java.util.regex.Matcher;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
@@ -28,6 +38,9 @@ public class Login extends AppCompatActivity {
     private TextView btnOlvidasteContraseña;
     private TextView btnRegistrarse;
     boolean passwordVisible = true;
+    private UsuarioNegocio usuarioNegocio;
+
+    private CountDownLatch connectionLatch = new CountDownLatch(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +74,32 @@ public class Login extends AppCompatActivity {
         comportamientoBotonRegistrarse();
         comportamientoBotonOlvidasteContrasenia();
         comportamientoBotonLogin();
+
+        //////EJEMPLO/////////////
+        usuarioNegocio = new UsuarioNegocio();
+
+        // Llamar a traerTodosLosUsuarios para cargar la lista de usuarios
+        cargarListaDeUsuarios();
+
     }
+    private void cargarListaDeUsuarios() {
+        usuarioNegocio.traerTodosLosUsuarios(new UsuarioNegocio.UsuariosCallback() {
+            @Override
+            public void onUsuariosLoaded(List<Usuario> usuarios) {
+                // Aquí puedes utilizar la lista de usuarios cargada para mostrarla en tu interfaz de usuario
+                // Por ejemplo, configurar un RecyclerView o un ListView
+                mostrarUsuariosEnConsola(usuarios);
+            }
+        });
+    }
+
+    private void mostrarUsuariosEnConsola(List<Usuario> usuarios) {
+        for (Usuario usuario : usuarios) {
+            // Imprime cada usuario en la consola
+            Log.d("UsuariosActivity", usuario.toString());
+        }
+    }
+
 
     private void comportamientoMostrarOcultarContrasenia(){
         //Controlar mostrar ocultar contraseña
@@ -119,4 +157,5 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
 }
