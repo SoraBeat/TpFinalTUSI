@@ -24,6 +24,11 @@ public class UsuarioNegocio {
             }
         }).start();
     }
+    public boolean crearUsuario(Usuario usuario) {
+        // Realizar la operación de creación de usuario en un hilo o AsyncTask
+        boolean resultado = usuarioDAO.crearUsuario(usuario);
+        return resultado;
+    }
 
     public void editarUsuario(Usuario usuario, UsuarioCallback callback) {
         // Realizar la operación de edición de usuario en un hilo o AsyncTask

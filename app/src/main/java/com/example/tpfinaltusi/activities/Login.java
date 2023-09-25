@@ -2,6 +2,7 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class Login extends AppCompatActivity {
     private TextView btnRegistrarse;
     boolean passwordVisible = true;
     private UsuarioNegocio usuarioNegocio;
+    private ProgressBar progressBar ;
 
     private CountDownLatch connectionLatch = new CountDownLatch(1);
 
@@ -68,7 +71,7 @@ public class Login extends AppCompatActivity {
         togglePasswordButton = findViewById(R.id.togglePasswordButton);
         btnRegistrarse = findViewById(R.id.btn_registrarse);
         btnOlvidasteContraseña = findViewById(R.id.btn_olvidasteContraseña);
-
+        progressBar = findViewById(R.id.progressBar);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
         comportamientoMostrarOcultarContrasenia();
         comportamientoBotonRegistrarse();
@@ -152,6 +155,9 @@ public class Login extends AppCompatActivity {
                 }else if(etPassword.getText().toString().equals("")){
                     etPassword.setError("Campo requerido");
                 }else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnLogin.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
+                    btnLogin.setClickable(false);
                     String email = etEmail.getText().toString();
                     String password = etPassword.getText().toString();
 
@@ -161,6 +167,9 @@ public class Login extends AppCompatActivity {
 
                         // Mostrar el resultado en el hilo principal
                         runOnUiThread(() -> {
+                            progressBar.setVisibility(View.GONE);
+                            btnLogin.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                            btnLogin.setClickable(true);
                             if (loginExitoso) {
                                 // Inicio de sesión exitoso
                                 Intent i = new Intent(getApplicationContext(), HomeActivity.class);
@@ -169,6 +178,7 @@ public class Login extends AppCompatActivity {
                                 // Inicio de sesión fallido
                                 Toast.makeText(getApplicationContext(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                             }
+
                         });
                     }).start();
                 }

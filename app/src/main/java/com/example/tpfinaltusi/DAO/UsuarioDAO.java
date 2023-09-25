@@ -49,6 +49,10 @@ public class UsuarioDAO {
     // Crear un nuevo usuario
     public boolean crearUsuario(Usuario usuario) {
         esperarConexion();
+        if (correoElectronicoExiste(usuario.getEmail())) {
+            // El correo electrónico ya está en uso, no se puede crear el usuario
+            return false;
+        }
         String sql = "INSERT INTO usuarios (alias, dni, email, password, cantpuntos, fechaalta, fechabaja) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getAlias());
@@ -64,6 +68,20 @@ public class UsuarioDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    private boolean correoElectronicoExiste(String email) {
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0; // Si count es mayor que 0, el correo electrónico ya existe
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     // Editar un usuario existente

@@ -2,6 +2,7 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,11 +16,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.entidades.Usuario;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public class Registro extends AppCompatActivity {
@@ -36,7 +42,7 @@ public class Registro extends AppCompatActivity {
     private TextView btnCondicionesDelServicio;
     private Button btnRegistrarse;
     private TextView btnLogin;
-
+    private ProgressBar progressBar ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //////////////////////////////////CONFIGURACION ACTION BAR////////////////////////////////////////////
@@ -68,6 +74,7 @@ public class Registro extends AppCompatActivity {
         toggleRepeatPasswordButton = findViewById(R.id.toggleRepeatPasswordButton);
         btnRegistrarse = findViewById(R.id.btn_registrarse);
         btnLogin = findViewById(R.id.btn_login);
+        progressBar = findViewById(R.id.progressBar);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
         comportamientoMostrarOcultarContrasenia();
         comportamientoMostrarOcultarContraseniaRepetida();
@@ -75,16 +82,18 @@ public class Registro extends AppCompatActivity {
         comportamientoBotonLogin();
         comportamientoBotonRegistro();
     }
-    private void comportamientoBotonLogin(){
+
+    private void comportamientoBotonLogin() {
         //Control boton registrarse
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Login.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
             }
         });
     }
+
     private void comportamientoBotonCondicionesDelServicio() {
         btnCondicionesDelServicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +118,8 @@ public class Registro extends AppCompatActivity {
         });
 
     }
-    private void comportamientoMostrarOcultarContrasenia(){
+
+    private void comportamientoMostrarOcultarContrasenia() {
         //Controlar mostrar ocultar contraseña
         togglePasswordButton.setBackgroundResource(R.drawable.eye_svgrepo_com); // Icono de ojo abierto
         togglePasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +138,8 @@ public class Registro extends AppCompatActivity {
             }
         });
     }
-    private void comportamientoMostrarOcultarContraseniaRepetida(){
+
+    private void comportamientoMostrarOcultarContraseniaRepetida() {
         //Controlar mostrar ocultar contraseña
         toggleRepeatPasswordButton.setBackgroundResource(R.drawable.eye_svgrepo_com); // Icono de ojo abierto
         toggleRepeatPasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -147,37 +158,70 @@ public class Registro extends AppCompatActivity {
             }
         });
     }
-    private void comportamientoBotonRegistro(){
+
+    private void comportamientoBotonRegistro() {
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Pattern patternMail = Pattern.compile( "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$");
-                if(etAlias.getText().toString().equals("")){
+                Pattern patternMail = Pattern.compile("^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$");
+                if (etAlias.getText().toString().equals("")) {
                     etAlias.setError("Campo requerido");
-                }else if(etAlias.getText().toString().length()<3){
+                } else if (etAlias.getText().toString().length() < 3) {
                     etAlias.setError("Minimo 3 caracteres");
-                }else if(etAlias.getText().toString().length()>10){
+                } else if (etAlias.getText().toString().length() > 10) {
                     etAlias.setError("Maximo 10 caracteres");
-                }else if(etDni.getText().toString().equals("")){
+                } else if (etDni.getText().toString().equals("")) {
                     etDni.setError("Campo requerido");
-                }else if(etDni.getText().toString().length()>10){
+                } else if (etDni.getText().toString().length() > 10) {
                     etDni.setError("Maximo 10 caracteres");
-                }else if(etMail.getText().toString().equals("")){
+                } else if (etMail.getText().toString().equals("")) {
                     etMail.setError("Campo requerido");
-                }else if(!patternMail.matcher(etMail.getText().toString()).matches()){
+                } else if (!patternMail.matcher(etMail.getText().toString()).matches()) {
                     etMail.setError("Email invalido");
-                }else if(etPassword.getText().toString().equals("")){
+                } else if (etPassword.getText().toString().equals("")) {
                     etPassword.setError("Campo requerido");
-                }else if(etPassword.getText().toString().length()<3){
+                } else if (etPassword.getText().toString().length() < 3) {
                     etPassword.setError("Minimo 3 caracteres");
-                }else if(etPassword.getText().toString().length()>10){
+                } else if (etPassword.getText().toString().length() > 10) {
                     etPassword.setError("Maximo 10 caracteres");
-                }else if(!etRepeatPassword.getText().toString().equals(etPassword.getText().toString())){
+                } else if (!etRepeatPassword.getText().toString().equals(etPassword.getText().toString())) {
                     etRepeatPassword.setError("Las contraseñas no coinciden");
-                }else if(!cbCondiciones.isChecked()){
+                } else if (!cbCondiciones.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Debe aceptar Terminos y Condiciones", Toast.LENGTH_SHORT).show();
-                }else{
-                    ///////ACA PROGRAMAR REGISTRO
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnRegistrarse.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
+                    btnRegistrarse.setClickable(false);
+                    String alias = etAlias.getText().toString();
+                    String dni = etDni.getText().toString();
+                    String email = etMail.getText().toString();
+                    String password = etPassword.getText().toString();
+
+
+                    Usuario nuevoUsuario = new Usuario(alias, dni, email, password, 0, Date.valueOf(LocalDate.now().toString()), Date.valueOf(LocalDate.now().toString()));
+                    new Thread(() -> {
+                        UsuarioNegocio negocio = new UsuarioNegocio();
+                        boolean resultado = negocio.crearUsuario(nuevoUsuario);
+
+                        // Actualizar la interfaz de usuario en el hilo principal
+                        runOnUiThread(() -> {
+                            if (resultado) {
+                                // Éxito: mostrar un mensaje de éxito o realizar alguna acción adicional
+                                Toast.makeText(getApplicationContext(), "Usuario creado con éxito", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(getApplicationContext(), Login.class);
+                                startActivity(i);
+                            } else {
+                                // Error: mostrar un mensaje de error o realizar alguna acción adicional
+                                Toast.makeText(getApplicationContext(), "Error al crear usuario", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        runOnUiThread(() -> {
+                            progressBar.setVisibility(View.GONE);
+                            btnRegistrarse.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.green));
+                            btnRegistrarse.setClickable(true);
+                        });
+                    }).start();
+
                 }
             }
         });
