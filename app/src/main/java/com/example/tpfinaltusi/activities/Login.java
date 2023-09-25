@@ -2,6 +2,7 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tpfinaltusi.DAO.UsuarioDAO;
+import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.db.PostgreSQLConnection;
 import com.example.tpfinaltusi.entidades.Usuario;
@@ -35,6 +37,7 @@ public class Login extends AppCompatActivity {
     private TextView btnOlvidasteContraseña;
     private TextView btnRegistrarse;
     boolean passwordVisible = true;
+    private UsuarioNegocio usuarioNegocio;
 
     private CountDownLatch connectionLatch = new CountDownLatch(1);
 
@@ -71,30 +74,31 @@ public class Login extends AppCompatActivity {
         comportamientoBotonOlvidasteContrasenia();
         comportamientoBotonLogin();
 
-        // Ejecutar la tarea en segundo plano para obtener usuarios
-        new FetchUsuariosTask().execute();
+        //////EJEMPLO/////////////
+        usuarioNegocio = new UsuarioNegocio();
+
+        // Llamar a traerTodosLosUsuarios para cargar la lista de usuarios
+        cargarListaDeUsuarios();
+
     }
-    private class FetchUsuariosTask extends AsyncTask<Void, Void, List<Usuario>> {
-
-        @Override
-        protected List<Usuario> doInBackground(Void... voids) {
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            return usuarioDAO.traerTodosLosUsuarios();
-        }
-
-        @Override
-        protected void onPostExecute(List<Usuario> usuarios) {
-            super.onPostExecute(usuarios);
-
-            // Mostrar los usuarios por consola
-            for (Usuario usuario : usuarios) {
-                Log.d("Usuario", "Alias: " + usuario.getAlias());
-                Log.d("Usuario", "DNI: " + usuario.getDni());
-                Log.d("Usuario", "Email: " + usuario.getEmail());
-                // Agrega más campos según tus necesidades
+    private void cargarListaDeUsuarios() {
+        usuarioNegocio.traerTodosLosUsuarios(new UsuarioNegocio.UsuariosCallback() {
+            @Override
+            public void onUsuariosLoaded(List<Usuario> usuarios) {
+                // Aquí puedes utilizar la lista de usuarios cargada para mostrarla en tu interfaz de usuario
+                // Por ejemplo, configurar un RecyclerView o un ListView
+                mostrarUsuariosEnConsola(usuarios);
             }
+        });
+    }
+
+    private void mostrarUsuariosEnConsola(List<Usuario> usuarios) {
+        for (Usuario usuario : usuarios) {
+            // Imprime cada usuario en la consola
+            Log.d("UsuariosActivity", usuario.toString());
         }
     }
+
 
     private void comportamientoMostrarOcultarContrasenia(){
         //Controlar mostrar ocultar contraseña

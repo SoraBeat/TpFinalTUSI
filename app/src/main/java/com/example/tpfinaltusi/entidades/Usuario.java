@@ -3,6 +3,9 @@ package com.example.tpfinaltusi.entidades;
 import java.util.Date;
 
 public class Usuario {
+
+
+    private int id;
     private String alias;
     private String dni;
     private String email;
@@ -23,6 +26,13 @@ public class Usuario {
     }
 
     // Getters y Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getAlias() {
         return alias;
     }
@@ -82,7 +92,8 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "alias='" + alias + '\'' +
+                "id=" + id +
+                ", alias='" + alias + '\'' +
                 ", dni='" + dni + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
