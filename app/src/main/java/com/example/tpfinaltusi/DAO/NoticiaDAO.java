@@ -136,14 +136,15 @@ public class NoticiaDAO {
 
     // Método auxiliar para crear un objeto Noticia desde un ResultSet
     private Noticia crearNoticiaDesdeResultSet(ResultSet resultSet) throws SQLException {
-        int idNoticia = resultSet.getInt("IdNoticia");
-        String titulo = resultSet.getString("Titulo");
-        String cuerpo = resultSet.getString("Cuerpo");
-        String categoria = resultSet.getString("Categoria");
-        String imagen = resultSet.getString("Imagen");
-        Date fechaAlta = resultSet.getDate("FechaAlta");
-        int idLocalidad = resultSet.getInt("IdLocalidad");
+        int idNoticia = resultSet.getInt("idnoticia");
+        String titulo = resultSet.getString("titulo");
+        String cuerpo = resultSet.getString("cuerpo");
+        String categoria = resultSet.getString("categoria");
+        String imagen = resultSet.getString("imagen");
+        Date fechaAlta = resultSet.getDate("fechaalta");
+        int idLocalidad = resultSet.getInt("idlocalidad");
         return new Noticia(idNoticia, titulo, cuerpo, categoria, imagen, fechaAlta, idLocalidad);
     }
+
 }
 

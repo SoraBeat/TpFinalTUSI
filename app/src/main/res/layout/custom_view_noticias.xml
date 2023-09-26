@@ -1,0 +1,72 @@
+<!-- custom_news_item.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Fecha de la Noticia -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:paddingBottom="4dp"
+            android:text="29\nSept."
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:fontFamily="@font/inter"
+            android:textStyle="bold"
+            android:background="@drawable/rec_rounded_green"
+            android:gravity=""
+            android:padding="10dp"
+            android:layout_marginTop="9dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+
+            <!-- Título de la Noticia -->
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/green"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:gravity="top"
+                android:text="Evento aniversario Concientizar"/>
+
+            <!-- Descripción de la Noticia -->
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:textColor="@color/darkGrey"
+                android:textSize="12sp"
+                android:text="Únete a nosotros para celebrar nuestro primer aniversario en un evento al aire libre dedicado al reciclaje! Juntos, crearemos un mundo más verde. ¡Te esperamos!"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Imagen de la Noticia -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/newsImageView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:background="@color/green"
+        app:shapeAppearanceOverlay="@style/RoundedSquare"
+        />
+
+</LinearLayout>

@@ -1,5 +1,8 @@
 package com.example.tpfinaltusi.Negocio;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.example.tpfinaltusi.DAO.NoticiaDAO;
 import com.example.tpfinaltusi.entidades.Noticia;
 
@@ -65,9 +68,25 @@ public class NoticiaNegocio {
         // Realizar la operación de traer todas las Noticias en un hilo o AsyncTask
         new Thread(() -> {
             List<Noticia> noticias = noticiaDAO.traerTodasLasNoticias();
-            callback.onNoticiasLoaded(noticias);
+            if (noticias != null) {
+                // Actualiza la interfaz de usuario en el hilo principal
+                runOnUiThread(() -> {
+                    callback.onNoticiasLoaded(noticias);
+                });
+            } else {
+                // También debes manejar el error en el hilo principal
+                runOnUiThread(() -> {
+                    callback.onError("Error al obtener las noticias");
+                });
+            }
         }).start();
     }
+
+    // Método auxiliar para ejecutar código en el hilo principal
+    private void runOnUiThread(Runnable action) {
+        new Handler(Looper.getMainLooper()).post(action);
+    }
+
 
     public interface NoticiaCallback {
         void onSuccess(String mensaje);
@@ -79,5 +98,6 @@ public class NoticiaNegocio {
 
     public interface NoticiasCallback {
         void onNoticiasLoaded(List<Noticia> noticias);
+        void onError(String error);
     }
 }
