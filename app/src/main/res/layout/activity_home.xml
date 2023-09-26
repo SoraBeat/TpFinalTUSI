@@ -4,6 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.HomeActivity">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       app:layout_constraintBottom_toTopOf="@+id/tl_tablayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        app:tabRippleColor="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tabIconTint="@color/tab_icon_color"
+        app:tabMode="fixed"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_noticias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_home_24" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_reportes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_event_24"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_qr_code_scanner_24" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_crearreporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_add_alert_24" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_cuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_person_outline_24" />
+
+    </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

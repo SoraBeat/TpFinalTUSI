@@ -43,6 +43,11 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:fontFamily">@font/inter</item>
     </style>
+    <style name="TabIconStyle">
+        <item name="android:layout_width">100dp</item> <!-- Ancho deseado del icono -->
+        <item name="android:layout_height">100dp</item> <!-- Alto deseado del icono -->
+    </style>
+
     <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
         <item name="android:textColor">@color/darkGrey</item> <!-- Cambiar color del texto -->
         <item name="android:elevation">0dp</item> <!-- Eliminar la elevación -->
@@ -54,6 +59,4 @@
         <item name="android:clickable">false</item> <!-- Deshabilita la interacción táctil -->
         <item name="android:focusable">false</item>
     </style>
-
-
 </resources>

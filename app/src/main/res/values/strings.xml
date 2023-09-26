@@ -44,5 +44,7 @@
     \n
     Por favor, lee estos Términos y Condiciones cuidadosamente antes de aceptarlos y utilizar la Plataforma. Si tienes alguna pregunta o inquietud sobre estos Términos, te recomendamos buscar asesoramiento legal antes de aceptarlos.
 </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
