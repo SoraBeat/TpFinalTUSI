@@ -1,6 +1,7 @@
 package com.example.tpfinaltusi.adicionales;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.DetalleNoticia;
 import com.example.tpfinaltusi.entidades.Noticia;
 
 import java.text.SimpleDateFormat;
@@ -90,6 +92,17 @@ public class NoticiaAdapter extends RecyclerView.Adapter<NoticiaAdapter.NoticiaV
         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         holder.image.setImageBitmap(bitmap);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Cuando se hace clic en un elemento, abrir la actividad de detalles de noticia
+                Intent intent = new Intent(context, DetalleNoticia.class);
+                // Puedes pasar datos adicionales a la actividad si es necesario
+                intent.putExtra("id_noticia", noticia.getIdNoticia());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
