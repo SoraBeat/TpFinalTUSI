@@ -11,8 +11,38 @@ public class Noticia {
     private Date fechaAlta;
     private int idLocalidad;
 
+    public float getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(float latitud) {
+        this.latitud = latitud;
+    }
+
+    public float getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(float longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getTagMaps() {
+        return tagMaps;
+    }
+
+    public void setTagMaps(String tagMaps) {
+        this.tagMaps = tagMaps;
+    }
+
+    private float latitud;
+    private float longitud;
+    private String tagMaps;
+
     // Constructor
-    public Noticia(int idNoticia, String titulo, String cuerpo, String categoria, String imagen, Date fechaAlta, int idLocalidad) {
+
+
+    public Noticia(int idNoticia, String titulo, String cuerpo, String categoria, String imagen, Date fechaAlta, int idLocalidad, float latitud, float longitud, String tagMaps) {
         this.idNoticia = idNoticia;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
@@ -20,6 +50,9 @@ public class Noticia {
         this.imagen = imagen;
         this.fechaAlta = fechaAlta;
         this.idLocalidad = idLocalidad;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.tagMaps = tagMaps;
     }
 
     // Getters y Setters
@@ -89,6 +122,9 @@ public class Noticia {
                 ", imagen='" + imagen + '\'' +
                 ", fechaAlta=" + fechaAlta +
                 ", idLocalidad=" + idLocalidad +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                ", tagMaps='" + tagMaps + '\'' +
                 '}';
     }
 }

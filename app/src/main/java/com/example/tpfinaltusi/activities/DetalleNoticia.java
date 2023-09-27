@@ -33,6 +33,7 @@ public class DetalleNoticia extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout layoutInvisible;
     ImageView btnBack;
+    LinearLayout btnGoogleMaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class DetalleNoticia extends AppCompatActivity {
             tvFecha = findViewById(R.id.dateTextView);
             progressBar = findViewById(R.id.progressBar);
             layoutInvisible = findViewById(R.id.layoutInvisible);
+            btnGoogleMaps = findViewById(R.id.btn_verMaps);
             /////////////////////////////////////OBTENER DATOS///////////////////////////////////////////////
             int id = intent.getIntExtra("id_noticia", -1);
             cargarNoticia(id);
@@ -147,6 +149,20 @@ public class DetalleNoticia extends AppCompatActivity {
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         ivImagen.setImageBitmap(bitmap);
                         progressBar.setVisibility(View.GONE);
+                        btnGoogleMaps.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
+                                    Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                                    i.putExtra("latitud",noticia.getLatitud());
+                                    i.putExtra("longitud",noticia.getLongitud());
+                                    i.putExtra("tagmaps",noticia.getTagMaps());
+                                    startActivity(i);
+                                }catch (Exception e){
+                                    System.out.println(e);
+                                }
+                            }
+                        });
                     }
                 });
             }

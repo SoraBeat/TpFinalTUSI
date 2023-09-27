@@ -51,7 +51,7 @@ public class NoticiaDAO {
     // Crear una nueva Noticia
     public boolean crearNoticia(Noticia noticia) {
         esperarConexion();
-        String sql = "INSERT INTO noticias (IdNoticia, Titulo, Cuerpo, Categoria, Imagen, FechaAlta, IdLocalidad) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO noticias (idnoticia, titulo, cuerpo, categoria, imagen, fechaalta, idlocalidad,latitud,longitud,tagmaps) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, noticia.getIdNoticia());
             statement.setString(2, noticia.getTitulo());
@@ -60,6 +60,9 @@ public class NoticiaDAO {
             statement.setString(5, noticia.getImagen());
             statement.setDate(6, new java.sql.Date(noticia.getFechaAlta().getTime()));
             statement.setInt(7, noticia.getIdLocalidad());
+            statement.setFloat(8, noticia.getLatitud());
+            statement.setFloat(9, noticia.getLongitud());
+            statement.setString(8, noticia.getTagMaps());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -71,7 +74,7 @@ public class NoticiaDAO {
     // Editar una Noticia existente
     public boolean editarNoticia(Noticia noticia) {
         esperarConexion();
-        String sql = "UPDATE noticias SET Titulo=?, Cuerpo=?, Categoria=?, Imagen=?, FechaAlta=?, IdLocalidad=? WHERE IdNoticia=?";
+        String sql = "UPDATE noticias SET titulo=?, cuerpo=?, categoria=?, imagen=?, fechaalta=?, idlocalidad=?, latitud=?, longitud=?, tagmaps=? WHERE idnoticia=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, noticia.getTitulo());
             statement.setString(2, noticia.getCuerpo());
@@ -79,6 +82,9 @@ public class NoticiaDAO {
             statement.setString(4, noticia.getImagen());
             statement.setDate(5, new java.sql.Date(noticia.getFechaAlta().getTime()));
             statement.setInt(6, noticia.getIdLocalidad());
+            statement.setFloat(7, noticia.getLatitud());
+            statement.setFloat(8, noticia.getLongitud());
+            statement.setString(9, noticia.getTagMaps());
             statement.setInt(7, noticia.getIdNoticia());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
@@ -91,7 +97,7 @@ public class NoticiaDAO {
     // Borrar una Noticia por IdNoticia
     public boolean borrarNoticia(int idNoticia) {
         esperarConexion();
-        String sql = "DELETE FROM noticias WHERE IdNoticia=?";
+        String sql = "DELETE FROM noticias WHERE idnoticia=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idNoticia);
             int filasAfectadas = statement.executeUpdate();
@@ -105,7 +111,7 @@ public class NoticiaDAO {
     // Traer una Noticia por IdNoticia
     public Noticia traerNoticiaPorId(int idNoticia) {
         esperarConexion();
-        String sql = "SELECT * FROM noticias WHERE IdNoticia=?";
+        String sql = "SELECT * FROM noticias WHERE idnoticia=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idNoticia);
             ResultSet resultSet = statement.executeQuery();
@@ -143,7 +149,10 @@ public class NoticiaDAO {
         String imagen = resultSet.getString("imagen");
         Date fechaAlta = resultSet.getDate("fechaalta");
         int idLocalidad = resultSet.getInt("idlocalidad");
-        return new Noticia(idNoticia, titulo, cuerpo, categoria, imagen, fechaAlta, idLocalidad);
+        float latitud = resultSet.getFloat("latitud");
+        float longitud = resultSet.getFloat("longitud");
+        String tagMap = resultSet.getString("tagmaps");
+        return new Noticia(idNoticia, titulo, cuerpo, categoria, imagen, fechaAlta, idLocalidad,latitud,longitud,tagMap);
     }
 
 }

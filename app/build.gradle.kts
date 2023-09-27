@@ -2,6 +2,7 @@ import org.apache.tools.ant.util.JavaEnvUtils.VERSION_1_7
 
 plugins {
     id("com.android.application")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -36,6 +37,9 @@ android {
         //resources.excludes.add("META-INF/INDEX.LIST")
         //resources.excludes.add("META-INF/io.netty.versions.properties")
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -44,5 +48,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("org.postgresql:postgresql:42.2.9")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
 }
 
