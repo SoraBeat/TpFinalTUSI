@@ -53,5 +53,7 @@ dependencies {
     implementation("androidx.fragment:fragment:1.4.0")
     implementation("androidx.fragment:fragment-ktx:1.4.0")
     implementation("com.google.zxing:core:3.4.1")
+    implementation("org.osmdroid:osmdroid-android:6.1.11")
+    implementation("org.osmdroid:osmdroid-geopackage:6.1.11")
 }
 

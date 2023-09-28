@@ -1,46 +1,53 @@
 package com.example.tpfinaltusi.activities;
 
-import androidx.fragment.app.FragmentActivity;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.views.MapView;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.overlay.Marker;
 import com.example.tpfinaltusi.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.tpfinaltusi.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity {
 
-    private GoogleMap mMap;
-    private ActivityMapsBinding binding;
+    private MapView mapView;
+    private IMapController mapController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // Configurar osmdroid (debe hacerse antes de cargar el diseño)
+        Configuration.getInstance().load(getApplicationContext(), getSharedPreferences("osmdroid", MODE_PRIVATE));
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
+        setContentView(R.layout.activity_maps);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        mapView = findViewById(R.id.map);
+        mapView.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK); // Usa la fuente de mapas de Mapnik (OpenStreetMap)
+        mapView.setBuiltInZoomControls(true);
+        mapView.setMultiTouchControls(true);
+
+        mapController = mapView.getController();
+        mapController.setZoom(15.0); // Establece el nivel de zoom inicial
+
         double latitud = getIntent().getFloatExtra("latitud", 0);
         double longitud = getIntent().getFloatExtra("longitud", 0);
-        String titulo = getIntent().getStringExtra("titulo");
+        String titulo = getIntent().getStringExtra("tagmaps");
 
+        // Añade un marcador
+        GeoPoint location = new GeoPoint(latitud, longitud);
+        Marker startMarker = new Marker(mapView);
+        startMarker.setPosition(location);
+        startMarker.setTitle(titulo);
+        mapView.getOverlays().add(startMarker);
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(latitud, longitud);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(titulo));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Centra el mapa en la ubicación
+        mapController.setCenter(location);
     }
 }
