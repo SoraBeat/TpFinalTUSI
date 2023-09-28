@@ -136,5 +136,16 @@ public class UsuarioNegocio {
             }
         }).start();
     }
+    public void sumarPuntosAUsuarioPorId(int idUsuario, int puntosASumar, UsuarioCallback callback) {
+        // Realizar la operación de sumar puntos a un usuario por su ID en un hilo o AsyncTask
+        new Thread(() -> {
+            boolean resultado = usuarioDAO.sumarPuntosAUsuario(idUsuario, puntosASumar);
+            if (resultado) {
+                callback.onSuccess("Puntos sumados con éxito");
+            } else {
+                callback.onError("Error al sumar puntos");
+            }
+        }).start();
+    }
 
 }

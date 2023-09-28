@@ -13,9 +13,10 @@ public class Usuario {
     private int cantPuntos;
     private Date fechaAlta;
     private Date fechaBaja;
+    private int puntosTotalesObtenidos;
 
     // Constructor
-    public Usuario(String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja) {
+    public Usuario(String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos) {
         this.alias = alias;
         this.dni = dni;
         this.email = email;
@@ -23,8 +24,10 @@ public class Usuario {
         this.cantPuntos = cantPuntos;
         this.fechaAlta = fechaAlta;
         this.fechaBaja = fechaBaja;
+        this.puntosTotalesObtenidos = puntosTotalesObtenidos;
     }
-    public Usuario(int id,String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja) {
+
+    public Usuario(int id, String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos) {
         this.id = id;
         this.alias = alias;
         this.dni = dni;
@@ -33,6 +36,7 @@ public class Usuario {
         this.cantPuntos = cantPuntos;
         this.fechaAlta = fechaAlta;
         this.fechaBaja = fechaBaja;
+        this.puntosTotalesObtenidos = puntosTotalesObtenidos;
     }
 
     // Getters y Setters
@@ -43,6 +47,7 @@ public class Usuario {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getAlias() {
         return alias;
     }
@@ -99,6 +104,14 @@ public class Usuario {
         this.fechaBaja = fechaBaja;
     }
 
+    public int getPuntosTotalesObtenidos() {
+        return puntosTotalesObtenidos;
+    }
+
+    public void setPuntosTotalesObtenidos(int puntosTotalesObtenidos) {
+        this.puntosTotalesObtenidos = puntosTotalesObtenidos;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -110,6 +123,7 @@ public class Usuario {
                 ", cantPuntos=" + cantPuntos +
                 ", fechaAlta=" + fechaAlta +
                 ", fechaBaja=" + fechaBaja +
+                ", puntosTotalesObtenidos=" + puntosTotalesObtenidos +
                 '}';
     }
 }

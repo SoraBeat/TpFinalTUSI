@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -27,17 +26,16 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class FragmentQR extends Fragment {
-    private final String codigoQR25 =  "A5fGv9wK3lM8pR7";
-    private final String codigoQR50 =  "N1yTzPq2Rm8Lk6J";
-    private final String codigoQR100 =  "X4sHtVp7Zi9KlW3";
-    private final String codigoQR200 =  "D2pLk5Y9RwNvQ6Z";
-    private final String codigoQR300 =  "M7oTn2Lw9XpRfVz";
-    TextView puntajeActual;
-    TextView puntajeSumar;
+    private final String codigoQR25 = "A5fGv9wK3lM8pR7";
+    private final String codigoQR50 = "N1yTzPq2Rm8Lk6J";
+    private final String codigoQR100 = "X4sHtVp7Zi9KlW3";
+    private final String codigoQR200 = "D2pLk5Y9RwNvQ6Z";
+    private final String codigoQR300 = "M7oTn2Lw9XpRfVz";
+    TextView tv_puntajeActual;
+    TextView tv_puntajeSumar;
     Button btnEscanear;
     ProgressBar progressBar;
     RelativeLayout layoutOcultar;
-    Button btnSumar;
     private ActivityResultLauncher<Intent> qrCodeScannerLauncher;
 
     public FragmentQR() {
@@ -58,12 +56,11 @@ public class FragmentQR extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_q_r, container, false);
-        puntajeActual = view.findViewById(R.id.tv_puntajeActual);
-        puntajeSumar = view.findViewById(R.id.tv_puntajeSumar);
+        tv_puntajeActual = view.findViewById(R.id.tv_puntajeActual);
+        tv_puntajeSumar = view.findViewById(R.id.tv_puntajeSumar);
         btnEscanear = view.findViewById(R.id.btnEscanear);
         progressBar = view.findViewById(R.id.progressBar);
         layoutOcultar = view.findViewById(R.id.layoutOcultar);
-        btnSumar = view.findViewById(R.id.btnSumar);
         // Inicializa el ActivityResultLauncher
         qrCodeScannerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -91,6 +88,7 @@ public class FragmentQR extends Fragment {
         traerDatosUsuario(view);
         return view;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -103,37 +101,77 @@ public class FragmentQR extends Fragment {
             } else {
                 // Escaneo exitoso
                 String scanResult = result.getContents();
-                int puntaje=0;
-                switch (scanResult){
-                    case codigoQR25:puntaje=25;
+                int puntaje = 0;
+                switch (scanResult) {
+                    case codigoQR25:
+                        puntaje = 25;
                         break;
-                    case codigoQR50:puntaje=50;
+                    case codigoQR50:
+                        puntaje = 50;
                         break;
-                    case codigoQR100:puntaje=100;
+                    case codigoQR100:
+                        puntaje = 100;
                         break;
-                    case codigoQR200:puntaje=200;
+                    case codigoQR200:
+                        puntaje = 200;
                         break;
-                    case codigoQR300:puntaje=300;
+                    case codigoQR300:
+                        puntaje = 300;
                         break;
                     default:
-                        puntaje=0;
+                        puntaje = 0;
                         break;
                 }
-                if(puntaje>0){
-                    btnSumar.setVisibility(View.VISIBLE);
+                if (puntaje > 0) {
                     btnEscanear.setVisibility(View.GONE);
-                    puntajeSumar.setVisibility(View.VISIBLE);
-                    puntajeSumar.setText("+"+puntaje);
+                    tv_puntajeSumar.setVisibility(View.VISIBLE);
+                    tv_puntajeSumar.setText("+" + puntaje);
                     //sumar puntaje
+                    int idUsuario = UsuarioNegocio.obtenerIDUsuario(getContext());
+                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                    int finalPuntaje = puntaje;
+                    usuarioNegocio.sumarPuntosAUsuarioPorId(idUsuario, puntaje, new UsuarioNegocio.UsuarioCallback() {
+                        @Override
+                        public void onSuccess(String mensaje) {
+                            // Manejar el éxito, por ejemplo, mostrar un mensaje al usuario
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "Puntaje sumado", Toast.LENGTH_SHORT).show();
+                                    int puntosActuales = (Integer.parseInt(tv_puntajeActual.getText().toString()))+finalPuntaje;
+                                    tv_puntajeActual.setText(String.valueOf(puntosActuales));
+                                    btnEscanear.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
 
-                }else{
+                        @Override
+                        public void onError(String error) {
+                            // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "Error al sumar puntaje", Toast.LENGTH_SHORT).show();
+                                    tv_puntajeSumar.setVisibility(View.GONE);
+                                    btnEscanear.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onUsuarioLoaded(Usuario usuario) {
+                            // Esta función no se utiliza en este contexto, pero puede manejarla si es necesario
+                        }
+                    });
+
+                } else {
                     Toast.makeText(getContext(), "Codigo invalido", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
 
-    private void traerDatosUsuario(View view){
+    private void traerDatosUsuario(View view) {
         int idUsuario = UsuarioNegocio.obtenerIDUsuario(view.getContext());
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         progressBar.setVisibility(View.VISIBLE);
@@ -155,7 +193,7 @@ public class FragmentQR extends Fragment {
                     public void run() {
                         progressBar.setVisibility(View.GONE);
                         layoutOcultar.setVisibility(View.VISIBLE);
-                        puntajeActual.setText(String.valueOf(usuario.getCantPuntos())); // Debes convertir el valor int a String
+                        tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos())); // Debes convertir el valor int a String
                     }
                 });
             }
