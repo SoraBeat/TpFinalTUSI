@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tpfinaltusi.DAO.UsuarioDAO;
+
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.db.PostgreSQLConnection;
@@ -40,7 +41,6 @@ public class Login extends AppCompatActivity {
     private TextView btnOlvidasteContraseña;
     private TextView btnRegistrarse;
     boolean passwordVisible = true;
-    private UsuarioNegocio usuarioNegocio;
     private ProgressBar progressBar ;
 
     private CountDownLatch connectionLatch = new CountDownLatch(1);
@@ -78,31 +78,8 @@ public class Login extends AppCompatActivity {
         comportamientoBotonOlvidasteContrasenia();
         comportamientoBotonLogin();
 
-        //////EJEMPLO/////////////
-        usuarioNegocio = new UsuarioNegocio();
-
-        // Llamar a traerTodosLosUsuarios para cargar la lista de usuarios
-        cargarListaDeUsuarios();
 
     }
-    private void cargarListaDeUsuarios() {
-        usuarioNegocio.traerTodosLosUsuarios(new UsuarioNegocio.UsuariosCallback() {
-            @Override
-            public void onUsuariosLoaded(List<Usuario> usuarios) {
-                // Aquí puedes utilizar la lista de usuarios cargada para mostrarla en tu interfaz de usuario
-                // Por ejemplo, configurar un RecyclerView o un ListView
-                mostrarUsuariosEnConsola(usuarios);
-            }
-        });
-    }
-
-    private void mostrarUsuariosEnConsola(List<Usuario> usuarios) {
-        for (Usuario usuario : usuarios) {
-            // Imprime cada usuario en la consola
-            Log.d("UsuariosActivity", usuario.toString());
-        }
-    }
-
 
     private void comportamientoMostrarOcultarContrasenia(){
         //Controlar mostrar ocultar contraseña
@@ -172,8 +149,8 @@ public class Login extends AppCompatActivity {
                             btnLogin.setClickable(true);
                             if (loginExitoso) {
                                 // Inicio de sesión exitoso
-                                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                                startActivity(i);
+
+                                guardarCredenciales(email,password);
                             } else {
                                 // Inicio de sesión fallido
                                 Toast.makeText(getApplicationContext(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
@@ -181,7 +158,31 @@ public class Login extends AppCompatActivity {
 
                         });
                     }).start();
+
                 }
+            }
+        });
+    }
+
+    private void guardarCredenciales(String email,String password){
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        usuarioNegocio.buscarUsuarioPorCredenciales(this, email, password, new UsuarioNegocio.UsuarioCallback() {
+            @Override
+            public void onSuccess(String mensaje) {
+                // Handle success
+            }
+
+            @Override
+            public void onError(String error) {
+                // Handle error
+            }
+
+            @Override
+            public void onUsuarioLoaded(Usuario usuario) {
+                UsuarioNegocio.guardarIDUsuario(getApplicationContext(),usuario.getId());
+                // Handle loaded user
+                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(i);
             }
         });
     }

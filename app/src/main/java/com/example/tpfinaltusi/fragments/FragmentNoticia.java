@@ -52,32 +52,38 @@ public class FragmentNoticia extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
-                cargarListaDeNoticias();
+                cargarListaDeNoticias(view);
             }
         });
-        cargarListaDeNoticias();
+        cargarListaDeNoticias(view);
         return  view;
     }
-    private void cargarListaDeNoticias() {
+    private void cargarListaDeNoticias(View view) {
         progressBar.setVisibility(View.VISIBLE);
         NoticiaNegocio noticiaNegocio = new NoticiaNegocio();
         noticiaNegocio.traerTodasLasNoticias(new NoticiaNegocio.NoticiasCallback() {
             @Override
             public void onNoticiasLoaded(List<Noticia> noticias) {
-                // Ordenar la lista de noticias por fecha en orden descendente
-                Collections.sort(noticias, new Comparator<Noticia>() {
-                    @Override
-                    public int compare(Noticia noticia1, Noticia noticia2) {
-                        // Compara las fechas de las noticias en orden descendente
-                        return noticia2.getFechaAlta().compareTo(noticia1.getFechaAlta());
-                    }
-                });
-                RecyclerView recyclerView = getView().findViewById(R.id.recyclerViewNoticias);
-                recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                NoticiaAdapter adapter = new NoticiaAdapter(requireContext(), noticias);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
+                if (noticias != null && !noticias.isEmpty()) {
+                    // Ordenar la lista de noticias por fecha en orden descendente
+                    Collections.sort(noticias, new Comparator<Noticia>() {
+                        @Override
+                        public int compare(Noticia noticia1, Noticia noticia2) {
+                            // Compara las fechas de las noticias en orden descendente
+                            return noticia2.getFechaAlta().compareTo(noticia1.getFechaAlta());
+                        }
+                    });
+                    RecyclerView recyclerView = view.findViewById(R.id.recyclerViewNoticias);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    NoticiaAdapter adapter = new NoticiaAdapter(requireContext(), noticias);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    // Maneja el caso en el que no se obtuvieron noticias
+                    progressBar.setVisibility(View.GONE);
+                    // Puedes mostrar un mensaje o realizar alguna acción en este caso
+                }
             }
             @Override
             public void onError(String error) {
@@ -85,4 +91,5 @@ public class FragmentNoticia extends Fragment {
             }
         });
     }
+
 }

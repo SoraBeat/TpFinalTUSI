@@ -1,5 +1,9 @@
 package com.example.tpfinaltusi.Negocio;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.example.tpfinaltusi.DAO.UsuarioDAO;
 import com.example.tpfinaltusi.entidades.Usuario;
 
@@ -7,10 +11,10 @@ import java.util.List;
 
 public class UsuarioNegocio {
 
-    private static UsuarioDAO usuarioDAO;
+    private static UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     public UsuarioNegocio() {
-        usuarioDAO = new UsuarioDAO();
+
     }
 
     public void crearUsuario(Usuario usuario, UsuarioCallback callback) {
@@ -88,4 +92,49 @@ public class UsuarioNegocio {
     public interface UsuariosCallback {
         void onUsuariosLoaded(List<Usuario> usuarios);
     }
+    public void buscarUsuarioPorCredenciales(Context context, String email, String password, UsuarioCallback callback) {
+        // Realizar la operación de búsqueda de usuario por credenciales en un hilo o AsyncTask
+        new Thread(() -> {
+            Usuario usuario;
+            boolean loginExitoso = login(email, password);
+            if (loginExitoso) {
+                usuario = usuarioDAO.traerUsuarioPorEmail(email);
+            } else {
+                usuario = null;
+            }
+
+            // Invocar el callback con el resultado en el hilo principal
+            ((Activity)context).runOnUiThread(() -> {
+                if (usuario != null) {
+                    callback.onUsuarioLoaded(usuario);
+                } else {
+                    callback.onError("Credenciales incorrectas");
+                }
+            });
+        }).start();
+    }
+
+    public static void guardarIDUsuario(Context context, int idUsuario) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("UsuarioGuardado", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("idUsuario", idUsuario);
+        editor.apply();
+    }
+    public static int obtenerIDUsuario(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("UsuarioGuardado", Context.MODE_PRIVATE);
+        int idUsuario = sharedPreferences.getInt("idUsuario",-1);
+        return  idUsuario;
+    }
+    public void buscarUsuarioPorId(int idUsuario, UsuarioCallback callback) {
+        // Realizar la operación de búsqueda de usuario por ID en un hilo o AsyncTask
+        new Thread(() -> {
+            Usuario usuario = usuarioDAO.traerUsuarioPorId(idUsuario);
+            if (usuario != null) {
+                callback.onUsuarioLoaded(usuario);
+            } else {
+                callback.onError("Usuario no encontrado");
+            }
+        }).start();
+    }
+
 }

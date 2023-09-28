@@ -42,6 +42,7 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/white</item>
         <item name="android:fontFamily">@font/inter</item>
+        <item name="android:background">@color/white</item>
     </style>
     <style name="TabIconStyle">
         <item name="android:layout_width">100dp</item> <!-- Ancho deseado del icono -->

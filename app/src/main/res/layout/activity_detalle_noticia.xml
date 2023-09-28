@@ -75,6 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:textColor="@color/darkGrey"
                     android:layout_marginBottom="20dp"
                     android:text="Únete a nosotros en un emocionante evento al aire libre mientras celebramos con alegría y compromiso nuestro primer aniversario. Este especial encuentro está dedicado a la causa del reciclaje y la preservación del medio ambiente. En un día lleno de actividades interactivas, talleres educativos y entretenimiento para todas las edades, trabajaremos juntos para promover prácticas sostenibles. ¡Es una oportunidad única para aprender sobre la importancia del reciclaje y cómo cada uno de nosotros puede marcar la diferencia en la construcción de un mundo más verde y saludable! Te esperamos con entusiasmo para compartir momentos significativos, hacer nuevos amigos y contribuir a un futuro más sostenible. ¡No te lo pierdas!" />
             </LinearLayout>

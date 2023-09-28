@@ -152,6 +152,7 @@ public class UsuarioDAO {
 
     // Método auxiliar para crear un objeto Usuario desde un ResultSet
     private Usuario crearUsuarioDesdeResultSet(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("idusuario");
         String alias = resultSet.getString("alias");
         String dni = resultSet.getString("dni");
         String email = resultSet.getString("email");
@@ -159,7 +160,7 @@ public class UsuarioDAO {
         int cantPuntos = resultSet.getInt("cantpuntos");
         Date fechaAlta = resultSet.getDate("fechaalta");
         Date fechaBaja = resultSet.getDate("fechabaja");
-        return new Usuario(alias, dni, email, password, cantPuntos, fechaAlta, fechaBaja);
+        return new Usuario(id,alias, dni, email, password, cantPuntos, fechaAlta, fechaBaja);
     }
     // Verificar las credenciales del usuario
     public boolean verificarCredenciales(String email, String password) {
@@ -177,6 +178,35 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
         return false;
+    }
+    public Usuario traerUsuarioPorEmail(String email) {
+        esperarConexion();
+        String sql = "SELECT * FROM usuarios WHERE email=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return crearUsuarioDesdeResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Usuario traerUsuarioPorId(int idUsuario) {
+        esperarConexion();
+        String sql = "SELECT * FROM usuarios WHERE idusuario=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idUsuario);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return crearUsuarioDesdeResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

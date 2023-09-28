@@ -29,8 +29,8 @@ android {
         }
     }
     compileOptions {
-        //sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
-        //targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+        sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+        targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
     }
     packaging {
         // Exclude the problematic files
@@ -49,5 +49,9 @@ dependencies {
     implementation("org.postgresql:postgresql:42.2.9")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.journeyapps:zxing-android-embedded:4.1.0")
+    implementation("androidx.fragment:fragment:1.4.0")
+    implementation("androidx.fragment:fragment-ktx:1.4.0")
+    implementation("com.google.zxing:core:3.4.1")
 }
 

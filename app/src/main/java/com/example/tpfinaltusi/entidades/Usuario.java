@@ -24,6 +24,16 @@ public class Usuario {
         this.fechaAlta = fechaAlta;
         this.fechaBaja = fechaBaja;
     }
+    public Usuario(int id,String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja) {
+        this.id = id;
+        this.alias = alias;
+        this.dni = dni;
+        this.email = email;
+        this.password = password;
+        this.cantPuntos = cantPuntos;
+        this.fechaAlta = fechaAlta;
+        this.fechaBaja = fechaBaja;
+    }
 
     // Getters y Setters
     public int getId() {
