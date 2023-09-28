@@ -3,6 +3,7 @@ package com.example.tpfinaltusi.fragments;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Usuario;
+import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -76,11 +78,12 @@ public class FragmentQR extends Fragment {
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(getActivity());
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                integrator.setPrompt("Apunta al QR");
                 integrator.setCameraId(0);
+                integrator.setPrompt("Apunta al QR");
                 integrator.setBeepEnabled(true);
                 integrator.setBarcodeImageEnabled(true);
-
+                integrator.addExtra(Intents.Scan.ORIENTATION_LOCKED, 0);
+                integrator.setOrientationLocked(true);
                 // Inicia la actividad de escaneo
                 qrCodeScannerLauncher.launch(integrator.createScanIntent());
             }

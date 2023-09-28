@@ -37,7 +37,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
-
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
         <activity
             android:name=".activities.MapsActivity"
             android:exported="false"
@@ -53,7 +56,7 @@
             android:name=".activities.HomeActivity"
             android:exported="false"
             android:theme="@style/MainThemeWhite"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="sensorPortrait"/>
         <activity
             android:name=".activities.Registro"
             android:exported="false"

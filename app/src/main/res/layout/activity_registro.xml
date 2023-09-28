@@ -15,9 +15,9 @@
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:src="@mipmap/ic_reciclyng_person_1_foreground" />
+            android:scaleX="1"
+            android:scaleY="1"
+            android:src="@drawable/recycling_person_1" />
 
         <EditText
             android:id="@+id/et_alias"
@@ -157,7 +157,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Acepto las " />
+                android:text="Acepto las "
+                android:textColor="@color/darkGrey"/>
 
             <TextView
                 android:id="@+id/btn_condicionesDelServicio"
@@ -190,11 +191,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkGrey"
                 android:text="Ya tienes cuenta? " />
 
             <TextView

@@ -19,9 +19,9 @@
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:src="@mipmap/ic_person_recycling_2" />
+            android:scaleX="1"
+            android:scaleY="1"
+            android:src="@drawable/recycling_person_2" />
 
         <EditText
             android:id="@+id/et_mail"

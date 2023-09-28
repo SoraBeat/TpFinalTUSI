@@ -74,7 +74,7 @@ public class FragmentNoticia extends Fragment {
                         }
                     });
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerViewNoticias);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     NoticiaAdapter adapter = new NoticiaAdapter(requireContext(), noticias);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
