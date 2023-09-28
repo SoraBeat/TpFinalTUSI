@@ -226,5 +226,20 @@ public class UsuarioDAO {
             return false;
         }
     }
+    // En la clase UsuarioDAO
+    public String obtenerPasswordPorEmail(String email) {
+        esperarConexion();
+        String sql = "SELECT password FROM usuarios WHERE email=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

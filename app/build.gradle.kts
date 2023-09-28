@@ -36,6 +36,8 @@ android {
         // Exclude the problematic files
         //resources.excludes.add("META-INF/INDEX.LIST")
         //resources.excludes.add("META-INF/io.netty.versions.properties")
+        resources.excludes.add("META-INF/NOTICE.md")
+        resources.excludes.add("META-INF/LICENSE.md")
     }
     buildFeatures {
         viewBinding = true
@@ -55,5 +57,7 @@ dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("org.osmdroid:osmdroid-android:6.1.11")
     implementation("org.osmdroid:osmdroid-geopackage:6.1.11")
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 }
 

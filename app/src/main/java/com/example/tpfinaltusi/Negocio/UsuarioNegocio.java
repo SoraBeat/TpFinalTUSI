@@ -147,5 +147,22 @@ public class UsuarioNegocio {
             }
         }).start();
     }
+    public void obtenerContraseñaPorEmail(String email, ContraseñaCallback callback) {
+        // Realizar la operación de obtener contraseña por email en un hilo o AsyncTask
+        new Thread(() -> {
+            String contraseña = usuarioDAO.obtenerPasswordPorEmail(email);
+            if (contraseña != null) {
+                callback.onContraseñaObtenida(contraseña);
+            } else {
+                callback.onError("Correo electrónico no encontrado");
+            }
+        }).start();
+    }
+
+    public interface ContraseñaCallback {
+        void onContraseñaObtenida(String contraseña);
+
+        void onError(String error);
+    }
 
 }

@@ -115,7 +115,8 @@ public class Login extends AppCompatActivity {
         btnOlvidasteContraseña.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "FALTA HACER XD", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(), OlvidePassword.class);
+                startActivity(i);
             }
         });
     }
