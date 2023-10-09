@@ -42,26 +42,25 @@
                 </ImageView>
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="70dp"
                     android:layout_alignTop="@id/Imagen_persona"
+                    android:backgroundTint="@color/transparent"
                     android:layout_alignRight="@id/Imagen_persona">
 
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:src="@drawable/gold_medall"
-                    android:background="@color/transparent"
-                    >
-                </ImageView>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="70dp"
+                        android:background="@color/transparent"
+                        android:foreground="@drawable/gold_medall"/>
             </RelativeLayout>
             </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/tv_nombre_perfil_usuario"
                 android:layout_height="wrap_content"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:textColor="@color/darkGrey"
