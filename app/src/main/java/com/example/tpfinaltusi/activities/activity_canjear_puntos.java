@@ -5,15 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.adicionales.ProductoAdapter;
 import com.example.tpfinaltusi.entidades.Usuario;
 
 public class activity_canjear_puntos extends AppCompatActivity {
 
     TextView tv_puntajeActual;
+    ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,12 @@ public class activity_canjear_puntos extends AppCompatActivity {
         setContentView(R.layout.activity_canjear_puntos);
 
         tv_puntajeActual = findViewById(R.id.tv_puntajeActual);
+        listView = findViewById(R.id.lvlistar);
+
+        // Llenar el ListView con el adaptador ProductoAdapter
+        ProductoAdapter productoAdapter = new ProductoAdapter(this);
+        listView.setAdapter(productoAdapter);
+
         traer_puntaje();
     }
 

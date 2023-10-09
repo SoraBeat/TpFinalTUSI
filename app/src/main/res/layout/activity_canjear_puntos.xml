@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".fragments.FragmentQR">
 
     <ProgressBar
@@ -12,16 +12,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/transparent"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_constraintTop_toTopOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintEnd_toEndOf="parent" />
 
-        <!--PUNTOS A CANJEAR-->
+    <!--PUNTOS A CANJEAR-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_constraintTop_toBottomOf="@id/progressBar"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/tv_puntajeActual"
@@ -41,14 +45,11 @@
             android:textColor="@color/darkGrey"
             android:textSize="30sp"
             android:textStyle="bold" />
+
         <ListView
             android:id="@+id/lvlistar"
             android:layout_width="409dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_constraintBottom_toBottomOf="parent"
-            android:layout_constraintEnd_toEndOf="parent"
-            android:layout_constraintStart_toStartOf="parent"
-            android:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
-</LinearLayout>
+            android:layout_marginStart="20dp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
