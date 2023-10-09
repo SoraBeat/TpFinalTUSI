@@ -50,6 +50,7 @@
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:text="Titulo"
+                    android:textColor="@color/darkGrey"
                     android:textAllCaps="true"
                     android:layout_marginRight="8dp"/>
                 <TextView
