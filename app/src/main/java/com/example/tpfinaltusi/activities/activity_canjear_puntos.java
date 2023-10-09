@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ public class activity_canjear_puntos extends AppCompatActivity {
 
     TextView tv_puntajeActual;
     ListView listView;
+    ImageView btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +33,14 @@ public class activity_canjear_puntos extends AppCompatActivity {
         }
         // Inflar la vista personalizada
         View customActionBarView = getSupportActionBar().getCustomView();
-
+        btnBack = customActionBarView.findViewById(R.id.btn_back);
+        btnBack.setVisibility(View.VISIBLE);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         // Configurar el título centrado (opcional)
         TextView actionBarTitle = customActionBarView.findViewById(R.id.action_bar_title);
         actionBarTitle.setText("Canjer Puntos");
