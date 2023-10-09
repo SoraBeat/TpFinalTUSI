@@ -1,10 +1,12 @@
 package com.example.tpfinaltusi.adicionales;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tpfinaltusi.R;
@@ -21,7 +23,7 @@ public class ProductoAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.fragment_item_canje, parent, false);
+            convertView = inflater.inflate(R.layout.adapter_item_canje, parent, false);
         }
 
         // Obtener referencias a las vistas dentro del elemento personalizado
@@ -32,8 +34,12 @@ public class ProductoAdapter extends ArrayAdapter<String> {
         // Asignar los datos estáticos del producto a las vistas
         productTitle.setText("Mate");
         productDesc.setText("Disfruta de la tradición argentina con este elegante mate de calabaza y bombilla. Perfecto para compartir y relajarse.");
-        productPts.setText("200 Pts");
+        productPts.setText("200");
 
+        // Obtén una referencia al botón dentro del elemento de la lista
+        Button boton = convertView.findViewById(R.id.btnCanjear);
+
+        // Configura el evento de clic para el botón
         return convertView;
     }
 
