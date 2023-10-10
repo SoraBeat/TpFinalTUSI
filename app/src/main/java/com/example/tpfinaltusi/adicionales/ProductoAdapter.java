@@ -3,11 +3,13 @@ package color.tpfinaltusi.adicionales;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -60,8 +62,27 @@ public class ProductoAdapter extends ArrayAdapter<String> {
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(context, activity_canje_exitoso.class);
-                context.startActivity(intent);
+                // Acceder a las vistas en el elemento de la lista actual
+                View listItemView = getView(position, null, null);
+                if (listItemView != null) {
+                    ImageView productImage = listItemView.findViewById(R.id.product_image);
+                    TextView productTitle = listItemView.findViewById(R.id.product_title);
+                    TextView productPts = listItemView.findViewById(R.id.product_Pts);
+
+                    // Obtener los valores de las vistas
+                    String title = productTitle.getText().toString();
+                    String points = productPts.getText().toString();
+
+                    // Obtener la imagen dinámicamente
+                    Drawable imageDrawable = productImage.getDrawable();
+
+                    // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
+                    Intent intent = new Intent(context, activity_canje_exitoso.class);
+                    intent.putExtra("title", title);
+                    intent.putExtra("points", points);
+
+                    context.startActivity(intent);
+                }
             }
         });
 

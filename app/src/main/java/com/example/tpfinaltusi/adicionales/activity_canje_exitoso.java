@@ -3,8 +3,10 @@ package com.example.tpfinaltusi.adicionales;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
@@ -13,29 +15,40 @@ import com.example.tpfinaltusi.entidades.Usuario;
 
 import color.tpfinaltusi.adicionales.ProductoAdapter;
 
-public class activity_canje_exitoso extends AppCompatActivity {it
+public class activity_canje_exitoso extends AppCompatActivity {
     TextView tv_puntajeActual;
+    TextView product_title;
+    ImageView Imagen_canje;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_canje_exitoso);
 
-        //////////////////////////////////CONFIGURACION ACTION BAR////////////////////////////////////////////
-        // Habilitar ActionBar y configurar vista personalizada
+        // CONFIGURACION ACTION BAR
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar);
-        // Desactivar la elevación de la ActionBar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
         }
-        // Inflar la vista personalizada
         View customActionBarView = getSupportActionBar().getCustomView();
-
-        // Configurar el título centrado (opcional)
         TextView actionBarTitle = customActionBarView.findViewById(R.id.action_bar_title);
-        actionBarTitle.setText("Canjer Exitoso");
-        setContentView(R.layout.activity_canje_exitoso);
+        actionBarTitle.setText("Canje Exitoso");
 
+        // Obtén las vistas por sus IDs
         tv_puntajeActual = findViewById(R.id.tv_puntajeActual);
+        product_title = findViewById(R.id.product_title);
+        Imagen_canje = findViewById(R.id.Imagen_canje);
+
+        // Recupera los datos pasados desde Intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            String title = intent.getStringExtra("title");
+
+            // Establece los datos en las vistas correspondientes
+            product_title.setText(title);
+            // Establece la imagen si la tienes
+            // Imagen_canje.setImageResource(R.drawable.tu_imagen);
+        }
 
         traer_puntaje();
     }

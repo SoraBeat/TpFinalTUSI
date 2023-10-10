@@ -53,7 +53,7 @@
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:id="@+id/Imagen_persona"
+                android:id="@+id/Imagen_canje"
                 android:src="@mipmap/img_person_perfile_foreground">
 
             </ImageView>
