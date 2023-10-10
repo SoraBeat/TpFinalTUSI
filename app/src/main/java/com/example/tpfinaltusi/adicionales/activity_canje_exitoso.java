@@ -13,7 +13,7 @@ import com.example.tpfinaltusi.entidades.Usuario;
 
 import color.tpfinaltusi.adicionales.ProductoAdapter;
 
-public class activity_canje_exitoso extends AppCompatActivity {
+public class activity_canje_exitoso extends AppCompatActivity {it
     TextView tv_puntajeActual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +32,10 @@ public class activity_canje_exitoso extends AppCompatActivity {
 
         // Configurar el título centrado (opcional)
         TextView actionBarTitle = customActionBarView.findViewById(R.id.action_bar_title);
-        actionBarTitle.setText("Canjer Puntos");
-        setContentView(R.layout.activity_canjear_puntos);
+        actionBarTitle.setText("Canjer Exitoso");
+        setContentView(R.layout.activity_canje_exitoso);
 
         tv_puntajeActual = findViewById(R.id.tv_puntajeActual);
-
-        // Llenar el ListView con el adaptador ProductoAdapter
-        ProductoAdapter productoAdapter = new ProductoAdapter(this);
 
         traer_puntaje();
     }
