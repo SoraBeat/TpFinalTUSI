@@ -2,6 +2,7 @@ package color.tpfinaltusi.adicionales;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.tpfinaltusi.activities.OlvidePassword;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
 
 public class ProductoAdapter extends ArrayAdapter<String> {
     private Context context;
@@ -44,9 +46,6 @@ public class ProductoAdapter extends ArrayAdapter<String> {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Intent intent = new Intent(context, activity_canje_exitoso.class);
-                //context.startActivity(intent);
                 mostrarAlertDialog(position);
             }
         });
@@ -61,10 +60,8 @@ public class ProductoAdapter extends ArrayAdapter<String> {
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Aquí puedes realizar la acción de canje del producto
-                // Puedes usar la posición (position) para identificar el producto
-                // Por ejemplo, si tienes una lista de productos, puedes acceder al producto en esa posición
-                // y realizar las operaciones necesarias.
+                Intent intent = new Intent(context, activity_canje_exitoso.class);
+                context.startActivity(intent);
             }
         });
 
