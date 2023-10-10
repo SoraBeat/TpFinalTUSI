@@ -47,7 +47,7 @@
                     android:id="@+id/product_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:text="Titulo"
                     android:textColor="@color/darkGrey"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="YoReciclo"
                     android:textColor="@color/green"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -78,12 +78,11 @@
                     android:id="@+id/btnCanjear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp"
                     android:backgroundTint="@color/green"
                     android:text="Canjear"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginRight="8sp"/>
                 <TextView
@@ -98,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/darkGrey"
                     android:text="Pts"/>
