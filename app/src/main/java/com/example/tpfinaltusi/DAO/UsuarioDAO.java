@@ -225,7 +225,20 @@ public class UsuarioDAO {
             e.printStackTrace();
             return false;
         }
+    } public boolean restarPuntosAUsuario(int idUsuario, int puntosARestar) {
+        esperarConexion();
+        String sql = "UPDATE usuarios SET cantpuntos = cantpuntos - ? WHERE idusuario = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, puntosARestar);
+            statement.setInt(3, idUsuario);
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
     // En la clase UsuarioDAO
     public String obtenerPasswordPorEmail(String email) {
         esperarConexion();

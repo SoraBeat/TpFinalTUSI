@@ -147,6 +147,12 @@ public class UsuarioNegocio {
             }
         }).start();
     }
+    public void restarPuntosAUsuarioPorId(int idUsuario, int puntosARestar) {
+        // Realizar la operación de sumar puntos a un usuario por su ID en un hilo o AsyncTask
+        new Thread(() -> {
+            boolean resultado = usuarioDAO.restarPuntosAUsuario(idUsuario, puntosARestar);
+        }).start();
+    }
     public void obtenerContraseñaPorEmail(String email, ContraseñaCallback callback) {
         // Realizar la operación de obtener contraseña por email en un hilo o AsyncTask
         new Thread(() -> {

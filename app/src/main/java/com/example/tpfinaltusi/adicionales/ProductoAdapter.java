@@ -11,9 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.activities.OlvidePassword;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
@@ -65,21 +67,21 @@ public class ProductoAdapter extends ArrayAdapter<String> {
                 // Acceder a las vistas en el elemento de la lista actual
                 View listItemView = getView(position, null, null);
                 if (listItemView != null) {
-                    ImageView productImage = listItemView.findViewById(R.id.product_image);
                     TextView productTitle = listItemView.findViewById(R.id.product_title);
                     TextView productPts = listItemView.findViewById(R.id.product_Pts);
 
                     // Obtener los valores de las vistas
                     String title = productTitle.getText().toString();
-                    String points = productPts.getText().toString();
 
-                    // Obtener la imagen dinámicamente
-                    Drawable imageDrawable = productImage.getDrawable();
 
                     // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
                     Intent intent = new Intent(context, activity_canje_exitoso.class);
                     intent.putExtra("title", title);
-                    intent.putExtra("points", points);
+
+                    //Damos de baja la cantidad de puntos canjeados
+                    int idUsuario = UsuarioNegocio.obtenerIDUsuario(getContext());
+                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                    usuarioNegocio.restarPuntosAUsuarioPorId(idUsuario, Integer.parseInt(productPts.getText().toString()));
 
                     context.startActivity(intent);
                 }
