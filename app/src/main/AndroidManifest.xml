@@ -24,17 +24,19 @@
         tools:replace="android:allowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".adicionales.activity_canje_exitoso"
+            android:exported="false" />
+        <activity
             android:name=".activities.activity_canjear_puntos"
             android:exported="false"
+            android:label="Canjear_Puntos"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/MainThemeWhite"
-            android:label="Canjear_Puntos"/>
+            android:theme="@style/MainThemeWhite" />
         <activity
             android:name=".activities.OlvidePassword"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/MainThemeWhite"
-            />
+            android:theme="@style/MainThemeWhite" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

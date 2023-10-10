@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
-import com.example.tpfinaltusi.adicionales.ProductoAdapter;
 import com.example.tpfinaltusi.entidades.Usuario;
+
+import color.tpfinaltusi.adicionales.ProductoAdapter;
 
 public class activity_canjear_puntos extends AppCompatActivity {
 
