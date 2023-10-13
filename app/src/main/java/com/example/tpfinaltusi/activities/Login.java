@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -73,6 +75,21 @@ public class Login extends AppCompatActivity {
         btnOlvidasteContraseña = findViewById(R.id.btn_olvidasteContraseña);
         progressBar = findViewById(R.id.progressBar);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
+
+        SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
+        if (sharedPreferences.contains("idUsuario")) {
+            int idUsuario = sharedPreferences.getInt("idUsuario", -1);
+            if (idUsuario != -1) {
+                Intent i = new Intent(this, HomeActivity.class);
+                startActivity(i);
+                finish(); // Cierra la actividad actual para que el usuario no pueda regresar usando el botón de retroceso.
+            } else {
+                super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
+            }
+        } else {
+            super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
+        }
+
         comportamientoMostrarOcultarContrasenia();
         comportamientoBotonRegistrarse();
         comportamientoBotonOlvidasteContrasenia();
@@ -182,6 +199,11 @@ public class Login extends AppCompatActivity {
             public void onUsuarioLoaded(Usuario usuario) {
                 UsuarioNegocio.guardarIDUsuario(getApplicationContext(),usuario.getId());
                 // Handle loaded user
+                SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("idUsuario", usuario.getId());
+                editor.apply();
+
                 Intent i = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(i);
             }

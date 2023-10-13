@@ -25,8 +25,8 @@
             android:layout_gravity="center">
             <ImageView
                 android:id="@+id/product_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@mipmap/img_person_perfile_foreground"
                 android:layout_marginRight="16dp" >
 
@@ -47,18 +47,17 @@
                     android:id="@+id/product_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:text="Titulo"
                     android:textColor="@color/darkGrey"
-                    android:textAllCaps="true"
-                    android:layout_marginRight="8dp"/>
+                    android:layout_marginRight="2dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="YoReciclo"
                     android:textColor="@color/green"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -68,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/darkGrey"
-                android:text="descripcion del producto"/>
+                android:text="descripcion del producto"
+                android:layout_marginVertical="5dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -77,14 +77,15 @@
                 <Button
                     android:id="@+id/btnCanjear"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:backgroundTint="@color/green"
                     android:text="Canjear"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:layout_marginRight="8sp"/>
+                    android:layout_marginRight="8sp"
+                    android:background="@drawable/rec_rounded_green" />
                 <TextView
                     android:id="@+id/product_Pts"
                     android:layout_width="wrap_content"

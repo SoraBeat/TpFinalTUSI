@@ -37,7 +37,6 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.adapter_item_canje, parent, false);
         }
-
         // Obtener una instancia del Producto en la posición actual
         Premio premio = getItem(position);
 
@@ -46,9 +45,10 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         TextView productDesc = convertView.findViewById(R.id.product_Desc);
         ImageView productImag = convertView.findViewById(R.id.product_image);
         TextView productPts = convertView.findViewById(R.id.product_Pts);
+        Button boton = convertView.findViewById(R.id.btnCanjear);
 
         //Seteamos bitmap para la imagen
-        String pureBase64Encoded = premio.getImagen().substring(premio.getImagen().indexOf(",")  + 1);
+        String pureBase64Encoded = premio.getImagen().substring(premio.getImagen().indexOf(",") + 1);
         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 
@@ -58,47 +58,37 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         productPts.setText(String.valueOf(premio.getPrecio()));
         productImag.setImageBitmap(bitmap);
 
-
-        // Obtén una referencia al botón dentro del elemento de la lista
-        Button boton = convertView.findViewById(R.id.btnCanjear);
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarAlertDialog(position);
+                mostrarAlertDialog(context, premio);
             }
         });
 
         return convertView;
     }
-    private void mostrarAlertDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomStyle);
+
+    private void mostrarAlertDialog(final Context context, final Premio premio) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomStyle);
         builder.setTitle("Confirmación");
-        builder.setMessage("¿Está seguro de canjear este producto en la posición " + position + "?");
+        builder.setMessage("¿Está seguro de canjear este producto en la posición " + getPosition(premio) + "?");
 
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Acceder a las vistas en el elemento de la lista actual
-                View listItemView = getView(position, null, null);
-                if (listItemView != null) {
-                    TextView productTitle = listItemView.findViewById(R.id.product_title);
-                    TextView productPts = listItemView.findViewById(R.id.product_Pts);
+                // Acceder a los valores del premio directamente
+                String title = premio.getNombre();
 
-                    // Obtener los valores de las vistas
-                    String title = productTitle.getText().toString();
+                // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
+                Intent intent = new Intent(context, activity_canje_exitoso.class);
+                intent.putExtra("title", title);
 
+                //Damos de baja la cantidad de puntos canjeados
+                int idUsuario = UsuarioNegocio.obtenerIDUsuario(context);
+                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                usuarioNegocio.restarPuntosAUsuarioPorId(idUsuario, premio.getPrecio());
 
-                    // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
-                    Intent intent = new Intent(context, activity_canje_exitoso.class);
-                    intent.putExtra("title", title);
-
-                    //Damos de baja la cantidad de puntos canjeados
-                    int idUsuario = UsuarioNegocio.obtenerIDUsuario(getContext());
-                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-                    usuarioNegocio.restarPuntosAUsuarioPorId(idUsuario, Integer.parseInt(productPts.getText().toString()));
-
-                    context.startActivity(intent);
-                }
+                context.startActivity(intent);
             }
         });
 
@@ -111,5 +101,4 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
 
         builder.show();
     }
-
 }
