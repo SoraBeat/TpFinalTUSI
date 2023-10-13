@@ -13,8 +13,6 @@ import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Usuario;
 
-import color.tpfinaltusi.adicionales.ProductoAdapter;
-
 public class activity_canje_exitoso extends AppCompatActivity {
     TextView tv_puntajeActual;
     TextView product_title;

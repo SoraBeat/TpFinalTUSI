@@ -13,6 +13,9 @@ public class Premio {
         this.imagen = imagen;
         this.precio = precio;
     }
+    public Premio() {
+
+    }
 
     // Getters y Setters
     public int getIdPremio() {

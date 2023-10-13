@@ -3,7 +3,9 @@ package color.tpfinaltusi.adicionales;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,39 +13,46 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
-import com.example.tpfinaltusi.activities.OlvidePassword;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
+import com.example.tpfinaltusi.entidades.Premio;
 
-public class ProductoAdapter extends ArrayAdapter<String> {
+import java.util.List;
+
+public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
     private Context context;
 
-    public ProductoAdapter(Context context) {
-        super(context, 0);
+    public ItemCanjeAdapter(Context context, List<Premio> Premio) {
+        super(context, 0, Premio);
         this.context = context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.adapter_item_canje, parent, false);
         }
 
+        // Obtener una instancia del Producto en la posición actual
+        Premio premio = getItem(position);
+
         // Obtener referencias a las vistas dentro del elemento personalizado
         TextView productTitle = convertView.findViewById(R.id.product_title);
         TextView productDesc = convertView.findViewById(R.id.product_Desc);
+        ImageView productImag = convertView.findViewById(R.id.product_image);
         TextView productPts = convertView.findViewById(R.id.product_Pts);
 
-        // Asignar los datos estáticos del producto a las vistas
-        productTitle.setText("Mate");
-        productDesc.setText("Disfruta de la tradición argentina con este elegante mate de calabaza y bombilla. Perfecto para compartir y relajarse.");
-        productPts.setText("200");
+        // Asignar los datos del Producto a las vistas
+        productTitle.setText(premio.getNombre());
+        String pureBase64Encoded = premio.getImagen().substring(premio.getImagen().indexOf(",")  + 1);
+        byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        productPts.setText(String.valueOf(premio.getPrecio()));
 
         // Obtén una referencia al botón dentro del elemento de la lista
         Button boton = convertView.findViewById(R.id.btnCanjear);
@@ -53,7 +62,7 @@ public class ProductoAdapter extends ArrayAdapter<String> {
                 mostrarAlertDialog(position);
             }
         });
-        // Configura el evento de clic para el botón
+
         return convertView;
     }
     private void mostrarAlertDialog(final int position) {
@@ -98,9 +107,4 @@ public class ProductoAdapter extends ArrayAdapter<String> {
         builder.show();
     }
 
-    @Override
-    public int getCount() {
-        // Definir la cantidad de elementos en la lista
-        return 3; // Tres elementos estáticos
-    }
 }
