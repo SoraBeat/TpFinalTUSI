@@ -1,4 +1,4 @@
-package color.tpfinaltusi.adicionales;
+package com.example.tpfinaltusi.adicionales;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,12 +47,17 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         ImageView productImag = convertView.findViewById(R.id.product_image);
         TextView productPts = convertView.findViewById(R.id.product_Pts);
 
-        // Asignar los datos del Producto a las vistas
-        productTitle.setText(premio.getNombre());
+        //Seteamos bitmap para la imagen
         String pureBase64Encoded = premio.getImagen().substring(premio.getImagen().indexOf(",")  + 1);
         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+        // Asignar los datos del Producto a las vistas
+        productTitle.setText(premio.getNombre());
+        productDesc.setText(premio.getDescripcion());
         productPts.setText(String.valueOf(premio.getPrecio()));
+        productImag.setImageBitmap(bitmap);
+
 
         // Obtén una referencia al botón dentro del elemento de la lista
         Button boton = convertView.findViewById(R.id.btnCanjear);

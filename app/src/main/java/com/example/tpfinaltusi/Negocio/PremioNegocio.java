@@ -1,6 +1,9 @@
 package com.example.tpfinaltusi.Negocio;
 
+import android.os.AsyncTask;
+
 import com.example.tpfinaltusi.DAO.PremioDAO;
+import com.example.tpfinaltusi.adicionales.ItemCanjeAdapter;
 import com.example.tpfinaltusi.entidades.Premio;
 
 import java.util.List;
