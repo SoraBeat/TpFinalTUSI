@@ -82,12 +82,10 @@ public class Login extends AppCompatActivity {
             if (idUsuario != -1) {
                 Intent i = new Intent(this, HomeActivity.class);
                 startActivity(i);
-                finish(); // Cierra la actividad actual para que el usuario no pueda regresar usando el botón de retroceso.
+                //finish(); // Cierra la actividad actual para que el usuario no pueda regresar usando el botón de retroceso.
             } else {
                 super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
             }
-        } else {
-            super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
         }
 
         comportamientoMostrarOcultarContrasenia();
