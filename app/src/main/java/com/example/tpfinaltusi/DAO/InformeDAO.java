@@ -51,17 +51,15 @@ public class InformeDAO {
     // Crear un nuevo informe
     public boolean crearInforme(Informe informe) {
         esperarConexion();
-        String sql = "INSERT INTO informes (IdInforme, Titulo, Cuerpo, IdNivel, FechaAlta, UsuarioAlta, FechaBaja, UsuarioBaja, PuntosRecompensa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO informes (Titulo, Cuerpo, UsuarioAlta, idEstado, latitud, longitud, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, informe.getIdInforme());
-            statement.setString(2, informe.getTitulo());
-            statement.setString(3, informe.getCuerpo());
-            statement.setInt(4, informe.getIdNivel());
-            statement.setDate(5, new java.sql.Date(informe.getFechaAlta().getTime()));
-            statement.setInt(6, informe.getUsuarioAlta());
-            statement.setDate(7, new java.sql.Date(informe.getFechaBaja().getTime()));
-            statement.setInt(8, informe.getUsuarioBaja());
-            statement.setInt(9, informe.getPuntosRecompensa());
+            statement.setString(1, informe.getTitulo());
+            statement.setString(2, informe.getCuerpo());
+            statement.setInt(3, informe.getUsuarioAlta());
+            statement.setInt(4, informe.getIdEstado());
+            statement.setDouble(5, informe.getLatitud());
+            statement.setDouble(6, informe.getLongitud());
+            statement.setString(7, informe.getImagen());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -149,6 +147,10 @@ public class InformeDAO {
         Date fechaBaja = resultSet.getDate("FechaBaja");
         int usuarioBaja = resultSet.getInt("UsuarioBaja");
         int puntosRecompensa = resultSet.getInt("PuntosRecompensa");
-        return new Informe(idInforme, titulo, cuerpo, idNivel, fechaAlta, usuarioAlta, fechaBaja, usuarioBaja, puntosRecompensa);
+        int idEstado = resultSet.getInt("IdEstado");
+        double latitud = resultSet.getDouble("Latitud");
+        double longitud = resultSet.getDouble("Longitud");
+        String imagen = resultSet.getString("Imagen");
+        return new Informe(idInforme, titulo, cuerpo, idNivel, fechaAlta, usuarioAlta, fechaBaja, usuarioBaja, puntosRecompensa, idEstado, latitud, longitud, imagen);
     }
 }

@@ -1,5 +1,8 @@
 package com.example.tpfinaltusi.Negocio;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.example.tpfinaltusi.DAO.InformeDAO;
 import com.example.tpfinaltusi.entidades.Informe;
 
@@ -13,15 +16,9 @@ public class InformeNegocio {
         informeDAO = new InformeDAO();
     }
 
-    public void crearInforme(Informe informe, InformeCallback callback) {
-        // Realizar la operación de creación de Informe en un hilo o AsyncTask
+    public void crearInforme(Informe informe) {
         new Thread(() -> {
             boolean resultado = informeDAO.crearInforme(informe);
-            if (resultado) {
-                callback.onSuccess("Informe creado con éxito");
-            } else {
-                callback.onError("Error al crear Informe");
-            }
         }).start();
     }
 
@@ -65,10 +62,20 @@ public class InformeNegocio {
         // Realizar la operación de traer todos los Informes en un hilo o AsyncTask
         new Thread(() -> {
             List<Informe> informes = informeDAO.traerTodosLosInformes();
-            callback.onInformesLoaded(informes);
+            if(informes!= null){
+                runOnUiThread(() -> {
+                    callback.onInformesLoaded(informes);
+                });
+            } else {
+                runOnUiThread(() -> {
+                    callback.onError("Error al obtener los reportes");
+                });
+            }
         }).start();
     }
-
+    private void runOnUiThread(Runnable action) {
+        new Handler(Looper.getMainLooper()).post(action);
+    }
     public interface InformeCallback {
         void onSuccess(String mensaje);
 
@@ -79,5 +86,6 @@ public class InformeNegocio {
 
     public interface InformesCallback {
         void onInformesLoaded(List<Informe> informes);
+        void onError(String error);
     }
 }

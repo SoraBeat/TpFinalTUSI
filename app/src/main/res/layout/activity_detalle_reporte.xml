@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DetalleNoticia">
+    tools:context=".activities.DetalleReporte">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,55 +53,94 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dateTextView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/rec_rounded_green"
-                    android:fontFamily="@font/inter"
-                    android:gravity=""
-                    android:padding="10dp"
-                    android:paddingBottom="4dp"
-                    android:text="29\nSept."
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:id="@+id/infoTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:gravity="top"
+                    android:text="14/07/2023 - @Mati"
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_cuerpo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginBottom="20dp"
                     android:text="Únete a nosotros en un emocionante evento al aire libre mientras celebramos con alegría y compromiso nuestro primer aniversario. Este especial encuentro está dedicado a la causa del reciclaje y la preservación del medio ambiente. En un día lleno de actividades interactivas, talleres educativos y entretenimiento para todas las edades, trabajaremos juntos para promover prácticas sostenibles. ¡Es una oportunidad única para aprender sobre la importancia del reciclaje y cómo cada uno de nosotros puede marcar la diferencia en la construcción de un mundo más verde y saludable! Te esperamos con entusiasmo para compartir momentos significativos, hacer nuevos amigos y contribuir a un futuro más sostenible. ¡No te lo pierdas!"
                     android:textColor="@color/darkGrey" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btn_verMaps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp">
+                android:gravity="fill_vertical|center">
 
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/google_maps" />
-
-                <TextView
+                <LinearLayout
+                    android:id="@+id/btn_verMaps"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Ver en Google Maps"
-                    android:textColor="@color/green"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/google_maps" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ver en Google Maps"
+                        android:textColor="@color/green"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="100"
+                        android:textColor="@color/green"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Puntos"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_cerrarInforme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:backgroundTint="@color/green"
+                android:text="Cerrar Informe"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

@@ -50,6 +50,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("org.postgresql:postgresql:42.2.9")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("com.journeyapps:zxing-android-embedded:4.1.0")
     implementation("androidx.fragment:fragment:1.4.0")

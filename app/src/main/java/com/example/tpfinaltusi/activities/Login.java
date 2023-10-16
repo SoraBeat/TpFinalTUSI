@@ -182,8 +182,14 @@ public class Login extends AppCompatActivity {
             public void onUsuarioLoaded(Usuario usuario) {
                 UsuarioNegocio.guardarIDUsuario(getApplicationContext(),usuario.getId());
                 // Handle loaded user
-                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(i);
+
+                if(usuario.getId() == 7){
+                    Intent i = new Intent(getApplicationContext(),HomeActivityAdmin.class);
+                    startActivity(i);
+                } else{
+                    Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(i);
+                }
             }
         });
     }

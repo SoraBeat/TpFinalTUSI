@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +29,7 @@
             android:name=".activities.OlvidePassword"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/MainThemeWhite"/>
+            android:theme="@style/MainThemeWhite" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -39,15 +41,10 @@
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
-
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
-            tools:replace="screenOrientation"
-            />
+            tools:replace="screenOrientation" />
         <activity
             android:name=".activities.MapsActivity"
             android:exported="false"
@@ -60,7 +57,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainThemeWhite" />
         <activity
+            android:name=".activities.DetalleReporte"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainThemeWhite" />
+        <activity
+            android:name=".activities.CerrarInforme"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainThemeWhite" />
+        <activity
             android:name=".activities.HomeActivity"
+            android:exported="false"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/MainThemeWhite" />
+        <activity
+            android:name=".activities.HomeActivityAdmin"
             android:exported="false"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/MainThemeWhite" />

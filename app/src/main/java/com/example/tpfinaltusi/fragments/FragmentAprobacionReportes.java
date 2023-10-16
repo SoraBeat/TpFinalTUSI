@@ -22,20 +22,20 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentReporte#newInstance} factory method to
+ * Use the {@link FragmentAprobacionReportes#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentReporte extends Fragment {
+public class FragmentAprobacionReportes extends Fragment {
 
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    public FragmentReporte() {
+    public FragmentAprobacionReportes() {
         // Required empty public constructor
     }
 
-    public static FragmentReporte newInstance() {
-        FragmentReporte fragment = new FragmentReporte();
+    public static FragmentAprobacionReportes newInstance() {
+        FragmentAprobacionReportes fragment = new FragmentAprobacionReportes();
         return fragment;
     }
 
@@ -47,7 +47,7 @@ public class FragmentReporte extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_reporte, container, false);
+        View view= inflater.inflate(R.layout.fragment_aprobacion_reportes, container, false);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swapRefresh);
         //swipeRefreshLayout.setProgressViewEndTarget(false, 0);
