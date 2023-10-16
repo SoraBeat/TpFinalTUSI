@@ -3,17 +3,13 @@ package com.example.tpfinaltusi.activities;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,16 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tpfinaltusi.DAO.UsuarioDAO;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
-import com.example.tpfinaltusi.db.PostgreSQLConnection;
 import com.example.tpfinaltusi.entidades.Usuario;
-
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 
@@ -82,10 +72,13 @@ public class Login extends AppCompatActivity {
             if (idUsuario != -1) {
                 Intent i = new Intent(this, HomeActivity.class);
                 startActivity(i);
-                //finish(); // Cierra la actividad actual para que el usuario no pueda regresar usando el botón de retroceso.
+                finish(); // Cierra la actividad actual para que el usuario no pueda regresar usando el botón de retroceso.
             } else {
                 super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
             }
+        }
+        else{
+            super.onBackPressed();
         }
 
         comportamientoMostrarOcultarContrasenia();

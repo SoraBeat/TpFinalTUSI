@@ -1,5 +1,6 @@
 package com.example.tpfinaltusi.adicionales;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,28 +66,6 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarAlertDialog(finalConvertView, premio);
-            }
-        });
-
-        return convertView;
-    }
-
-    private void mostrarAlertDialog(View view, final Premio premio) {
-
-        Snackbar snackbar = Snackbar.make(view,"", Snackbar.LENGTH_LONG);
-        snackbar.setTextColor(ContextCompat.getColor(context, R.color.black));
-        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.black));
-        TextView tv2 = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-        tv2.setVisibility(View.GONE);
-        TextView tv = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_action);
-        tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv.setTextSize(20);
-        tv.setAllCaps(false);
-        snackbar.setAction("Apreta aqui para canjear", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 // Realiza una acción cuando se hace clic en el botón de acción
                 // Acceder a los valores del premio directamente
                 String title = premio.getNombre();
@@ -94,15 +73,16 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
                 // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
                 Intent intent = new Intent(context, activity_canje_exitoso.class);
                 intent.putExtra("title", title);
+                intent.putExtra("idPremio", premio.getIdPremio());
 
-                //Damos de baja la cantidad de puntos canjeados
-                int idUsuario = UsuarioNegocio.obtenerIDUsuario(context);
-                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-                usuarioNegocio.restarPuntosAUsuarioPorId(idUsuario, premio.getPrecio());
+                // Agrega la bandera FLAG_ACTIVITY_NEW_TASK
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                snackbar.getContext().startActivity(intent);
+                // Inicia la actividad
+                context.startActivity(intent);
             }
         });
-        snackbar.show();
+
+        return convertView;
     }
 }
