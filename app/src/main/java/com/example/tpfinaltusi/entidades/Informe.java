@@ -12,9 +12,14 @@ public class Informe {
     private Date fechaBaja;
     private int usuarioBaja;
     private int puntosRecompensa;
+    private int idEstado;
+    private double latitud;
+    private double longitud;
+    private String imagen;
 
     // Constructor
-    public Informe(int idInforme, String titulo, String cuerpo, int idNivel, Date fechaAlta, int usuarioAlta, Date fechaBaja, int usuarioBaja, int puntosRecompensa) {
+
+    public Informe(int idInforme, String titulo, String cuerpo, int idNivel, Date fechaAlta, int usuarioAlta, Date fechaBaja, int usuarioBaja, int puntosRecompensa, int idEstado, double latitud, double longitud, String imagen) {
         this.idInforme = idInforme;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
@@ -24,8 +29,21 @@ public class Informe {
         this.fechaBaja = fechaBaja;
         this.usuarioBaja = usuarioBaja;
         this.puntosRecompensa = puntosRecompensa;
+        this.idEstado = idEstado;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.imagen = imagen;
     }
 
+    public Informe(String titulo, String cuerpo, int usuarioAlta, int idEstado, double latitud, double longitud, String imagen) {
+        this.titulo = titulo;
+        this.cuerpo = cuerpo;
+        this.usuarioAlta = usuarioAlta;
+        this.idEstado = idEstado;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.imagen = imagen;
+    }
     // Getters y Setters
     public int getIdInforme() {
         return idInforme;
@@ -93,6 +111,35 @@ public class Informe {
 
     public int getPuntosRecompensa() {
         return puntosRecompensa;
+    }
+    public  int getIdEstado(){return idEstado;}
+
+    public void setIdEstado(int idEstado) {
+        this.idEstado = idEstado;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public void setPuntosRecompensa(int puntosRecompensa) {

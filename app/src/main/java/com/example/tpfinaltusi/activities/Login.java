@@ -202,8 +202,13 @@ public class Login extends AppCompatActivity {
                 editor.putInt("idUsuario", usuario.getId());
                 editor.apply();
 
-                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(i);
+                if(usuario.getId() == 7){
+                    Intent i = new Intent(getApplicationContext(),HomeActivityAdmin.class);
+                    startActivity(i);
+                } else{
+                    Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(i);
+                }
             }
         });
     }

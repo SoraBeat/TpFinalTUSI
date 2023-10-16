@@ -36,8 +36,8 @@ public class MapsActivity extends AppCompatActivity {
         mapController = mapView.getController();
         mapController.setZoom(15.0); // Establece el nivel de zoom inicial
 
-        double latitud = getIntent().getFloatExtra("latitud", 0);
-        double longitud = getIntent().getFloatExtra("longitud", 0);
+        double latitud = getIntent().getDoubleExtra("latitud", 0);
+        double longitud = getIntent().getDoubleExtra("longitud", 0);
         String titulo = getIntent().getStringExtra("tagmaps");
 
         // Añade un marcador
