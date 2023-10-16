@@ -50,12 +50,13 @@ public class PremioDAO {
     // Crear un nuevo Premio
     public boolean crearPremio(Premio premio) {
         esperarConexion();
-        String sql = "INSERT INTO premios (IdPremio, Nombre, Imagen, Precio) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO premios (idpremio, nombre, imagen, precio, descripcion) VALUES (?, ?, ?, ?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, premio.getIdPremio());
             statement.setString(2, premio.getNombre());
             statement.setString(3, premio.getImagen());
             statement.setInt(4, premio.getPrecio());
+            statement.setString(5, premio.getDescripcion());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -129,10 +130,11 @@ public class PremioDAO {
 
     // Método auxiliar para crear un objeto Premio desde un ResultSet
     private Premio crearPremioDesdeResultSet(ResultSet resultSet) throws SQLException {
-        int idPremio = resultSet.getInt("IdPremio");
-        String nombre = resultSet.getString("Nombre");
-        String imagen = resultSet.getString("Imagen");
-        int precio = resultSet.getInt("Precio");
-        return new Premio(idPremio, nombre, imagen, precio);
+        int idPremio = resultSet.getInt("idpremio");
+        String nombre = resultSet.getString("nombre");
+        String imagen = resultSet.getString("imagen");
+        String descripcion = resultSet.getString("descripcion");
+        int precio = resultSet.getInt("precio");
+        return new Premio(idPremio, nombre, imagen, precio, descripcion);
     }
 }
