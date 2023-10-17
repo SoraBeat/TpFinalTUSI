@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -36,6 +37,7 @@ public class Login extends AppCompatActivity {
     private ProgressBar progressBar ;
 
     private CountDownLatch connectionLatch = new CountDownLatch(1);
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class Login extends AppCompatActivity {
         }
         else{
             super.onBackPressed();
+
         }
 
         comportamientoMostrarOcultarContrasenia();
@@ -200,5 +203,21 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            // Si el usuario presiona nuevamente el botón de retroceso, la aplicación se cerrará.
+        } else {
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Presiona nuevamente para salir de la aplicación", Toast.LENGTH_SHORT).show();
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000); // Si el usuario no presiona nuevamente en 2 segundos, se restablece la variable.
+        }
+    }
 }
