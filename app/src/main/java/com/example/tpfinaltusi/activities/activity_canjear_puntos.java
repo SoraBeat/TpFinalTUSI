@@ -2,11 +2,6 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,18 +9,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.tpfinaltusi.Negocio.NoticiaNegocio;
+
 import com.example.tpfinaltusi.Negocio.PremioNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.ItemCanjeAdapter;
-import com.example.tpfinaltusi.adicionales.NoticiaAdapter;
-import com.example.tpfinaltusi.entidades.Noticia;
 import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class activity_canjear_puntos extends AppCompatActivity {
