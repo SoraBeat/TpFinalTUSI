@@ -1,4 +1,4 @@
-package com.example.tpfinaltusi.negocio;
+package com.example.tpfinaltusi.Negocio;
 
 import com.example.tpfinaltusi.DAO.CanjeDAO;
 import com.example.tpfinaltusi.entidades.Canje;
