@@ -86,6 +86,8 @@ public class activity_canjear_puntos extends AppCompatActivity {
             }
         });
 
+
+
         traer_puntaje();
     }
     private void traer_puntaje(){

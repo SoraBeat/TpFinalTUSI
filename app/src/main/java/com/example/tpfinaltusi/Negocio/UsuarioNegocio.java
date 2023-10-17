@@ -147,10 +147,15 @@ public class UsuarioNegocio {
             }
         }).start();
     }
-    public void restarPuntosAUsuarioPorId(int idUsuario, int puntosARestar) {
+    public void restarPuntosAUsuarioPorId(int idUsuario, int puntosARestar,UsuarioCallback callback) {
         // Realizar la operación de sumar puntos a un usuario por su ID en un hilo o AsyncTask
         new Thread(() -> {
             boolean resultado = usuarioDAO.restarPuntosAUsuario(idUsuario, puntosARestar);
+            if (resultado) {
+                callback.onSuccess("Puntos restados con éxito");
+            } else {
+                callback.onError("Error al restados puntos");
+            }
         }).start();
     }
     public void obtenerContraseñaPorEmail(String email, ContraseñaCallback callback) {

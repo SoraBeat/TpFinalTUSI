@@ -230,7 +230,7 @@ public class UsuarioDAO {
         String sql = "UPDATE usuarios SET cantpuntos = cantpuntos - ? WHERE idusuario = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, puntosARestar);
-            statement.setInt(3, idUsuario);
+            statement.setInt(2, idUsuario);
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
