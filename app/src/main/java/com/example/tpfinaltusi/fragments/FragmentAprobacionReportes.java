@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.ReporteAdapter;
+import com.example.tpfinaltusi.adicionales.ReporteAdapterAdmin;
 import com.example.tpfinaltusi.entidades.Informe;
 
 import java.util.Collections;
@@ -79,7 +80,7 @@ public class FragmentAprobacionReportes extends Fragment {
                     });
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerViewReportes);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    ReporteAdapter adapter = new ReporteAdapter(requireContext(), informes);
+                    ReporteAdapterAdmin adapter = new ReporteAdapterAdmin(requireContext(), informes);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DetalleReporte">
+    tools:context=".activities.DetalleReporteAdmin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,7 +80,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="fill_vertical|center">
+                android:layout_marginHorizontal="20dp"
+                android:gravity="fill_vertical|center"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/btn_verMaps"
@@ -103,41 +105,45 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginTop="5dp"
+                    android:text="Defina puntos de recompensa:" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="100"
-                        android:textColor="@color/green"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/editTextNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:hint="Puntos"
+                    android:inputType="number"
+                    android:text="" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Puntos"
-                        android:textColor="@color/darkGrey"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
 
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_cerrarInforme"
+                android:id="@+id/btn_aprobarInforme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="20dp"
                 android:backgroundTint="@color/green"
-                android:text="Cerrar Informe"
+                android:text="Aprobar"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_cancelarInforme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:backgroundTint="@color/red"
+                android:text="Cancelar"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
