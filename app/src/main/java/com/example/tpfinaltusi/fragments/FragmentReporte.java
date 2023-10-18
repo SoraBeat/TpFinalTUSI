@@ -58,7 +58,10 @@ public class FragmentReporte extends Fragment {
                 cargarListaDeReportes(view);
             }
         });
+
         cargarListaDeReportes(view);
+
+
         return  view;
     }
 
@@ -68,25 +71,27 @@ public class FragmentReporte extends Fragment {
         informeNegocio.traerTodosLosInformes(new InformeNegocio.InformesCallback() {
             @Override
             public void onInformesLoaded(List<Informe> informes) {
-                if (informes != null && !informes.isEmpty()) {
-                    // Ordenar la lista de noticias por fecha en orden descendente
-                    Collections.sort(informes, new Comparator<Informe>() {
-                        @Override
-                        public int compare(Informe informe1, Informe informe2) {
-                            // Compara las fechas de las noticias en orden descendente
-                            return informe2.getFechaAlta().compareTo(informe1.getFechaAlta());
-                        }
-                    });
-                    RecyclerView recyclerView = view.findViewById(R.id.recyclerViewReportes);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    ReporteAdapter adapter = new ReporteAdapter(requireContext(), informes);
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                } else {
-                    // Maneja el caso en el que no se obtuvieron noticias
-                    progressBar.setVisibility(View.GONE);
-                    // Puedes mostrar un mensaje o realizar alguna acción en este caso
+                if (isAdded()) {
+                    if (informes != null && !informes.isEmpty()) {
+                        // Ordenar la lista de noticias por fecha en orden descendente
+                        Collections.sort(informes, new Comparator<Informe>() {
+                            @Override
+                            public int compare(Informe informe1, Informe informe2) {
+                                // Compara las fechas de las noticias en orden descendente
+                                return informe2.getFechaAlta().compareTo(informe1.getFechaAlta());
+                            }
+                        });
+                        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewReportes);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        ReporteAdapter adapter = new ReporteAdapter(requireContext(), informes);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        // Maneja el caso en el que no se obtuvieron noticias
+                        progressBar.setVisibility(View.GONE);
+                        // Puedes mostrar un mensaje o realizar alguna acción en este caso
+                    }
                 }
             }
             @Override

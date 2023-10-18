@@ -1,16 +1,19 @@
 package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,26 +70,27 @@ public class Login extends AppCompatActivity {
         btnOlvidasteContraseña = findViewById(R.id.btn_olvidasteContraseña);
         progressBar = findViewById(R.id.progressBar);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
+        if (!usuarioyalogeado()) {
+            comportamientoMostrarOcultarContrasenia();
+            comportamientoBotonRegistrarse();
+            comportamientoBotonOlvidasteContrasenia();
+            comportamientoBotonLogin();
+        }
+    }
+    private boolean usuarioyalogeado(){
         SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
+
         if (sharedPreferences.contains("idUsuario")) {
             int idUsuario = sharedPreferences.getInt("idUsuario", -1);
             if (idUsuario != -1) {
                 Intent i = new Intent(this, HomeActivity.class);
                 startActivity(i);
-                finish(); // Cierra la actividad actual para que el usuario no pueda regresar usando el botón de retroceso.
-            } else {
-                super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
+                finish();
+                return true;
             }
         }
-
-        comportamientoMostrarOcultarContrasenia();
-        comportamientoBotonRegistrarse();
-        comportamientoBotonOlvidasteContrasenia();
-        comportamientoBotonLogin();
-
-
+        return false;
     }
-
     private void comportamientoMostrarOcultarContrasenia(){
         //Controlar mostrar ocultar contraseña
         togglePasswordButton.setBackgroundResource(R.drawable.eye_svgrepo_com); // Icono de ojo abierto
@@ -205,19 +209,21 @@ public class Login extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            // Si el usuario presiona nuevamente el botón de retroceso, la aplicación se cerrará.
-        } else {
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Presiona nuevamente para salir de la aplicación", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 2000); // Si el usuario no presiona nuevamente en 2 segundos, se restablece la variable.
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustomStyle);
+        builder.setMessage("¿Desea salir de la aplicación?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        finish(); // Cierra la aplicación
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        builder.create().show();
     }
 }
