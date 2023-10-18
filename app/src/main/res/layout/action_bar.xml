@@ -13,6 +13,7 @@
         android:textColor="@color/darkGrey"
         android:visibility="gone"
         android:src="@drawable/baseline_arrow_back_ios_24"
+        style="@style/MenuTextItemStyle"
 
         />
     <TextView
@@ -34,6 +35,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:background="@color/white"
-        android:src="@drawable/ic_action_name" />
+        android:src="@drawable/ic_action_name"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
