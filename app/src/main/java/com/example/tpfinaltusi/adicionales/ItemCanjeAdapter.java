@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -23,16 +24,19 @@ import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
 import com.example.tpfinaltusi.entidades.Premio;
+import com.example.tpfinaltusi.entidades.Usuario;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
     private Context context;
+    private int puntos;
 
-    public ItemCanjeAdapter(Context context, List<Premio> Premio) {
+    public ItemCanjeAdapter(Context context, List<Premio> Premio, int puntos) {
         super(context, 0, Premio);
         this.context = context;
+        this.puntos = puntos;
     }
 
     @Override
@@ -62,15 +66,29 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         productPts.setText(String.valueOf(premio.getPrecio()));
         productImag.setImageBitmap(bitmap);
 
+        int precioPremio = premio.getPrecio(); // Suponiendo que premio.getPrecio() devuelve un entero
+
+        System.out.println("Valor de puntos: " + puntos);
+        System.out.println("Precio del premio: " + precioPremio);
+
+
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              mostrarDialogoConfirmacion(premio);
+                //validamos si el usuario tiene suficientes puntos para canjear el premio
+                if(puntos >= premio.getPrecio()){
+                    mostrarDialogoConfirmacion(premio);
+                }
+                else{
+                    mostrarDialogoSinPuntos(premio);
+                }
+
             }
         });
 
         return convertView;
     }
+
     private void mostrarDialogoConfirmacion(final Premio premio) {
         // Realiza una acción cuando se hace clic en el botón de acción
         // Acceder a los valores del premio directamente
@@ -92,6 +110,7 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
                 Intent intent = new Intent(context, activity_canje_exitoso.class);
                 intent.putExtra("title", title);
                 intent.putExtra("idPremio", premio.getIdPremio());
+                intent.putExtra("Precio", premio.getPrecio());
 
                 // Agrega la bandera FLAG_ACTIVITY_NEW_TASK
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -101,6 +120,27 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No se realiza ninguna acción si se selecciona "No".
+                dialog.dismiss();
+            }
+        });
+
+        // Mostrar el AlertDialog
+        builder.create().show();
+    }
+    private void mostrarDialogoSinPuntos(final Premio premio) {
+        // Realiza una acción cuando se hace clic en el botón de acción
+        // Acceder a los valores del premio directamente
+        String title = premio.getNombre();
+
+        // Crea un AlertDialog
+        androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomStyle);
+        builder.setTitle("Error puntaje");
+        builder.setMessage("No es posible canjear el premio " + title + ", puntos no suficientes");
+
+        // Agregar botones al AlertDialog
+        builder.setNegativeButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // No se realiza ninguna acción si se selecciona "No".
                 dialog.dismiss();

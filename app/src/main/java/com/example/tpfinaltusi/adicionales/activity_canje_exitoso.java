@@ -3,12 +3,14 @@ package com.example.tpfinaltusi.adicionales;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +20,14 @@ import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
+import com.example.tpfinaltusi.fragments.FragmentPerfil;
 
 public class activity_canje_exitoso extends AppCompatActivity {
     TextView tv_puntajeActual;
     TextView product_title;
     ImageView Imagen_canje;
+    Button btCerrar;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,8 @@ public class activity_canje_exitoso extends AppCompatActivity {
         tv_puntajeActual = findViewById(R.id.tv_puntajeActual);
         product_title = findViewById(R.id.product_title);
         Imagen_canje = findViewById(R.id.Imagen_canje);
+        btCerrar = findViewById(R.id.btnCerrar);
+
 
         // Recupera los datos pasados desde Intent
         Intent intent = getIntent();
@@ -104,6 +111,16 @@ public class activity_canje_exitoso extends AppCompatActivity {
 
                 }
             });
+            btCerrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Coloca aquí el código que deseas ejecutar cuando se hace clic en el botón "Cerrar"
+                    // Por ejemplo, puedes cerrar la actividad actual
+                    finish();
+                    //Intent intent = new Intent(getApplicationContext(), FragmentPerfil.class);
+                    //startActivity(intent);
+                }
+            });
         }
         traer_puntaje();
     }
@@ -126,11 +143,10 @@ public class activity_canje_exitoso extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()));
+                        tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()- getIntent().getIntExtra("Precio",-1)));
                     }
                 });
             }
-
         });
     }
 }

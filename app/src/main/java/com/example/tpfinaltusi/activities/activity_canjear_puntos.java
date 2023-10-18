@@ -66,8 +66,11 @@ public class activity_canjear_puntos extends AppCompatActivity {
         tv_puntajeActual = findViewById(R.id.tv_puntajeActual);
         listView = findViewById(R.id.lvlistar);
 
+        traer_puntaje();
+
         // Llenar el ListView con el adaptador ProductoAdapter
         PremioNegocio premioNegocio = new PremioNegocio();
+
         premioNegocio.traerTodosLosPremios(new PremioNegocio.PremiosCallback() {
             @Override
             public void onPremiosLoaded(final List<Premio> premios) {
@@ -75,7 +78,7 @@ public class activity_canjear_puntos extends AppCompatActivity {
                     @Override
                     public void run() {
                         // Crear una instancia del adaptador y establecer la lista de productos
-                        ItemCanjeAdapter productoAdapter = new ItemCanjeAdapter(activity_canjear_puntos.this, premios);
+                        ItemCanjeAdapter productoAdapter = new ItemCanjeAdapter(activity_canjear_puntos.this, premios,Integer.parseInt(tv_puntajeActual.getText().toString()));
                         listView.setAdapter(productoAdapter);
                         progressBar.setVisibility(View.GONE);
                     }
@@ -83,7 +86,7 @@ public class activity_canjear_puntos extends AppCompatActivity {
             }
         });
 
-        traer_puntaje();
+
     }
 
     private void traer_puntaje(){
