@@ -137,7 +137,7 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         // Crea un AlertDialog
         androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomStyle);
         builder.setTitle("Error puntaje");
-        builder.setMessage("No es posible canjear el premio " + title + ", puntos no suficientes");
+        builder.setMessage("No es posible canjear el premio--------------- " + title + ", puntos no suficientes");
 
         // Agregar botones al AlertDialog
         builder.setNegativeButton("Aceptar", new DialogInterface.OnClickListener() {
