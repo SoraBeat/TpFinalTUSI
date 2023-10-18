@@ -67,7 +67,6 @@ public class Login extends AppCompatActivity {
         btnOlvidasteContraseña = findViewById(R.id.btn_olvidasteContraseña);
         progressBar = findViewById(R.id.progressBar);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
-        /*HAY QUE ARREGLAR ESTO A VECES FUNCIONA Y A VECES NO
         SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
         if (sharedPreferences.contains("idUsuario")) {
             int idUsuario = sharedPreferences.getInt("idUsuario", -1);
@@ -79,10 +78,6 @@ public class Login extends AppCompatActivity {
                 super.onBackPressed(); // Permite el comportamiento normal del botón de retroceso si el usuario no ha iniciado sesión.
             }
         }
-        else{
-            super.onBackPressed();
-
-        }*/
 
         comportamientoMostrarOcultarContrasenia();
         comportamientoBotonRegistrarse();
