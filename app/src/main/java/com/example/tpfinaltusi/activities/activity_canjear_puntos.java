@@ -1,9 +1,14 @@
 package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -14,6 +19,7 @@ import com.example.tpfinaltusi.Negocio.PremioNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.ItemCanjeAdapter;
+import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
 import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
 
@@ -69,7 +75,7 @@ public class activity_canjear_puntos extends AppCompatActivity {
                     @Override
                     public void run() {
                         // Crear una instancia del adaptador y establecer la lista de productos
-                        ItemCanjeAdapter productoAdapter = new ItemCanjeAdapter(getApplicationContext(), premios);
+                        ItemCanjeAdapter productoAdapter = new ItemCanjeAdapter(activity_canjear_puntos.this, premios);
                         listView.setAdapter(productoAdapter);
                         progressBar.setVisibility(View.GONE);
                     }
@@ -77,10 +83,10 @@ public class activity_canjear_puntos extends AppCompatActivity {
             }
         });
 
-
-
         traer_puntaje();
     }
+
+
     private void traer_puntaje(){
         int idUsuario = UsuarioNegocio.obtenerIDUsuario(getApplicationContext());
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();

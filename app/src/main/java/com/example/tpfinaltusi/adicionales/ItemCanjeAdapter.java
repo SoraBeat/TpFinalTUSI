@@ -62,10 +62,28 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         productPts.setText(String.valueOf(premio.getPrecio()));
         productImag.setImageBitmap(bitmap);
 
-        View finalConvertView = convertView;
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              mostrarDialogoConfirmacion(premio);
+            }
+        });
+
+        return convertView;
+    }
+    private void mostrarDialogoConfirmacion(final Premio premio) {
+        // Realiza una acción cuando se hace clic en el botón de acción
+        // Acceder a los valores del premio directamente
+        String title = premio.getNombre();
+
+        // Crea un AlertDialog
+        androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomStyle);
+        builder.setTitle("Confirmar canje");
+        builder.setMessage("¿Estás seguro de que deseas canjear el premio " + title + "?");
+
+        // Agregar botones al AlertDialog
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
                 // Realiza una acción cuando se hace clic en el botón de acción
                 // Acceder a los valores del premio directamente
                 String title = premio.getNombre();
@@ -82,7 +100,14 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
                 context.startActivity(intent);
             }
         });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No se realiza ninguna acción si se selecciona "No".
+                dialog.dismiss();
+            }
+        });
 
-        return convertView;
+        // Mostrar el AlertDialog
+        builder.create().show();
     }
 }
