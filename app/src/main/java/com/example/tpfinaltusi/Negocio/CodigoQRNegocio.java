@@ -74,4 +74,15 @@ public class CodigoQRNegocio {
     public interface CodigoQRsCallback {
         void onCodigoQRsLoaded(List<CodigoQR> codigoQRs);
     }
+    public void editarEstadoCanjeado(String codigo, boolean nuevoEstado, CodigoQRCallback callback) {
+        new Thread(() -> {
+            boolean resultado = codigoQRDAO.editarEstadoCanjeado(codigo, nuevoEstado);
+            if (resultado) {
+                callback.onSuccess("Estado canjeado cambiado con éxito");
+            } else {
+                callback.onError("Error al cambiar el estado canjeado");
+            }
+        }).start();
+    }
+
 }

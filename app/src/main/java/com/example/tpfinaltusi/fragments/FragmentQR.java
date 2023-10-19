@@ -111,10 +111,23 @@ public class FragmentQR extends Fragment {
                     public void onCodigoQRsLoaded(List<CodigoQR> codigoQRs) {
                         String scanResult = result.getContents();
                         int puntaje = 0;
-                        for (CodigoQR codigo:codigoQRs
-                             ) {
-                            if(scanResult.equals(codigo.getCodigo())){
+                        for (CodigoQR codigo : codigoQRs
+                        ) {
+                            if (scanResult.equals(codigo.getCodigo())) {
                                 puntaje = codigo.getPuntos();
+                                if(codigo.isCanjeado()){
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getContext(),"Este codigo ya ha sido conjeado",Toast.LENGTH_SHORT).show();
+                                            btnEscanear.setVisibility(View.VISIBLE);
+                                            progressBar.setVisibility(View.GONE);
+                                            layoutOcultar.setVisibility(View.VISIBLE);
+                                            tv_puntajeSumar.setVisibility(View.GONE);
+                                        }
+                                    });
+                                    return;
+                                }
                             }
                         }
                         if (puntaje > 0) {
@@ -130,18 +143,36 @@ public class FragmentQR extends Fragment {
                                     usuarioNegocio.sumarPuntosAUsuarioPorId(idUsuario, copiaPuntaje, new UsuarioNegocio.UsuarioCallback() {
                                         @Override
                                         public void onSuccess(String mensaje) {
-                                            // Manejar el éxito, por ejemplo, mostrar un mensaje al usuario
-                                            getActivity().runOnUiThread(new Runnable() {
+                                            CodigoQRNegocio codigoQRNegocio = new CodigoQRNegocio();
+                                            codigoQRNegocio.editarEstadoCanjeado(scanResult, true, new CodigoQRNegocio.CodigoQRCallback() {
                                                 @Override
-                                                public void run() {
-                                                    Toast.makeText(getContext(), "Puntaje sumado", Toast.LENGTH_SHORT).show();
-                                                    int puntosActuales = (Integer.parseInt(tv_puntajeActual.getText().toString()))+finalPuntaje;
-                                                    tv_puntajeActual.setText(String.valueOf(puntosActuales));
-                                                    btnEscanear.setVisibility(View.VISIBLE);
-                                                    progressBar.setVisibility(View.GONE);
-                                                    layoutOcultar.setVisibility(View.VISIBLE);
+                                                public void onSuccess(String mensaje) {
+                                                    // Manejar el éxito, por ejemplo, mostrar un mensaje al usuario
+                                                    getActivity().runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            Toast.makeText(getContext(), "Puntaje sumado", Toast.LENGTH_SHORT).show();
+                                                            int puntosActuales = (Integer.parseInt(tv_puntajeActual.getText().toString())) + finalPuntaje;
+                                                            tv_puntajeActual.setText(String.valueOf(puntosActuales));
+                                                            btnEscanear.setVisibility(View.VISIBLE);
+                                                            progressBar.setVisibility(View.GONE);
+                                                            layoutOcultar.setVisibility(View.VISIBLE);
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onError(String error) {
+                                                    // Error al cambiar el estado canjeado
+                                                }
+
+                                                @Override
+                                                public void onCodigoQRLoaded(CodigoQR codigoQR) {
+
                                                 }
                                             });
+
+
                                         }
 
                                         @Override
@@ -166,7 +197,7 @@ public class FragmentQR extends Fragment {
                                     });
                                 }
 
-                                });
+                            });
 
 
                         } else {

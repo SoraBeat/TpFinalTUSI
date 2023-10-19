@@ -47,12 +47,13 @@ public class CodigoQRDAO {
 
     public boolean crearCodigoQR(CodigoQR codigoQR) {
         esperarConexion();
-        String sql = "INSERT INTO codigosqr (idcodigoqr, codigo, imagen, puntos) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO codigosqr (codigo, imagen, puntos, usuarioquelocreo,canjeado) VALUES (?, ?, ?, ?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, codigoQR.getIdCodigoQR());
-            statement.setString(2, codigoQR.getCodigo());
-            statement.setString(3, codigoQR.getImagen());
-            statement.setInt(4, codigoQR.getPuntos());
+            statement.setString(1, codigoQR.getCodigo());
+            statement.setString(2, codigoQR.getImagen());
+            statement.setInt(3, codigoQR.getPuntos());
+            statement.setInt(4, codigoQR.getUsuarioQueLoCreo());
+            statement.setBoolean(5, codigoQR.isCanjeado());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -63,12 +64,14 @@ public class CodigoQRDAO {
 
     public boolean editarCodigoQR(CodigoQR codigoQR) {
         esperarConexion();
-        String sql = "UPDATE codigosqr SET codigo=?, imagen=?, puntos=? WHERE idcodigoqr=?";
+        String sql = "UPDATE codigosqr SET codigo=?, imagen=?, puntos=?, usuarioquelocreo=?, canjeado=? WHERE idcodigoqr=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, codigoQR.getCodigo());
             statement.setString(2, codigoQR.getImagen());
             statement.setInt(3, codigoQR.getPuntos());
-            statement.setInt(4, codigoQR.getIdCodigoQR());
+            statement.setInt(4, codigoQR.getUsuarioQueLoCreo());
+            statement.setBoolean(5, codigoQR.isCanjeado());
+            statement.setInt(6, codigoQR.getIdCodigoQR());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -125,6 +128,21 @@ public class CodigoQRDAO {
         String codigo = resultSet.getString("codigo");
         String imagen = resultSet.getString("imagen");
         int puntos = resultSet.getInt("puntos");
-        return new CodigoQR(idCodigoQR, codigo, imagen, puntos);
+        int usuarioquelocreo = resultSet.getInt("usuarioquelocreo");
+        Boolean canjeado = resultSet.getBoolean("canjeado");
+        return new CodigoQR(idCodigoQR, codigo, imagen, puntos,canjeado,usuarioquelocreo);
+    }
+    public boolean editarEstadoCanjeado(String codigo, boolean nuevoEstado) {
+        esperarConexion();
+        String sql = "UPDATE codigosqr SET canjeado=? WHERE codigo=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, nuevoEstado);
+            statement.setString(2, codigo);
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
