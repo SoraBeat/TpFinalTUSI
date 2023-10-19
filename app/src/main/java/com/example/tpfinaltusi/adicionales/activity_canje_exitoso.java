@@ -12,6 +12,8 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,9 @@ public class activity_canje_exitoso extends AppCompatActivity {
     TextView product_title;
     ImageView Imagen_canje;
     Button btCerrar;
+    ProgressBar progressBar;
+    RelativeLayout relativeLayout;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +55,16 @@ public class activity_canje_exitoso extends AppCompatActivity {
         product_title = findViewById(R.id.product_title);
         Imagen_canje = findViewById(R.id.Imagen_canje);
         btCerrar = findViewById(R.id.btnCerrar);
+        progressBar = findViewById(R.id.progressBar);
+        relativeLayout = findViewById(R.id.layoutOcultar);
 
+        mostrarDatos();
 
+    }
+
+    private void mostrarDatos() {
+        relativeLayout.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         // Recupera los datos pasados desde Intent
         Intent intent = getIntent();
         if (intent != null) {
@@ -60,12 +73,24 @@ public class activity_canje_exitoso extends AppCompatActivity {
             PremioNegocio.traerPremioPorId(intent.getIntExtra("idPremio", -1), new PremioNegocio.PremioCallback() {
                 @Override
                 public void onSuccess(String mensaje) {
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            relativeLayout.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }
 
                 @Override
                 public void onError(String error) {
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            relativeLayout.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }
 
                 @Override
@@ -93,18 +118,22 @@ public class activity_canje_exitoso extends AppCompatActivity {
                                         public void run() {
                                             int puntosActuales = (Integer.parseInt(tv_puntajeActual.getText().toString()));
                                             tv_puntajeActual.setText(String.valueOf(puntosActuales));
+                                            relativeLayout.setVisibility(View.VISIBLE);
+                                            progressBar.setVisibility(View.GONE);
                                         }
                                     });
                                 }
 
                                 @Override
                                 public void onError(String error) {
-
+                                    relativeLayout.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
                                 }
 
                                 @Override
                                 public void onUsuarioLoaded(Usuario usuario) {
-
+                                    relativeLayout.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
                         }
@@ -126,7 +155,8 @@ public class activity_canje_exitoso extends AppCompatActivity {
         }
         traer_puntaje();
     }
-    private void traer_puntaje(){
+
+    private void traer_puntaje() {
         int idUsuario = UsuarioNegocio.obtenerIDUsuario(getApplicationContext());
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
@@ -145,7 +175,7 @@ public class activity_canje_exitoso extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()- getIntent().getIntExtra("Precio",-1)));
+                        tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos() - getIntent().getIntExtra("Precio", -1)));
                     }
                 });
             }
