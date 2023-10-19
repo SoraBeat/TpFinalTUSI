@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -39,6 +40,7 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
     TextView tv_puntajeActual;
     ProgressBar progressBar;
     RelativeLayout relativeLayout;
+    ImageView imgMedal;
 
     public FragmentPerfil() {
         // Required empty public constructor
@@ -108,6 +110,7 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
         btnCanjear = b.findViewById(R.id.btnCanjear);
         progressBar = b.findViewById(R.id.progressBar);
         relativeLayout = b.findViewById(R.id.layoutOcultar);
+        imgMedal = b.findViewById(R.id.imgMedal);
 
         btnCanjear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +162,13 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                         relativeLayout.setVisibility(View.VISIBLE);
                         tv_nombre_perfil_usuario.setText("@" + usuario.getAlias().toString());
                         tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()));
+                        if (usuario.getCantPuntos()>=10000){
+                            imgMedal.setForeground(getContext().getDrawable(R.drawable.gold_medall));
+                        }else if (usuario.getCantPuntos()<10000 && usuario.getCantPuntos()>=5000){
+                            imgMedal.setForeground(getContext().getDrawable(R.drawable.silver_medal));
+                        }else {
+                            imgMedal.setForeground(getContext().getDrawable(R.drawable.bronze_medal));
+                        }
                     }
                 });
             }
