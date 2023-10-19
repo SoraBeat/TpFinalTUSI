@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,18 +70,42 @@ public class HomeActivity extends AppCompatActivity {
                 if(tab.getPosition()==0){
                     pagerController.notifyDataSetChanged();
                     actionBarTitle.setText("Noticias");
+                    ActionBar actionBar = getSupportActionBar();
+                    // Inflar la vista personalizada
+                    View customActionBarView = actionBar.getCustomView();
+
+                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                    img_config.setVisibility(View.GONE);
                 }
                 if(tab.getPosition()==1) {
                     pagerController.notifyDataSetChanged();
                     actionBarTitle.setText("Reportes");
+                    ActionBar actionBar = getSupportActionBar();
+                    // Inflar la vista personalizada
+                    View customActionBarView = actionBar.getCustomView();
+
+                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                    img_config.setVisibility(View.GONE);
                 }
                 if(tab.getPosition()==2){
                     pagerController.notifyDataSetChanged();
                     actionBarTitle.setText("QR");
+                    ActionBar actionBar = getSupportActionBar();
+                    // Inflar la vista personalizada
+                    View customActionBarView = actionBar.getCustomView();
+
+                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                    img_config.setVisibility(View.GONE);
                 }
                 if(tab.getPosition()==3){
                     pagerController.notifyDataSetChanged();
                     actionBarTitle.setText("Crear reporte");
+                    ActionBar actionBar = getSupportActionBar();
+                    // Inflar la vista personalizada
+                    View customActionBarView = actionBar.getCustomView();
+
+                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                    img_config.setVisibility(View.GONE);
                 }
                 if(tab.getPosition()==4){
                     pagerController.notifyDataSetChanged();
