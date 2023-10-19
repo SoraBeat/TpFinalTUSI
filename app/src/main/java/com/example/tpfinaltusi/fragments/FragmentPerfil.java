@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -11,7 +12,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,16 +57,16 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
         View b = inflater.inflate(R.layout.fragment_perfil, container, false);
 
         //////////////////////////////////CONFIGURACION ACTION BAR////////////////////////////////////////////
-
         // Habilitar ActionBar y configurar vista personalizada
+
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
-
+/*
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.action_bar);
             actionBar.setElevation(0);
-        }
+        }*/
 
         // Inflar la vista personalizada
         View customActionBarView = actionBar.getCustomView();
@@ -77,6 +81,16 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                 PopupMenu popupMenu = new PopupMenu(requireActivity(), img_config);
                 MenuInflater inflater = popupMenu.getMenuInflater();
                 inflater.inflate(R.menu.menu_overflow, popupMenu.getMenu());
+                // Obtén el menú del PopupMenu
+                Menu menu = popupMenu.getMenu();
+
+                // Obtiene los elementos de menú y establece un color para el texto
+                for (int i = 0; i < menu.size(); i++) {
+                    MenuItem menuItem = menu.getItem(i);
+                    SpannableString spannableString = new SpannableString(menuItem.getTitle());
+                    spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannableString.length(), 0);
+                    menuItem.setTitle(spannableString);
+                }
                 popupMenu.setOnMenuItemClickListener(FragmentPerfil.this);
                 popupMenu.show();
             }
