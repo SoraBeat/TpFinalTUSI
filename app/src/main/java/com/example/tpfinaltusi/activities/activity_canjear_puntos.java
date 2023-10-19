@@ -24,6 +24,8 @@ import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class activity_canjear_puntos extends AppCompatActivity {
 
@@ -89,31 +91,49 @@ public class activity_canjear_puntos extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        traer_puntaje();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        traer_puntaje();
+    }
+
     private void traer_puntaje(){
-        int idUsuario = UsuarioNegocio.obtenerIDUsuario(getApplicationContext());
-        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-        usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
+        new Timer().scheduleAtFixedRate(new TimerTask(){
             @Override
-            public void onSuccess(String mensaje) {
-                // Handle success
-            }
-
-            @Override
-            public void onError(String error) {
-                // Handle error
-            }
-
-            @Override
-            public void onUsuarioLoaded(Usuario usuario) {
-                runOnUiThread(new Runnable() {
+            public void run(){
+                int idUsuario = UsuarioNegocio.obtenerIDUsuario(getApplicationContext());
+                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
                     @Override
-                    public void run() {
-                        tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()));
+                    public void onSuccess(String mensaje) {
+                        // Handle success
                     }
+
+                    @Override
+                    public void onError(String error) {
+                        // Handle error
+                    }
+
+                    @Override
+                    public void onUsuarioLoaded(Usuario usuario) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()));
+                            }
+                        });
+                    }
+
                 });
             }
+        },0,1000);
 
-        });
     }
 
 }

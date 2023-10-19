@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
@@ -31,10 +33,13 @@ import com.example.tpfinaltusi.activities.Login;
 import com.example.tpfinaltusi.activities.activity_canjear_puntos;
 import com.example.tpfinaltusi.entidades.Usuario;
 
-public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClickListener{
+public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClickListener {
     TextView tv_nombre_perfil_usuario;
     Button btnCanjear;
     TextView tv_puntajeActual;
+    ProgressBar progressBar;
+    RelativeLayout relativeLayout;
+
     public FragmentPerfil() {
         // Required empty public constructor
     }
@@ -71,7 +76,7 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
         // Inflar la vista personalizada
         View customActionBarView = actionBar.getCustomView();
 
-        ImageButton img_config =customActionBarView.findViewById(R.id.menu_overflow);
+        ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
 
         img_config.setVisibility(b.VISIBLE);
 
@@ -101,6 +106,8 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
         tv_nombre_perfil_usuario = b.findViewById(R.id.tv_nombre_perfil_usuario);
         tv_puntajeActual = b.findViewById(R.id.tv_puntajeActual);
         btnCanjear = b.findViewById(R.id.btnCanjear);
+        progressBar = b.findViewById(R.id.progressBar);
+        relativeLayout = b.findViewById(R.id.layoutOcultar);
 
         btnCanjear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,17 +117,37 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
             }
         });
 
-        int idUsuario = UsuarioNegocio.obtenerIDUsuario(b.getContext());
+        cargarDatosUsuario(b);
+        return b;
+    }
+
+    private void cargarDatosUsuario(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+        relativeLayout.setVisibility(View.GONE);
+        int idUsuario = UsuarioNegocio.obtenerIDUsuario(view.getContext());
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
             @Override
             public void onSuccess(String mensaje) {
-                // Handle success
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        relativeLayout.setVisibility(View.VISIBLE);
+                    }
+                });
             }
 
             @Override
             public void onError(String error) {
-                // Handle error
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        relativeLayout.setVisibility(View.VISIBLE);
+                    }
+                });
             }
 
             @Override
@@ -128,14 +155,15 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_nombre_perfil_usuario.setText("@"+usuario.getAlias().toString());
+                        progressBar.setVisibility(View.GONE);
+                        relativeLayout.setVisibility(View.VISIBLE);
+                        tv_nombre_perfil_usuario.setText("@" + usuario.getAlias().toString());
                         tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()));
                     }
                 });
             }
 
         });
-        return b;
     }
 
     @Override
@@ -160,5 +188,11 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
         // Maneja otras acciones de menú si es necesario
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarDatosUsuario(getView());
     }
 }

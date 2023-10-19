@@ -18,9 +18,11 @@ import android.widget.Toast;
 import com.example.tpfinaltusi.Negocio.PremioNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.activity_canjear_puntos;
 import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
 import com.example.tpfinaltusi.fragments.FragmentPerfil;
+import com.j256.ormlite.stmt.query.In;
 
 public class activity_canje_exitoso extends AppCompatActivity {
     TextView tv_puntajeActual;
