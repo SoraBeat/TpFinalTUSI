@@ -7,21 +7,31 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.tpfinaltusi.Negocio.CodigoQRNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.Login;
 import com.example.tpfinaltusi.adicionales.CustomListAdapter;
 import com.example.tpfinaltusi.entidades.CodigoQR;
 import com.google.zxing.BarcodeFormat;
@@ -36,7 +46,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class FragmentCrearQR extends Fragment {
+public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemClickListener{
     View view;
     EditText etPuntos;
     Button btnGenerar;
@@ -66,6 +76,42 @@ public class FragmentCrearQR extends Fragment {
         etPuntos = view.findViewById(R.id.et_puntos);
         btnGenerar = view.findViewById(R.id.btn_generar);
         listaQR = view.findViewById(R.id.lv_listaqr);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+/*
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.action_bar);
+            actionBar.setElevation(0);
+        }*/
+
+        // Inflar la vista personalizada
+        View customActionBarView = actionBar.getCustomView();
+
+        ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+
+        img_config.setVisibility(view.VISIBLE);
+
+        img_config.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(requireActivity(), img_config);
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.menu_overflow, popupMenu.getMenu());
+                // Obtén el menú del PopupMenu
+                Menu menu = popupMenu.getMenu();
+
+                // Obtiene los elementos de menú y establece un color para el texto
+                for (int i = 0; i < menu.size(); i++) {
+                    MenuItem menuItem = menu.getItem(i);
+                    SpannableString spannableString = new SpannableString(menuItem.getTitle());
+                    spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannableString.length(), 0);
+                    menuItem.setTitle(spannableString);
+                }
+                popupMenu.setOnMenuItemClickListener(FragmentCrearQR.this);
+                popupMenu.show();
+            }
+        });
 
         traerListaQR();
         btnGenerar.setOnClickListener(new View.OnClickListener() {
@@ -163,5 +209,29 @@ public class FragmentCrearQR extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        int itemId = menuItem.getItemId();
+
+        if (itemId == R.id.menu_btn_cerrar) {
+            // Elimina la variable de SharedPreferences "idUsuario"
+            SharedPreferences preferences = getContext().getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove("idUsuario");
+            editor.apply();
+
+            // Navega de vuelta a la pantalla de inicio de sesión (LoginActivity)
+            Intent intent = new Intent(getContext(), Login.class);
+            startActivity(intent);
+
+            // Asegúrate de que el fragmento se cierre o se realice alguna acción adicional si es necesario
+            // return true; // Dependiendo de tus necesidades
+        }
+
+        // Maneja otras acciones de menú si es necesario
+
+        return true;
     }
 }

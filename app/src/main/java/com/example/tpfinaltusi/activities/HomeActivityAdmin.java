@@ -4,17 +4,23 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.PagerControllerAdmin;
 import com.google.android.material.tabs.TabLayout;
 
-public class HomeActivityAdmin extends AppCompatActivity {
+public class HomeActivityAdmin extends AppCompatActivity  {
     TabLayout tabLayout;
     ViewPager viewPager;
     PagerControllerAdmin pagerController;
@@ -82,4 +88,5 @@ public class HomeActivityAdmin extends AppCompatActivity {
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
 }

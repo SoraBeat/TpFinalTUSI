@@ -53,7 +53,7 @@ public class UsuarioDAO {
             // El correo electrónico ya está en uso, no se puede crear el usuario
             return false;
         }
-        String sql = "INSERT INTO usuarios (alias, dni, email, password, cantpuntos, fechaalta, fechabaja,puntostotalesobtenidos) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+        String sql = "INSERT INTO usuarios (alias, dni, email, password, cantpuntos, fechaalta, fechabaja,puntostotalesobtenidos,esadmin) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getAlias());
             statement.setString(2, usuario.getDni());
@@ -63,6 +63,7 @@ public class UsuarioDAO {
             statement.setDate(6, new java.sql.Date(usuario.getFechaAlta().getTime()));
             statement.setDate(7, new java.sql.Date(usuario.getFechaBaja().getTime()));
             statement.setInt(8, usuario.getPuntosTotalesObtenidos());
+            statement.setBoolean(9,usuario.isEsAdmin());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -88,7 +89,7 @@ public class UsuarioDAO {
     // Editar un usuario existente
     public boolean editarUsuario(Usuario usuario) {
         esperarConexion();
-        String sql = "UPDATE usuarios SET dni=?, email=?, password=?, cantpuntos=?, fechaalta=?, fechabaja=?, puntostotalesobtenidos=? WHERE alias=?";
+        String sql = "UPDATE usuarios SET dni=?, email=?, password=?, cantpuntos=?, fechaalta=?, fechabaja=?, puntostotalesobtenidos=?, esadmin=? WHERE alias=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getDni());
             statement.setString(2, usuario.getEmail());
@@ -97,7 +98,8 @@ public class UsuarioDAO {
             statement.setDate(5, new java.sql.Date(usuario.getFechaAlta().getTime()));
             statement.setDate(6, new java.sql.Date(usuario.getFechaBaja().getTime()));
             statement.setInt(7, usuario.getPuntosTotalesObtenidos());
-            statement.setString(8, usuario.getAlias());
+            statement.setBoolean(8,usuario.isEsAdmin());
+            statement.setString(9, usuario.getAlias());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -163,7 +165,8 @@ public class UsuarioDAO {
         Date fechaAlta = resultSet.getDate("fechaalta");
         Date fechaBaja = resultSet.getDate("fechabaja");
         int cantPuntosTotales = resultSet.getInt("puntostotalesobtenidos");
-        return new Usuario(id,alias, dni, email, password, cantPuntos, fechaAlta, fechaBaja,cantPuntosTotales);
+        boolean esAdmin = resultSet.getBoolean("esadmin");
+        return new Usuario(id,alias, dni, email, password, cantPuntos, fechaAlta, fechaBaja,cantPuntosTotales,esAdmin);
     }
     // Verificar las credenciales del usuario
     public boolean verificarCredenciales(String email, String password) {

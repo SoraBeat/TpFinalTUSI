@@ -70,26 +70,46 @@ public class Login extends AppCompatActivity {
         btnOlvidasteContraseña = findViewById(R.id.btn_olvidasteContraseña);
         progressBar = findViewById(R.id.progressBar);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
-        if (!usuarioyalogeado()) {
-            comportamientoMostrarOcultarContrasenia();
-            comportamientoBotonRegistrarse();
-            comportamientoBotonOlvidasteContrasenia();
-            comportamientoBotonLogin();
-        }
+       usuarioyalogeado();
+       comportamientoMostrarOcultarContrasenia();
+       comportamientoBotonRegistrarse();
+       comportamientoBotonOlvidasteContrasenia();
+       comportamientoBotonLogin();
+
     }
-    private boolean usuarioyalogeado(){
+    private void usuarioyalogeado(){
         SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
 
         if (sharedPreferences.contains("idUsuario")) {
             int idUsuario = sharedPreferences.getInt("idUsuario", -1);
-            if (idUsuario != -1) {
-                Intent i = new Intent(this, HomeActivity.class);
-                startActivity(i);
-                finish();
-                return true;
-            }
+            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+            usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
+                @Override
+                public void onSuccess(String mensaje) {
+
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+
+                @Override
+                public void onUsuarioLoaded(Usuario usuario) {
+                    if (idUsuario != -1) {
+                        if(usuario.isEsAdmin()){
+                            Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                            startActivity(i);
+                            finish();
+                        }else{
+                            Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    }
+                }
+            });
         }
-        return false;
     }
     private void comportamientoMostrarOcultarContrasenia(){
         //Controlar mostrar ocultar contraseña

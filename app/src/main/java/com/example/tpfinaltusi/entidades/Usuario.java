@@ -13,10 +13,11 @@ public class Usuario {
     private int cantPuntos;
     private Date fechaAlta;
     private Date fechaBaja;
+    private boolean esAdmin;
     private int puntosTotalesObtenidos;
 
     // Constructor
-    public Usuario(String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos) {
+    public Usuario(String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos,boolean esAdmin) {
         this.alias = alias;
         this.dni = dni;
         this.email = email;
@@ -25,9 +26,10 @@ public class Usuario {
         this.fechaAlta = fechaAlta;
         this.fechaBaja = fechaBaja;
         this.puntosTotalesObtenidos = puntosTotalesObtenidos;
+        this.esAdmin = esAdmin;
     }
 
-    public Usuario(int id, String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos) {
+    public Usuario(int id, String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos,boolean esAdmin) {
         this.id = id;
         this.alias = alias;
         this.dni = dni;
@@ -37,6 +39,7 @@ public class Usuario {
         this.fechaAlta = fechaAlta;
         this.fechaBaja = fechaBaja;
         this.puntosTotalesObtenidos = puntosTotalesObtenidos;
+        this.esAdmin = esAdmin;
     }
 
     // Getters y Setters
@@ -112,6 +115,14 @@ public class Usuario {
         this.puntosTotalesObtenidos = puntosTotalesObtenidos;
     }
 
+    public boolean isEsAdmin() {
+        return esAdmin;
+    }
+
+    public void setEsAdmin(boolean esAdmin) {
+        this.esAdmin = esAdmin;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -123,6 +134,7 @@ public class Usuario {
                 ", cantPuntos=" + cantPuntos +
                 ", fechaAlta=" + fechaAlta +
                 ", fechaBaja=" + fechaBaja +
+                ", esAdmin=" + esAdmin +
                 ", puntosTotalesObtenidos=" + puntosTotalesObtenidos +
                 '}';
     }

@@ -198,7 +198,7 @@ public class Registro extends AppCompatActivity {
                     String password = etPassword.getText().toString();
 
 
-                    Usuario nuevoUsuario = new Usuario(alias, dni, email, password, 0, Date.valueOf(LocalDate.now().toString()), Date.valueOf(LocalDate.now().toString()),0);
+                    Usuario nuevoUsuario = new Usuario(alias, dni, email, password, 0, Date.valueOf(LocalDate.now().toString()), Date.valueOf(LocalDate.now().toString()),0,false);
                     new Thread(() -> {
                         UsuarioNegocio negocio = new UsuarioNegocio();
                         boolean resultado = negocio.crearUsuario(nuevoUsuario);
