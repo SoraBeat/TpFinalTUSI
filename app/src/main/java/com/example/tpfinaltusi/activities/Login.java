@@ -146,7 +146,7 @@ public class Login extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     btnLogin.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
                     btnLogin.setClickable(false);
-                    String email = etEmail.getText().toString();
+                    String email = etEmail.getText().toString().trim().toLowerCase();
                     String password = etPassword.getText().toString();
 
                     // Realizar el inicio de sesión en un hilo o AsyncTask
