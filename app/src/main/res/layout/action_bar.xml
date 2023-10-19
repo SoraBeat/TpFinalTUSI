@@ -8,13 +8,13 @@
     android:background="@color/white">
     <ImageView
         android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:textColor="@color/darkGrey"
-        android:visibility="gone"
-        android:src="@drawable/baseline_arrow_back_ios_24"
+        android:background="@color/white"
+        android:foreground="@drawable/baseline_arrow_back_ios_24"
         style="@style/MenuTextItemStyle"
-
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/action_bar_title"
@@ -28,14 +28,14 @@
         android:layout_centerHorizontal="true"/>
     <ImageButton
         android:id="@+id/menu_overflow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:background="@color/white"
-        android:src="@drawable/ic_action_name"
-        android:visibility="invisible"/>
+        android:foreground="@drawable/ic_action_name"
+        android:visibility="gone"/>
 
 </RelativeLayout>
