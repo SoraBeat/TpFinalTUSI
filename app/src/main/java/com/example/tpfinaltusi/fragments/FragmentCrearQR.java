@@ -78,12 +78,6 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
         listaQR = view.findViewById(R.id.lv_listaqr);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
-/*
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            actionBar.setCustomView(R.layout.action_bar);
-            actionBar.setElevation(0);
-        }*/
 
         // Inflar la vista personalizada
         View customActionBarView = actionBar.getCustomView();
@@ -152,6 +146,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        etPuntos.setText("");
                                         Toast.makeText(getContext(), "Codigo generado", Toast.LENGTH_SHORT).show();
                                     }
                                 });

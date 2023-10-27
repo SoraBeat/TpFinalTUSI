@@ -72,7 +72,7 @@ public class HomeActivityAdmin extends AppCompatActivity  {
                 }
                 if(tab.getPosition()==1) {
                     pagerController.notifyDataSetChanged();
-                    actionBarTitle.setText("QR");
+                    actionBarTitle.setText("Generar QR");
                 }
             }
 
