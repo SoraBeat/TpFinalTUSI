@@ -11,14 +11,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_seleccionar_imagen"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:scaleX="1"
-            android:scaleY="1"
-            android:src="@drawable/recycling_person_1" />
+            android:layout_marginHorizontal="20dp"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            android:src="@drawable/person_add"/>
 
         <EditText
             android:id="@+id/et_alias"

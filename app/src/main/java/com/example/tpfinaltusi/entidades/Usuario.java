@@ -15,9 +15,10 @@ public class Usuario {
     private Date fechaBaja;
     private boolean esAdmin;
     private int puntosTotalesObtenidos;
+    private String imagen;
 
     // Constructor
-    public Usuario(String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos,boolean esAdmin) {
+    public Usuario(String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos,boolean esAdmin, String imagen) {
         this.alias = alias;
         this.dni = dni;
         this.email = email;
@@ -27,9 +28,10 @@ public class Usuario {
         this.fechaBaja = fechaBaja;
         this.puntosTotalesObtenidos = puntosTotalesObtenidos;
         this.esAdmin = esAdmin;
+        this.imagen = imagen;
     }
 
-    public Usuario(int id, String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos,boolean esAdmin) {
+    public Usuario(int id, String alias, String dni, String email, String password, int cantPuntos, Date fechaAlta, Date fechaBaja, int puntosTotalesObtenidos,boolean esAdmin, String imagen) {
         this.id = id;
         this.alias = alias;
         this.dni = dni;
@@ -40,6 +42,7 @@ public class Usuario {
         this.fechaBaja = fechaBaja;
         this.puntosTotalesObtenidos = puntosTotalesObtenidos;
         this.esAdmin = esAdmin;
+        this.imagen = imagen;
     }
 
     // Getters y Setters
@@ -122,6 +125,13 @@ public class Usuario {
     public void setEsAdmin(boolean esAdmin) {
         this.esAdmin = esAdmin;
     }
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
     @Override
     public String toString() {
@@ -136,6 +146,7 @@ public class Usuario {
                 ", fechaBaja=" + fechaBaja +
                 ", esAdmin=" + esAdmin +
                 ", puntosTotalesObtenidos=" + puntosTotalesObtenidos +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }

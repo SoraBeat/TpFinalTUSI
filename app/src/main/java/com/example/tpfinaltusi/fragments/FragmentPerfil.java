@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +44,7 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
     ProgressBar progressBar;
     RelativeLayout relativeLayout;
     ImageView imgMedal;
-
+    ImageView imgPersona;
     public FragmentPerfil() {
         // Required empty public constructor
     }
@@ -111,6 +114,7 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
         progressBar = b.findViewById(R.id.progressBar);
         relativeLayout = b.findViewById(R.id.layoutOcultar);
         imgMedal = b.findViewById(R.id.imgMedal);
+        imgPersona = b.findViewById(R.id.Imagen_persona);
 
         btnCanjear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +166,12 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                         relativeLayout.setVisibility(View.VISIBLE);
                         tv_nombre_perfil_usuario.setText("@" + usuario.getAlias().toString());
                         tv_puntajeActual.setText(String.valueOf(usuario.getCantPuntos()));
+                        if(usuario.getImagen() != null && !usuario.getImagen().equals("")){
+                            String pureBase64Encoded = usuario.getImagen().substring(usuario.getImagen().indexOf(",") + 1);
+                            byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            imgPersona.setImageBitmap(bitmap);
+                        }
                         if (usuario.getCantPuntos()>=10000){
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.gold_medall));
                         }else if (usuario.getCantPuntos()<10000 && usuario.getCantPuntos()>=5000){

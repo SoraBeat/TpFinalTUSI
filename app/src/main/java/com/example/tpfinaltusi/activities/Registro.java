@@ -2,15 +2,22 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,7 +30,10 @@ import android.widget.Toast;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Usuario;
+import com.google.android.material.imageview.ShapeableImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
@@ -43,6 +53,9 @@ public class Registro extends AppCompatActivity {
     private Button btnRegistrarse;
     private TextView btnLogin;
     private ProgressBar progressBar ;
+    private ShapeableImageView shapeableImageView;
+    private static final int PICK_IMAGE = 1;
+    private String imagenFinal="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //////////////////////////////////CONFIGURACION ACTION BAR////////////////////////////////////////////
@@ -75,12 +88,64 @@ public class Registro extends AppCompatActivity {
         btnRegistrarse = findViewById(R.id.btn_registrarse);
         btnLogin = findViewById(R.id.btn_login);
         progressBar = findViewById(R.id.progressBar);
+        shapeableImageView = findViewById(R.id.btn_seleccionar_imagen);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
+        shapeableImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Solicitar permisos para leer almacenamiento externo si no se han otorgado
+                if (ContextCompat.checkSelfPermission(Registro.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Registro.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_IMAGE);
+                } else {
+                    openGallery();
+                }
+            }
+        });
         comportamientoMostrarOcultarContrasenia();
         comportamientoMostrarOcultarContraseniaRepetida();
         comportamientoBotonCondicionesDelServicio();
         comportamientoBotonLogin();
         comportamientoBotonRegistro();
+    }
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PICK_IMAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                // Permiso denegado, puedes mostrar un mensaje o tomar alguna acción
+                Toast.makeText(this, "Permiso denegado para acceder a la galería", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            Uri imageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                String base64String = encodeImageToBase64(bitmap);
+                shapeableImageView.setImageBitmap(bitmap);
+                imagenFinal = base64String;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String encodeImageToBase64(Bitmap imageBitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
     private void comportamientoBotonLogin() {
@@ -197,8 +262,7 @@ public class Registro extends AppCompatActivity {
                     String email = etMail.getText().toString();
                     String password = etPassword.getText().toString();
 
-
-                    Usuario nuevoUsuario = new Usuario(alias, dni, email, password, 0, Date.valueOf(LocalDate.now().toString()), Date.valueOf(LocalDate.now().toString()),0,false);
+                    Usuario nuevoUsuario = new Usuario(alias, dni, email, password, 0, Date.valueOf(LocalDate.now().toString()), Date.valueOf(LocalDate.now().toString()),0,false,imagenFinal);
                     new Thread(() -> {
                         UsuarioNegocio negocio = new UsuarioNegocio();
                         boolean resultado = negocio.crearUsuario(nuevoUsuario);
