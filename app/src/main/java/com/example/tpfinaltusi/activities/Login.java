@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class Login extends AppCompatActivity {
     private TextView btnRegistrarse;
     boolean passwordVisible = true;
     private ProgressBar progressBar ;
+    private LinearLayout layoutContenido;
+    private LinearLayout layoutCargando;
 
     private CountDownLatch connectionLatch = new CountDownLatch(1);
     private boolean doubleBackToExitPressedOnce = false;
@@ -69,6 +72,8 @@ public class Login extends AppCompatActivity {
         btnRegistrarse = findViewById(R.id.btn_registrarse);
         btnOlvidasteContraseña = findViewById(R.id.btn_olvidasteContraseña);
         progressBar = findViewById(R.id.progressBar);
+        layoutContenido = findViewById(R.id.layoutContenido);
+        layoutCargando = findViewById(R.id.layoutCargando);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
        usuarioyalogeado();
        comportamientoMostrarOcultarContrasenia();
@@ -82,20 +87,41 @@ public class Login extends AppCompatActivity {
 
         if (sharedPreferences.contains("idUsuario")) {
             int idUsuario = sharedPreferences.getInt("idUsuario", -1);
+            layoutCargando.setVisibility(View.VISIBLE);
+            layoutContenido.setVisibility(View.GONE);
             UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
             usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
                 @Override
                 public void onSuccess(String mensaje) {
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutCargando.setVisibility(View.GONE);
+                            layoutContenido.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
 
                 @Override
                 public void onError(String error) {
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutCargando.setVisibility(View.GONE);
+                            layoutContenido.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
 
                 @Override
                 public void onUsuarioLoaded(Usuario usuario) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutCargando.setVisibility(View.GONE);
+                            layoutContenido.setVisibility(View.VISIBLE);
+                        }
+                    });
                     if (idUsuario != -1) {
                         if(usuario.isEsAdmin()){
                             Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
