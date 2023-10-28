@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -53,6 +54,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
     ListView listaQR;
     private CodigoQRNegocio codigoQRNegocio;
     private CustomListAdapter codigoQRAdapter;
+    ProgressBar progressBar;
 
     public FragmentCrearQR() {
     }
@@ -76,6 +78,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
         etPuntos = view.findViewById(R.id.et_puntos);
         btnGenerar = view.findViewById(R.id.btn_generar);
         listaQR = view.findViewById(R.id.lv_listaqr);
+        progressBar = view.findViewById(R.id.cargando);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
 
@@ -148,9 +151,9 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
                                     public void run() {
                                         etPuntos.setText("");
                                         Toast.makeText(getContext(), "Codigo generado", Toast.LENGTH_SHORT).show();
+                                        traerListaQR();
                                     }
                                 });
-                                traerListaQR();
                             }
 
                             @Override
@@ -182,6 +185,13 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
     }
 
     private void traerListaQR() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
         codigoQRNegocio = new CodigoQRNegocio();
         // Llama al método para traer todos los códigos QR
         codigoQRNegocio.traerTodosLosCodigoQRs(new CodigoQRNegocio.CodigoQRsCallback() {
@@ -200,6 +210,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
                     public void run() {
                         // Crea un adaptador personalizado y configura el ListView
                         listaQR.setAdapter(codigoQRAdapter);
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }
