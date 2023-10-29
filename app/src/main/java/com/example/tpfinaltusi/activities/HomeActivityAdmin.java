@@ -46,13 +46,13 @@ public class HomeActivityAdmin extends AppCompatActivity  {
         /////////////////////////////////////OBTENER ELEMENTOS///////////////////////////////////////////////
         tabLayout = findViewById(R.id.tl_tablayout);
         viewPager = findViewById(R.id.vp_viewpager);
-        pagerController = new PagerControllerAdmin(getSupportFragmentManager(),2);
+        pagerController = new PagerControllerAdmin(getSupportFragmentManager(),3);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
         comportamientoTabLayout();
     }
     private void comportamientoTabLayout(){
         viewPager.setAdapter(pagerController);
-        int[] iconos = {R.drawable.baseline_event_24, R.drawable.baseline_qr_code_scanner_24};
+        int[] iconos = {R.drawable.baseline_event_24, R.drawable.baseline_qr_code_scanner_24, R.drawable.baseline_people_alt_24};
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -73,6 +73,10 @@ public class HomeActivityAdmin extends AppCompatActivity  {
                 if(tab.getPosition()==1) {
                     pagerController.notifyDataSetChanged();
                     actionBarTitle.setText("Generar QR");
+                }
+                if(tab.getPosition()==2) {
+                    pagerController.notifyDataSetChanged();
+                    actionBarTitle.setText("Usuarios");
                 }
             }
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.tpfinaltusi.fragments.FragmentAprobacionReportes;
 import com.example.tpfinaltusi.fragments.FragmentCrearQR;
+import com.example.tpfinaltusi.fragments.FragmentUsuariosAdmin;
 
 public class PagerControllerAdmin extends FragmentPagerAdapter {
     int numoftabs;
@@ -24,6 +25,8 @@ public class PagerControllerAdmin extends FragmentPagerAdapter {
                 return new FragmentAprobacionReportes();
             case 1:
                 return new FragmentCrearQR();
+            case 2:
+                return new FragmentUsuariosAdmin();
             default:
                 return null;
         }

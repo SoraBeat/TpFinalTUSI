@@ -67,7 +67,6 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity activity = getActivity();
     }
 
     @Override
