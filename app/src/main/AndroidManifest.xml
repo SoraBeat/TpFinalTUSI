@@ -14,7 +14,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,6 +27,12 @@
         android:theme="@style/Theme.TpFinalTUSI"
         tools:replace="android:allowBackup"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.activity_punto_verde_canje"
+            android:exported="false"
+            android:label="Elegir_Punto_verde"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/MainThemeWhite"/>
         <activity
             android:name=".adicionales.activity_canje_exitoso"
             android:exported="false"
@@ -90,7 +95,8 @@
             android:exported="false"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/MainThemeWhite" />
-        <activity android:name=".activities.DetalleReporteAdmin"
+        <activity
+            android:name=".activities.DetalleReporteAdmin"
             android:exported="false"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/MainThemeWhite" />
@@ -111,6 +117,7 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -61,10 +61,22 @@ public class LocalidadNegocio {
         }).start();
     }
 
-    public void traerLocalidadesPorProvincia(int idProvincia, LocalidadesCallback callback) {
+    public void traerLocalidadPorId(int idLocalidad, LocalidadCallback callback) {
+        // Realizar la operación de traer Localidad por IdProvincia e IdLocalidad en un hilo o AsyncTask
+        new Thread(() -> {
+            Localidad localidad = localidadDAO.traerLocalidadPorId(idLocalidad);
+            if (localidad != null) {
+                callback.onLocalidadLoaded(localidad);
+            } else {
+                callback.onError("Localidad no encontrada");
+            }
+        }).start();
+    }
+
+    public void traerLocalidadesPorProvincia(int idLocalidad, LocalidadesCallback callback) {
         // Realizar la operación de traer todas las Localidades de una Provincia en un hilo o AsyncTask
         new Thread(() -> {
-            List<Localidad> localidades = localidadDAO.traerLocalidadesPorProvincia(idProvincia);
+            List<Localidad> localidades = localidadDAO.traerLocalidadesPorProvincia(idLocalidad);
             callback.onLocalidadesLoaded(localidades);
         }).start();
     }

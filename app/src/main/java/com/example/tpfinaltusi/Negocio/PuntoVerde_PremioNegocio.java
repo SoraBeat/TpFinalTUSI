@@ -49,10 +49,10 @@ public class PuntoVerde_PremioNegocio {
         }).start();
     }
 
-    public void traerPuntoVerde_PremioPorId(int idPuntoVerdePremio, PuntoVerde_PremioCallback callback) {
+    public void traerPuntoVerde_PremioPorId(int idPuntoVerde, int idPremio, PuntoVerde_PremioCallback callback) {
         // Realizar la operación de traer PuntoVerde_Premio por IdPuntoVerdePremio en un hilo o AsyncTask
         new Thread(() -> {
-            PuntoVerde_Premio puntoVerde_Premio = puntoVerde_PremioDAO.traerPuntoVerde_PremioPorId(idPuntoVerdePremio);
+            PuntoVerde_Premio puntoVerde_Premio = puntoVerde_PremioDAO.traerPuntoVerde_PremioPorId(idPuntoVerde,idPremio);
             if (puntoVerde_Premio != null) {
                 callback.onPuntoVerde_PremioLoaded(puntoVerde_Premio);
             } else {

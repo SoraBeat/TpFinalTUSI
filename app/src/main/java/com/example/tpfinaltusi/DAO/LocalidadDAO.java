@@ -50,7 +50,7 @@ public class LocalidadDAO {
     // Crear una nueva localidad
     public boolean crearLocalidad(Localidad localidad) {
         esperarConexion();
-        String sql = "INSERT INTO localidades (IdProvincia, IdLocalidad, Nombre) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO localidades (idprovincia, idlocalidad, nombre) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, localidad.getIdProvincia());
             statement.setInt(2, localidad.getIdLocalidad());
@@ -66,7 +66,7 @@ public class LocalidadDAO {
     // Editar una localidad existente
     public boolean editarLocalidad(Localidad localidad) {
         esperarConexion();
-        String sql = "UPDATE localidades SET Nombre=? WHERE IdProvincia=? AND IdLocalidad=?";
+        String sql = "UPDATE localidades SET nombre=? WHERE idprovincia=? AND idlocalidad=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, localidad.getNombre());
             statement.setInt(2, localidad.getIdProvincia());
@@ -82,7 +82,7 @@ public class LocalidadDAO {
     // Borrar una localidad por IdProvincia e IdLocalidad
     public boolean borrarLocalidad(int idProvincia, int idLocalidad) {
         esperarConexion();
-        String sql = "DELETE FROM localidades WHERE IdProvincia=? AND IdLocalidad=?";
+        String sql = "DELETE FROM localidades WHERE idprovincia=? AND idlocalidad=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idProvincia);
             statement.setInt(2, idLocalidad);
@@ -97,10 +97,25 @@ public class LocalidadDAO {
     // Traer una localidad por IdProvincia e IdLocalidad
     public Localidad traerLocalidadPorIds(int idProvincia, int idLocalidad) {
         esperarConexion();
-        String sql = "SELECT * FROM localidades WHERE IdProvincia=? AND IdLocalidad=?";
+        String sql = "SELECT * FROM localidades WHERE idprovincia=? AND idlocalidad=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idProvincia);
             statement.setInt(2, idLocalidad);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return crearLocalidadDesdeResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Localidad traerLocalidadPorId(int idLocalidad) {
+        esperarConexion();
+        String sql = "SELECT * FROM localidades WHERE idlocalidad=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idLocalidad);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return crearLocalidadDesdeResultSet(resultSet);
@@ -115,7 +130,7 @@ public class LocalidadDAO {
     public List<Localidad> traerLocalidadesPorProvincia(int idProvincia) {
         esperarConexion();
         List<Localidad> localidades = new ArrayList<>();
-        String sql = "SELECT * FROM localidades WHERE IdProvincia=?";
+        String sql = "SELECT * FROM localidades WHERE idprovincia=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idProvincia);
             ResultSet resultSet = statement.executeQuery();
@@ -130,9 +145,9 @@ public class LocalidadDAO {
 
     // Método auxiliar para crear un objeto Localidad desde un ResultSet
     private Localidad crearLocalidadDesdeResultSet(ResultSet resultSet) throws SQLException {
-        int idProvincia = resultSet.getInt("IdProvincia");
-        int idLocalidad = resultSet.getInt("IdLocalidad");
-        String nombre = resultSet.getString("Nombre");
+        int idProvincia = resultSet.getInt("idprovincia");
+        int idLocalidad = resultSet.getInt("idlocalidad");
+        String nombre = resultSet.getString("nombre");
         return new Localidad(idProvincia, idLocalidad, nombre);
     }
 }

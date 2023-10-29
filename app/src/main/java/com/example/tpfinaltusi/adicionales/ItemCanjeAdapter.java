@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.activity_punto_verde_canje;
 import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
 import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
@@ -107,7 +108,7 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
                 String title = premio.getNombre();
 
                 // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
-                Intent intent = new Intent(context, activity_canje_exitoso.class);
+                Intent intent = new Intent(context, activity_punto_verde_canje.class);
                 intent.putExtra("title", title);
                 intent.putExtra("idPremio", premio.getIdPremio());
                 intent.putExtra("Precio", premio.getPrecio());
@@ -137,7 +138,7 @@ public class ItemCanjeAdapter extends ArrayAdapter<Premio> {
         // Crea un AlertDialog
         androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomStyle);
         builder.setTitle("Error puntaje");
-        builder.setMessage("No es posible canjear el premio--------------- " + title + ", puntos no suficientes");
+        builder.setMessage("No es posible canjear el premio " + title + ", puntos no suficientes");
 
         // Agregar botones al AlertDialog
         builder.setNegativeButton("Aceptar", new DialogInterface.OnClickListener() {
