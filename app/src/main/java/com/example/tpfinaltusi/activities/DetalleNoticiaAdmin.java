@@ -2,8 +2,10 @@ package com.example.tpfinaltusi.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,21 +13,18 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tpfinaltusi.Negocio.NoticiaNegocio;
-import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Noticia;
-import com.example.tpfinaltusi.entidades.Usuario;
 
-import java.util.Date;
-import java.util.List;
-
-public class DetalleNoticia extends AppCompatActivity {
+public class DetalleNoticiaAdmin extends AppCompatActivity {
     TextView tvTitulo;
     TextView tvDescripcion;
     ImageView ivImagen;
@@ -34,6 +33,7 @@ public class DetalleNoticia extends AppCompatActivity {
     LinearLayout layoutInvisible;
     ImageView btnBack;
     LinearLayout btnGoogleMaps;
+    Button buttonEliminar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +59,10 @@ public class DetalleNoticia extends AppCompatActivity {
                 finish();
             }
         });
-        actionBarTitle.setText("Noticia");
-        setContentView(R.layout.activity_detalle_noticia);
+        actionBarTitle.setText("Detalle noticia");
+        setContentView(R.layout.activity_detalle_noticia_admin);
         //////////////////////////////////TRAER DATOS////////////////////////////////////////////
+        buttonEliminar = findViewById(R.id.btnEliminarNoticia);
         Intent intent = getIntent();
         if (intent != null) {
             /////////////////////////////////////OBTENER ELEMENTOS///////////////////////////////////////////////
@@ -75,7 +76,63 @@ public class DetalleNoticia extends AppCompatActivity {
             /////////////////////////////////////OBTENER DATOS///////////////////////////////////////////////
             int id = intent.getIntExtra("id_noticia", -1);
             cargarNoticia(id);
+            buttonEliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mostrarDialogoConfirmacion(id);
+                }
+            });
         }
+
+    }
+    private void mostrarDialogoConfirmacion(final int noticiaId) {
+        // Crea un AlertDialog
+        androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialogCustomStyle);
+        builder.setTitle("Confirmar eliminado");
+        builder.setMessage("¿Estás seguro de que deseas eliminar la noticia?");
+
+        // Agregar botones al AlertDialog
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                NoticiaNegocio noticiaNegocio = new NoticiaNegocio();
+                noticiaNegocio.borrarNoticia(noticiaId, new NoticiaNegocio.NoticiaCallback() {
+                    @Override
+                    public void onSuccess(String mensaje) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(),"Noticia eliminada",Toast.LENGTH_SHORT);
+                                finish();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(),"Error al eliminar noticia",Toast.LENGTH_SHORT);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNoticiaLoaded(Noticia noticia) {
+
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No se realiza ninguna acción si se selecciona "No".
+                dialog.dismiss();
+            }
+        });
+
+        // Mostrar el AlertDialog
+        builder.create().show();
     }
 
     private void cargarNoticia(int id) {

@@ -40,10 +40,20 @@ public class Noticia {
     private String tagMaps;
 
     // Constructor
-
-
     public Noticia(int idNoticia, String titulo, String cuerpo, String categoria, String imagen, Date fechaAlta, int idLocalidad, float latitud, float longitud, String tagMaps) {
         this.idNoticia = idNoticia;
+        this.titulo = titulo;
+        this.cuerpo = cuerpo;
+        this.categoria = categoria;
+        this.imagen = imagen;
+        this.fechaAlta = fechaAlta;
+        this.idLocalidad = idLocalidad;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.tagMaps = tagMaps;
+    }
+
+    public Noticia(String titulo, String cuerpo, String categoria, String imagen, Date fechaAlta, int idLocalidad, float latitud, float longitud, String tagMaps) {
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.categoria = categoria;

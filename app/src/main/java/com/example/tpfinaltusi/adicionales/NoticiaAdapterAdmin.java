@@ -15,30 +15,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.activities.DetalleNoticia;
+import com.example.tpfinaltusi.activities.DetalleNoticiaAdmin;
 import com.example.tpfinaltusi.entidades.Noticia;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class NoticiaAdapter extends RecyclerView.Adapter<NoticiaAdapter.NoticiaViewHolder> {
+public class NoticiaAdapterAdmin extends RecyclerView.Adapter<NoticiaAdapter.NoticiaViewHolder> {
 
     private List<Noticia> noticias;
     private Context context;
 
-    public NoticiaAdapter(Context context, List<Noticia> noticias) {
+    public NoticiaAdapterAdmin(Context context, List<Noticia> noticias) {
         this.context = context;
         this.noticias = noticias;
     }
 
+
     @NonNull
     @Override
-    public NoticiaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_view_noticias, parent, false);
-        return new NoticiaViewHolder(view);
+    public NoticiaAdapter.NoticiaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_view_noticias_admin, parent, false);
+        return new NoticiaAdapter.NoticiaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoticiaViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NoticiaAdapter.NoticiaViewHolder holder, int position) {
         Noticia noticia = noticias.get(position);
 
         // Configurar los datos de la noticia en la vista personalizada
@@ -87,7 +89,11 @@ public class NoticiaAdapter extends RecyclerView.Adapter<NoticiaAdapter.NoticiaV
         }
         holder.dateTextView.setText(fecha);
         holder.titleTextView.setText(noticia.getTitulo());
-        holder.descriptionTextView.setText(noticia.getCuerpo().substring(0,130)+"...");
+        if(noticia.getCuerpo().length()>=130){
+            holder.descriptionTextView.setText(noticia.getCuerpo().substring(0,130)+"...");
+        }else{
+            holder.descriptionTextView.setText(noticia.getCuerpo());
+        }
         String pureBase64Encoded = noticia.getImagen().substring(noticia.getImagen().indexOf(",")  + 1);
         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -96,13 +102,12 @@ public class NoticiaAdapter extends RecyclerView.Adapter<NoticiaAdapter.NoticiaV
             @Override
             public void onClick(View view) {
                 // Cuando se hace clic en un elemento, abrir la actividad de detalles de noticia
-                Intent intent = new Intent(context, DetalleNoticia.class);
+                Intent intent = new Intent(context, DetalleNoticiaAdmin.class);
                 // Puedes pasar datos adicionales a la actividad si es necesario
                 intent.putExtra("id_noticia", noticia.getIdNoticia());
                 context.startActivity(intent);
             }
         });
-
     }
 
     @Override

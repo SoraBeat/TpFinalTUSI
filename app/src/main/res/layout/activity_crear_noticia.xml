@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.CrearNoticia">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgElegida"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/upload_icon_1" />
+
+        <Button
+            android:id="@+id/btn_ElegirArchivo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/green"
+            android:text="Elegir archivo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/et_Titulo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rec_rounded"
+            android:hint="Titulo"
+            android:padding="10dp"
+            android:textColor="@color/darkGrey"
+            android:textColorHint="@color/grey"
+            android:textStyle="bold"
+            android:maxLength="30" />
+
+        <EditText
+            android:id="@+id/et_Descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rec_rounded"
+            android:gravity="top"
+            android:hint="Descripcion"
+            android:padding="10dp"
+            android:textColor="@color/darkGrey"
+            android:textColorHint="@color/grey"
+            android:textStyle="bold"
+            android:maxLength="1000"/>
+
+        <Spinner
+            android:id="@+id/spinnerTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/rec_rounded" />
+
+        <EditText
+            android:id="@+id/et_NombreUbicacion"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rec_rounded"
+            android:hint="Nombre ubicación"
+            android:padding="10dp"
+            android:textColor="@color/darkGrey"
+            android:textColorHint="@color/grey"
+            android:textStyle="bold"
+            android:maxLength="50"/>
+
+        <EditText
+            android:id="@+id/et_Latitud"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rec_rounded"
+            android:hint="Latitud ubicación"
+            android:padding="10dp"
+            android:textColor="@color/darkGrey"
+            android:textColorHint="@color/grey"
+            android:textStyle="bold"
+            android:inputType="numberDecimal"/>
+
+        <EditText
+            android:id="@+id/et_Longitud"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rec_rounded"
+            android:hint="Longitud ubicación"
+            android:padding="10dp"
+            android:textColor="@color/darkGrey"
+            android:textColorHint="@color/grey"
+            android:textStyle="bold"
+            android:inputType="numberDecimal"/>
+
+        <Button
+            android:id="@+id/btn_CrearNoticia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
+            android:backgroundTint="@color/green"
+            android:text="Crear"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -93,13 +93,6 @@ public class Login extends AppCompatActivity {
             usuarioNegocio.buscarUsuarioPorId(idUsuario, new UsuarioNegocio.UsuarioCallback() {
                 @Override
                 public void onSuccess(String mensaje) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            layoutCargando.setVisibility(View.GONE);
-                            layoutContenido.setVisibility(View.VISIBLE);
-                        }
-                    });
                 }
 
                 @Override
@@ -109,19 +102,13 @@ public class Login extends AppCompatActivity {
                         public void run() {
                             layoutCargando.setVisibility(View.GONE);
                             layoutContenido.setVisibility(View.VISIBLE);
+                            Toast.makeText(getApplicationContext(),"Error al iniciar sesion",Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
 
                 @Override
                 public void onUsuarioLoaded(Usuario usuario) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            layoutCargando.setVisibility(View.GONE);
-                            layoutContenido.setVisibility(View.VISIBLE);
-                        }
-                    });
                     if (idUsuario != -1) {
                         if(usuario.isEsAdmin()){
                             Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
@@ -243,7 +230,7 @@ public class Login extends AppCompatActivity {
                 editor.putInt("idUsuario", usuario.getId());
                 editor.apply();
 
-                if(usuario.getId() == 7){
+                if(usuario.isEsAdmin()){
                     Intent i = new Intent(getApplicationContext(),HomeActivityAdmin.class);
                     startActivity(i);
                 } else{
