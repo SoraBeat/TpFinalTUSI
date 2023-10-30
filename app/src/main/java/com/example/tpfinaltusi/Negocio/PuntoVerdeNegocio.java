@@ -69,6 +69,14 @@ public class PuntoVerdeNegocio {
         }).start();
     }
 
+    public void traerTodosLosPuntosVerdesCS(PuntoVerdesCallback callback) {
+        // Realizar la operación de traer todos los Puntos Verdes en un hilo o AsyncTask
+        new Thread(() -> {
+            List<PuntoVerde> puntosVerdes = puntoVerdeDAO.traerTodosLosPuntosVerdesCS();
+            callback.onPuntoVerdesLoaded(puntosVerdes);
+        }).start();
+    }
+
     public interface PuntoVerdeCallback {
         void onSuccess(String mensaje);
 

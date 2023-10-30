@@ -109,11 +109,27 @@ public class PuntoVerdeDAO {
         return null;
     }
 
+
     // Traer todos los puntos verdes
     public List<PuntoVerde> traerTodosLosPuntosVerdes() {
         esperarConexion();
         List<PuntoVerde> puntosVerdes = new ArrayList<>();
         String sql = "SELECT * FROM punto_verde";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                puntosVerdes.add(crearPuntoVerdeDesdeResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return puntosVerdes;
+    }
+
+    public List<PuntoVerde> traerTodosLosPuntosVerdesCS() {
+        esperarConexion();
+        List<PuntoVerde> puntosVerdes = new ArrayList<>();
+        String sql = "SELECT * FROM punto_verde a join punto_verde_premio b on b.idpuntoverde = a.idpuntoverde and b.stock>0";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

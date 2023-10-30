@@ -64,7 +64,7 @@ public class activity_punto_verde_canje extends AppCompatActivity {
         // Llenar el ListView con el adaptador ProductoAdapter
         PuntoVerdeNegocio PuntoVerdeNegocio = new PuntoVerdeNegocio();
 
-        PuntoVerdeNegocio.traerTodosLosPuntosVerdes(new PuntoVerdeNegocio.PuntoVerdesCallback() {
+        PuntoVerdeNegocio.traerTodosLosPuntosVerdesCS(new PuntoVerdeNegocio.PuntoVerdesCallback() {
             @Override
             public void onPuntoVerdesLoaded(List<PuntoVerde> puntosVerdes) {
                     runOnUiThread(new Runnable() {
