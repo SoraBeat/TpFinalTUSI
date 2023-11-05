@@ -4,7 +4,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,11 +19,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tpfinaltusi.Negocio.CanjeNegocio;
 import com.example.tpfinaltusi.Negocio.PremioNegocio;
+import com.example.tpfinaltusi.Negocio.PuntoVerde_PremioNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.activities.activity_canjear_puntos;
+import com.example.tpfinaltusi.entidades.Canje;
 import com.example.tpfinaltusi.entidades.Premio;
+import com.example.tpfinaltusi.entidades.PuntoVerde_Premio;
 import com.example.tpfinaltusi.entidades.Usuario;
 import com.example.tpfinaltusi.fragments.FragmentPerfil;
 import com.j256.ormlite.stmt.query.In;
@@ -67,6 +73,7 @@ public class activity_canje_exitoso extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         // Recupera los datos pasados desde Intent
         Intent intent = getIntent();
+
         if (intent != null) {
             String title = intent.getStringExtra("title");
             PremioNegocio PremioNegocio = new PremioNegocio();
@@ -106,6 +113,48 @@ public class activity_canje_exitoso extends AppCompatActivity {
                             // Establece los datos en las vistas correspondientes
                             product_title.setText(title);
                             Imagen_canje.setImageBitmap(bitmap);
+
+                            SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
+
+                            //Generamos el registro del canje
+                            Canje caneje = new Canje(sharedPreferences.getInt("idUsuario", -1),intent.getIntExtra("idPremio", -1),intent.getIntExtra("idPuntoVerde", -1),1,intent.getIntExtra("Precio", -1));
+
+                            CanjeNegocio canjeNegocio = new CanjeNegocio();
+                            canjeNegocio.crearCanje(caneje, new CanjeNegocio.CanjeCallback() {
+                                @Override
+                                public void onSuccess(String mensaje) {
+
+                                }
+
+                                @Override
+                                public void onError(String error) {
+
+                                }
+
+                                @Override
+                                public void onCanjeLoaded(Canje canje) {
+
+                                }
+                            });
+
+                            //Bajamos los stock
+                            PuntoVerde_PremioNegocio puntoVerdePremioNegocio = new PuntoVerde_PremioNegocio();
+                            puntoVerdePremioNegocio.restarStockPuntoVerde(1, intent.getIntExtra("idPuntoVerde", -1), intent.getIntExtra("idPremio", -1), new PuntoVerde_PremioNegocio.PuntoVerde_PremioCallback() {
+                                @Override
+                                public void onSuccess(String mensaje) {
+
+                                }
+
+                                @Override
+                                public void onError(String error) {
+
+                                }
+
+                                @Override
+                                public void onPuntoVerde_PremioLoaded(PuntoVerde_Premio puntoVerde_Premio) {
+
+                                }
+                            });
 
                             //Damos de baja la cantidad de puntos canjeados
                             int idUsuario = UsuarioNegocio.obtenerIDUsuario(getApplicationContext());
@@ -148,8 +197,6 @@ public class activity_canje_exitoso extends AppCompatActivity {
                     // Coloca aquí el código que deseas ejecutar cuando se hace clic en el botón "Cerrar"
                     // Por ejemplo, puedes cerrar la actividad actual
                     finish();
-                    //Intent intent = new Intent(getApplicationContext(), FragmentPerfil.class);
-                    //startActivity(intent);
                 }
             });
         }

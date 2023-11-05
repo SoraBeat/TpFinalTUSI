@@ -231,7 +231,8 @@ public class UsuarioDAO {
             e.printStackTrace();
             return false;
         }
-    } public boolean restarPuntosAUsuario(int idUsuario, int puntosARestar) {
+    }
+    public boolean restarPuntosAUsuario(int idUsuario, int puntosARestar) {
         esperarConexion();
         String sql = "UPDATE usuarios SET cantpuntos = cantpuntos - ? WHERE idusuario = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

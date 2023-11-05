@@ -50,14 +50,13 @@ public class CanjeDAO {
     // Crear un nuevo Canje
     public boolean crearCanje(Canje canje) {
         esperarConexion();
-        String sql = "INSERT INTO canjes (IdCanje, IdUsuario, IdPremio, IdPuntoVerde, Cantidad, Precio) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "insert into canjes ( idusuario, idpremio, idpuntoverde, cantidad, precio) values (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, canje.getIdCanje());
-            statement.setInt(2, canje.getIdUsuario());
-            statement.setInt(3, canje.getIdPremio());
-            statement.setInt(4, canje.getIdPuntoVerde());
-            statement.setInt(5, canje.getCantidad());
-            statement.setInt(6, canje.getPrecio());
+            statement.setInt(1, canje.getIdUsuario());
+            statement.setInt(2, canje.getIdPremio());
+            statement.setInt(3, canje.getIdPuntoVerde());
+            statement.setInt(4, canje.getCantidad());
+            statement.setInt(5, canje.getPrecio());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -69,7 +68,7 @@ public class CanjeDAO {
     // Editar un Canje existente
     public boolean editarCanje(Canje canje) {
         esperarConexion();
-        String sql = "UPDATE canjes SET IdUsuario=?, IdPremio=?, IdPuntoVerde=?, Cantidad=?, Precio=? WHERE IdCanje=?";
+        String sql = "UPDATE canjes SET idusuario=?, idpremio=?, idpuntoverde=?, cantidad=?, precio=? WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, canje.getIdUsuario());
             statement.setInt(2, canje.getIdPremio());
@@ -88,7 +87,7 @@ public class CanjeDAO {
     // Borrar un Canje por IdCanje
     public boolean borrarCanje(int idCanje) {
         esperarConexion();
-        String sql = "DELETE FROM canjes WHERE IdCanje=?";
+        String sql = "DELETE FROM canjes WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idCanje);
             int filasAfectadas = statement.executeUpdate();
@@ -102,7 +101,7 @@ public class CanjeDAO {
     // Traer un Canje por IdCanje
     public Canje traerCanjePorId(int idCanje) {
         esperarConexion();
-        String sql = "SELECT * FROM canjes WHERE IdCanje=?";
+        String sql = "SELECT * FROM canjes WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idCanje);
             ResultSet resultSet = statement.executeQuery();

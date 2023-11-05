@@ -69,6 +69,18 @@ public class PuntoVerde_PremioNegocio {
         }).start();
     }
 
+    public void restarStockPuntoVerde(int Arestar,int idPuntoVerde, int idPremio,PuntoVerde_PremioCallback callback){
+        // Realizar la operación de restar stock en un hilo o AsyncTask
+        new Thread(() -> {
+            boolean resultado = puntoVerde_PremioDAO.restarStock(Arestar,idPuntoVerde,idPremio);
+            if (resultado) {
+                callback.onSuccess("Puntos restados con éxito");
+            } else {
+                callback.onError("Error al restados puntos");
+            }
+        }).start();
+    }
+
     public interface PuntoVerde_PremioCallback {
         void onSuccess(String mensaje);
 

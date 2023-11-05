@@ -18,6 +18,14 @@ public class Canje {
         this.precio = precio;
     }
 
+    public Canje( int idUsuario, int idPremio, int idPuntoVerde, int cantidad, int precio) {;
+        this.idUsuario = idUsuario;
+        this.idPremio = idPremio;
+        this.idPuntoVerde = idPuntoVerde;
+        this.cantidad = cantidad;
+        this.precio = precio;
+    }
+
     // Getters y Setters
     public int getIdCanje() {
         return idCanje;

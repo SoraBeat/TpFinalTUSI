@@ -64,6 +64,21 @@ public class PuntoVerde_PremioDAO {
         }
     }
 
+    public boolean restarStock(int Arestar,int idPuntoVerde, int idPremio) {
+        esperarConexion();
+        String sql = "UPDATE punto_verde_premio SET stock = stock - ? WHERE idpuntoverde = ? and idpremio = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, Arestar);
+            statement.setInt(2, idPuntoVerde);
+            statement.setInt(3, idPremio);
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // Editar una relación PuntoVerde_Premio existente
     public boolean editarPuntoVerde_Premio(PuntoVerde_Premio puntoVerde_Premio) {
         esperarConexion();

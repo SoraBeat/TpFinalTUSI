@@ -3,6 +3,7 @@ package com.example.tpfinaltusi.activities;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,7 +65,8 @@ public class activity_punto_verde_canje extends AppCompatActivity {
         // Llenar el ListView con el adaptador ProductoAdapter
         PuntoVerdeNegocio PuntoVerdeNegocio = new PuntoVerdeNegocio();
 
-        PuntoVerdeNegocio.traerTodosLosPuntosVerdesCS(new PuntoVerdeNegocio.PuntoVerdesCallback() {
+        Intent intent = getIntent();
+        PuntoVerdeNegocio.traerTodosLosPuntosVerdesCS(intent.getIntExtra("idPremio", -1),new PuntoVerdeNegocio.PuntoVerdesCallback() {
             @Override
             public void onPuntoVerdesLoaded(List<PuntoVerde> puntosVerdes) {
                     runOnUiThread(new Runnable() {
