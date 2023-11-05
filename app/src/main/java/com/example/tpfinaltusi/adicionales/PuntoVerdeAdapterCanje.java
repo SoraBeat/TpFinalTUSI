@@ -104,60 +104,30 @@ public class PuntoVerdeAdapterCanje extends ArrayAdapter<PuntoVerde> {
             }
         });
 
-        PuntoVerde_PremioNegocio puntoVerdePremioNegocio = new PuntoVerde_PremioNegocio();
-
-        puntoVerdePremioNegocio.traerPuntoVerde_PremioPorId(PuntoVerde.getIdPuntoVerde(),intent.getIntExtra("idPremio", -1), new PuntoVerde_PremioNegocio.PuntoVerde_PremioCallback() {
+        btnElegir.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(String mensaje) {
-
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-
-            @Override
-            public void onPuntoVerde_PremioLoaded(PuntoVerde_Premio puntoVerde_Premio) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(puntoVerde_Premio.getStock()>0){
-                            btnElegir.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
-                                    SharedPreferences sharedPreferences = activity.getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
+            public void onClick(View v) {
+                // Aquí puedes usar los valores y la imagen como desees, por ejemplo, pasarlos a la siguiente actividad
+                SharedPreferences sharedPreferences = activity.getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
 
 
-                                    Intent intent2 = new Intent(context, activity_canje_exitoso.class);
+                Intent intent2 = new Intent(context, activity_canje_exitoso.class);
 
-                                    intent2.putExtra("idUsuario", sharedPreferences.contains("idUsuario"));
-                                    intent2.putExtra("idPuntoVerde", PuntoVerde.getIdPuntoVerde());
-                                    intent2.putExtra("idPremio", intent.getIntExtra("idPremio", -1));
-                                    intent2.putExtra("Precio", intent.getIntExtra("Precio", -1));
-                                    intent2.putExtra("Cantidad", 1);
+                intent2.putExtra("idUsuario", sharedPreferences.contains("idUsuario"));
+                intent2.putExtra("idPuntoVerde", PuntoVerde.getIdPuntoVerde());
+                intent2.putExtra("idPremio", intent.getIntExtra("idPremio", -1));
+                intent2.putExtra("Precio", intent.getIntExtra("Precio", -1));
+                intent2.putExtra("Cantidad", 1);
+                System.out.println(PuntoVerde.toString());
 
+                // Agrega la bandera FLAG_ACTIVITY_NEW_TASK
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                    // Agrega la bandera FLAG_ACTIVITY_NEW_TASK
-                                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                    // Inicia la actividad
-                                    context.startActivity(intent2);
-                                    btnElegir.setVisibility(View.VISIBLE);
-                                }
-                            });
-                        }
-                        else{
-                            mostrarDialogoSinPuntos();
-                        }
-                    }
-                });
-
+                // Inicia la actividad
+                context.startActivity(intent2);
+                btnElegir.setVisibility(View.VISIBLE);
             }
         });
-
-
 
         return convertView;
     }

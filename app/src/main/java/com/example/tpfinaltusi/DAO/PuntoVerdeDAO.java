@@ -129,7 +129,7 @@ public class PuntoVerdeDAO {
     public List<PuntoVerde> traerTodosLosPuntosVerdesCS(int idPremio) {
         esperarConexion();
         List<PuntoVerde> puntosVerdes = new ArrayList<>();
-        String sql = "SELECT * FROM punto_verde a join punto_verde_premio b on b.idpuntoverde = a.idpuntoverde and b.idpremio = ? and b.stock>0";
+        String sql = "SELECT a.* FROM punto_verde a join punto_verde_premio b on b.idpuntoverde = a.idpuntoverde and b.idpremio = ? and b.stock>0";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idPremio);
             ResultSet resultSet = statement.executeQuery();

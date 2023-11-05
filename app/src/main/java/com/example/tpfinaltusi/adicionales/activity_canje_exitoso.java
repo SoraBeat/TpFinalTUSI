@@ -24,6 +24,8 @@ import com.example.tpfinaltusi.Negocio.PremioNegocio;
 import com.example.tpfinaltusi.Negocio.PuntoVerde_PremioNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.HomeActivity;
+import com.example.tpfinaltusi.activities.MainActivity;
 import com.example.tpfinaltusi.activities.activity_canjear_puntos;
 import com.example.tpfinaltusi.entidades.Canje;
 import com.example.tpfinaltusi.entidades.Premio;
@@ -196,7 +198,9 @@ public class activity_canje_exitoso extends AppCompatActivity {
                 public void onClick(View v) {
                     // Coloca aquí el código que deseas ejecutar cuando se hace clic en el botón "Cerrar"
                     // Por ejemplo, puedes cerrar la actividad actual
-                    finish();
+                    Intent intent = new Intent(getApplicationContext() , HomeActivity.class);
+                    startActivity(intent);
+
                 }
             });
         }
