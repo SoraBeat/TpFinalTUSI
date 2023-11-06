@@ -70,6 +70,20 @@ public class UsuarioNegocio {
         }).start();
     }
 
+    public void traerUsuarioPorAliasFiltro(String alias, UsuariosCallback callback) {
+        // Realizar la operación de traer todos los usuarios en un hilo o AsyncTask
+        new Thread(() -> {
+            List<Usuario> usuarios = usuarioDAO.traerUsuarioPorAliasFiltro(alias);
+            callback.onUsuariosLoaded(usuarios);
+        }).start();
+    }
+    public void traerUsuarioPorEmailFiltro(String email, UsuariosCallback callback) {
+        // Realizar la operación de traer todos los usuarios en un hilo o AsyncTask
+        new Thread(() -> {
+            List<Usuario> usuarios = usuarioDAO.traerUsuarioPorMailFiltro(email);
+            callback.onUsuariosLoaded(usuarios);
+        }).start();
+    }
     public void traerTodosLosUsuarios(UsuariosCallback callback) {
         // Realizar la operación de traer todos los usuarios en un hilo o AsyncTask
         new Thread(() -> {

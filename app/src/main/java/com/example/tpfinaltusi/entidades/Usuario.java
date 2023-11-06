@@ -1,6 +1,7 @@
 package com.example.tpfinaltusi.entidades;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Usuario {
 
@@ -148,5 +149,18 @@ public class Usuario {
                 ", puntosTotalesObtenidos=" + puntosTotalesObtenidos +
                 ", imagen='" + imagen + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return id == usuario.id && cantPuntos == usuario.cantPuntos && esAdmin == usuario.esAdmin && puntosTotalesObtenidos == usuario.puntosTotalesObtenidos && Objects.equals(alias, usuario.alias) && Objects.equals(dni, usuario.dni) && Objects.equals(email, usuario.email) && Objects.equals(password, usuario.password) && Objects.equals(fechaAlta, usuario.fechaAlta) && Objects.equals(fechaBaja, usuario.fechaBaja) && Objects.equals(imagen, usuario.imagen);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, alias, dni, email, password, cantPuntos, fechaAlta, fechaBaja, esAdmin, puntosTotalesObtenidos, imagen);
     }
 }

@@ -26,6 +26,7 @@ import com.example.tpfinaltusi.Negocio.LocalidadNegocio;
 import com.example.tpfinaltusi.Negocio.ProvinciaNegocio;
 import com.example.tpfinaltusi.Negocio.PuntoVerde_PremioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.activity_canje_exitoso;
 import com.example.tpfinaltusi.activities.activity_punto_verde_canje;
 import com.example.tpfinaltusi.entidades.Localidad;
 import com.example.tpfinaltusi.entidades.Premio;

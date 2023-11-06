@@ -1,4 +1,4 @@
-package com.example.tpfinaltusi.adicionales;
+package com.example.tpfinaltusi.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

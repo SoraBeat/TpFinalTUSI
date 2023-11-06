@@ -139,6 +139,37 @@ public class UsuarioDAO {
         }
         return null;
     }
+    public List<Usuario> traerUsuarioPorAliasFiltro(String alias) {
+        esperarConexion();
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios WHERE LOWER(alias) LIKE ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + alias + "%");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                usuarios.add(crearUsuarioDesdeResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
+
+    public List<Usuario> traerUsuarioPorMailFiltro(String email) {
+        esperarConexion();
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios WHERE LOWER(email) LIKE ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + email + "%");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                usuarios.add(crearUsuarioDesdeResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
 
     // Traer todos los usuarios
     public List<Usuario> traerTodosLosUsuarios() {

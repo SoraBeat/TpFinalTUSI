@@ -1,14 +1,11 @@
 package com.example.tpfinaltusi.adicionales;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 
-import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.activities.activity_punto_verde_canje;
-import com.example.tpfinaltusi.adicionales.activity_canje_exitoso;
+
 import com.example.tpfinaltusi.entidades.Premio;
-import com.example.tpfinaltusi.entidades.Usuario;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
