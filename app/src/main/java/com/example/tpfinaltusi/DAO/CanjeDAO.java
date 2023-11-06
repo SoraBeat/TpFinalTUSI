@@ -69,14 +69,15 @@ public class CanjeDAO {
     // Editar un Canje existente
     public boolean editarCanje(Canje canje) {
         esperarConexion();
-        String sql = "UPDATE canjes SET idusuario=?, idpremio=?, idpuntoverde=?, cantidad=?, precio=? WHERE idcanje=?";
+        String sql = "UPDATE canjes SET idusuario=?, idpremio=?, idpuntoverde=?, cantidad=?, precio=?, estado=? WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, canje.getIdUsuario());
             statement.setInt(2, canje.getIdPremio());
             statement.setInt(3, canje.getIdPuntoVerde());
             statement.setInt(4, canje.getCantidad());
             statement.setInt(5, canje.getPrecio());
-            statement.setInt(6, canje.getIdCanje());
+            statement.setBoolean(6,canje.isEstado());
+            statement.setInt(7, canje.getIdCanje());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -148,13 +149,13 @@ public class CanjeDAO {
 
     // Método auxiliar para crear un objeto Canje desde un ResultSet
     private Canje crearCanjeDesdeResultSet(ResultSet resultSet) throws SQLException {
-        int idCanje = resultSet.getInt("IdCanje");
-        int idUsuario = resultSet.getInt("IdUsuario");
-        int idPremio = resultSet.getInt("IdPremio");
-        int idPuntoVerde = resultSet.getInt("IdPuntoVerde");
-        int cantidad = resultSet.getInt("Cantidad");
-        int precio = resultSet.getInt("Precio");
-        boolean estado = resultSet.getBoolean("Estado");
+        int idCanje = resultSet.getInt("idcanje");
+        int idUsuario = resultSet.getInt("idusuario");
+        int idPremio = resultSet.getInt("idpremio");
+        int idPuntoVerde = resultSet.getInt("idpuntoVerde");
+        int cantidad = resultSet.getInt("cantidad");
+        int precio = resultSet.getInt("precio");
+        boolean estado = resultSet.getBoolean("estado");
         return new Canje(idCanje, idUsuario, idPremio, idPuntoVerde, cantidad, precio, estado);
     }
 }

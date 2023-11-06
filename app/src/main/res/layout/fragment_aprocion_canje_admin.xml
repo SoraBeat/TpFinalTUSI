@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.FragmentAprocionCanjeAdmin"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingrese el ID del canje"
+        android:textColor="@color/darkGrey"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"/>
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/darkGrey"
+        android:textColorHint="@color/darkGrey"
+        android:textColorHighlight="@color/darkGrey"
+        android:textColorLink="@color/darkGrey"
+        android:hint="Aquí el ID"
+        android:inputType="number"
+        android:maxLength="10"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btn_aprobar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aprobar"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green"
+        android:textAllCaps="false"/>
+    <ProgressBar
+        android:id="@+id/cargando"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+</LinearLayout>

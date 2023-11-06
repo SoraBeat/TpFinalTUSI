@@ -17,6 +17,7 @@ public class Canje {
         this.idPuntoVerde = idPuntoVerde;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.estado = estado;
     }
 
     public Canje( int idUsuario, int idPremio, int idPuntoVerde, int cantidad, int precio, boolean estado) {;

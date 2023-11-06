@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.tpfinaltusi.fragments.FragmentAprobacionReportes;
+import com.example.tpfinaltusi.fragments.FragmentAprocionCanjeAdmin;
 import com.example.tpfinaltusi.fragments.FragmentCrearNoticia;
 import com.example.tpfinaltusi.fragments.FragmentCrearQR;
 import com.example.tpfinaltusi.fragments.FragmentUsuariosAdmin;
@@ -30,6 +31,8 @@ public class PagerControllerAdmin extends FragmentPagerAdapter {
                 return new FragmentUsuariosAdmin();
             case 3:
                 return new FragmentCrearNoticia();
+            case 4:
+                return new FragmentAprocionCanjeAdmin();
             default:
                 return null;
         }
