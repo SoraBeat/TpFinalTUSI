@@ -119,7 +119,7 @@ public class activity_canje_exitoso extends AppCompatActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("SesionUsuario", Context.MODE_PRIVATE);
 
                             //Generamos el registro del canje
-                            Canje caneje = new Canje(sharedPreferences.getInt("idUsuario", -1),intent.getIntExtra("idPremio", -1),intent.getIntExtra("idPuntoVerde", -1),1,intent.getIntExtra("Precio", -1));
+                            Canje caneje = new Canje(sharedPreferences.getInt("idUsuario", -1),intent.getIntExtra("idPremio", -1),intent.getIntExtra("idPuntoVerde", -1),1,intent.getIntExtra("Precio", -1),true);
 
                             CanjeNegocio canjeNegocio = new CanjeNegocio();
                             canjeNegocio.crearCanje(caneje, new CanjeNegocio.CanjeCallback() {

@@ -50,7 +50,7 @@ public class PuntoVerdeDAO {
     // Crear un nuevo punto verde
     public boolean crearPuntoVerde(PuntoVerde puntoVerde) {
         esperarConexion();
-        String sql = "INSERT INTO puntos_verdes (IdPuntoVerde,IdLocalidad, CalleAltura) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO puntos_verdes (idpuntoverde,idlocalidad, callealtura) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, puntoVerde.getIdPuntoVerde());
             statement.setInt(2, puntoVerde.getIdLocalidad());
@@ -66,7 +66,7 @@ public class PuntoVerdeDAO {
     // Editar un punto verde existente
     public boolean editarPuntoVerde(PuntoVerde puntoVerde) {
         esperarConexion();
-        String sql = "UPDATE puntos_verdes SET IdLocalidad=?, CalleAltura=? WHERE IdPuntoVerde=?";
+        String sql = "UPDATE punto_verde SET idlocalidad=?, callealtura=? WHERE idpuntoverde=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(2, puntoVerde.getIdLocalidad());
             statement.setString(3, puntoVerde.getCalleAltura());
@@ -82,7 +82,7 @@ public class PuntoVerdeDAO {
     // Borrar un punto verde por IdPuntoVerde
     public boolean borrarPuntoVerde(int idPuntoVerde) {
         esperarConexion();
-        String sql = "DELETE FROM puntos_verdes WHERE IdPuntoVerde=?";
+        String sql = "DELETE FROM punto_verde WHERE idpuntoverde=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idPuntoVerde);
             int filasAfectadas = statement.executeUpdate();
@@ -96,7 +96,7 @@ public class PuntoVerdeDAO {
     // Traer un punto verde por IdPuntoVerde
     public PuntoVerde traerPuntoVerdePorId(int idPuntoVerde) {
         esperarConexion();
-        String sql = "SELECT * FROM puntos_verdes WHERE IdPuntoVerde=?";
+        String sql = "SELECT * FROM punto_verde WHERE idpuntoverde=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idPuntoVerde);
             ResultSet resultSet = statement.executeQuery();

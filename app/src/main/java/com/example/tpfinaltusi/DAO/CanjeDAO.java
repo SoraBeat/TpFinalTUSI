@@ -50,13 +50,14 @@ public class CanjeDAO {
     // Crear un nuevo Canje
     public boolean crearCanje(Canje canje) {
         esperarConexion();
-        String sql = "insert into canjes ( idusuario, idpremio, idpuntoverde, cantidad, precio) values (?, ?, ?, ?, ?)";
+        String sql = "insert into canjes ( idusuario, idpremio, idpuntoverde, cantidad, precio,estado) values (?, ?, ?, ?, ?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, canje.getIdUsuario());
             statement.setInt(2, canje.getIdPremio());
             statement.setInt(3, canje.getIdPuntoVerde());
             statement.setInt(4, canje.getCantidad());
             statement.setInt(5, canje.getPrecio());
+            statement.setBoolean(6, canje.isEstado());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -114,6 +115,21 @@ public class CanjeDAO {
         return null;
     }
 
+    public List<Canje> traerCanjePorIdUsuario(int idUsuario) {
+        esperarConexion();
+        List<Canje> canjes = new ArrayList<>();
+        String sql = "SELECT * FROM canjes WHERE idusuario=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idUsuario);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                canjes.add(crearCanjeDesdeResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return canjes;
+    }
     // Traer todos los Canjes
     public List<Canje> traerTodosLosCanjes() {
         esperarConexion();
@@ -138,6 +154,8 @@ public class CanjeDAO {
         int idPuntoVerde = resultSet.getInt("IdPuntoVerde");
         int cantidad = resultSet.getInt("Cantidad");
         int precio = resultSet.getInt("Precio");
-        return new Canje(idCanje, idUsuario, idPremio, idPuntoVerde, cantidad, precio);
+        boolean estado = resultSet.getBoolean("Estado");
+        return new Canje(idCanje, idUsuario, idPremio, idPuntoVerde, cantidad, precio, estado);
     }
 }
+

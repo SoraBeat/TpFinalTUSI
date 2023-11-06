@@ -27,12 +27,19 @@
         android:theme="@style/Theme.TpFinalTUSI"
         tools:replace="android:allowBackup"
         tools:targetApi="31">
+
+        <activity
+            android:name=".activities.ActivityListCanje"
+            android:exported="false"
+            android:label="Lista_Canjes"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/MainThemeWhite" />
         <activity
             android:name=".activities.activity_punto_verde_canje"
             android:exported="false"
             android:label="Elegir_Punto_verde"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/MainThemeWhite"/>
+            android:theme="@style/MainThemeWhite" />
         <activity
             android:name=".adicionales.activity_canje_exitoso"
             android:exported="false"

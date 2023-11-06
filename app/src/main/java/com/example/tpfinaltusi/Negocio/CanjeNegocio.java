@@ -60,7 +60,13 @@ public class CanjeNegocio {
             }
         }).start();
     }
-
+    public void traerCanjePorIdUsuario(int idUsuario,CanjesCallback callback) {
+        // Realizar la operación de traer todos los Canjes en un hilo o AsyncTask
+        new Thread(() -> {
+            List<Canje> canjes = canjeDAO.traerCanjePorIdUsuario(idUsuario);;
+            callback.onCanjesLoaded(canjes);
+        }).start();
+    }
     public void traerTodosLosCanjes(CanjesCallback callback) {
         // Realizar la operación de traer todos los Canjes en un hilo o AsyncTask
         new Thread(() -> {
