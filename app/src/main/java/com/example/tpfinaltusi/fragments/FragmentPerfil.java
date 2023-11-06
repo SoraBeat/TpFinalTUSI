@@ -173,9 +173,9 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                             imgPersona.setImageBitmap(bitmap);
                         }
-                        if (usuario.getCantPuntos()>=10000){
+                        if (usuario.getPuntosTotalesObtenidos()>=10000){
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.gold_medall));
-                        }else if (usuario.getCantPuntos()<10000 && usuario.getCantPuntos()>=5000){
+                        }else if (usuario.getPuntosTotalesObtenidos()<10000 && usuario.getCantPuntos()>=5000){
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.silver_medal));
                         }else {
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.bronze_medal));
