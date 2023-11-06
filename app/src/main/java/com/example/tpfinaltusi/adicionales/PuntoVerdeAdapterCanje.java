@@ -1,5 +1,6 @@
 package com.example.tpfinaltusi.adicionales;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -41,12 +45,11 @@ public class PuntoVerdeAdapterCanje extends ArrayAdapter<PuntoVerde> {
         super(activity, 0, PuntoVerde);;
         this.context = context;
         this.activity = activity;
-
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        if(convertView==null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.adapter_punto_verde, parent, false);
         }
@@ -56,12 +59,15 @@ public class PuntoVerdeAdapterCanje extends ArrayAdapter<PuntoVerde> {
         PuntoVerde PuntoVerde = getItem(position);
 
         // Obtener referencias a las vistas dentro del elemento personalizado
+        ProgressBar progressBar = convertView.findViewById(R.id.cargando);
         TextView txtubicacion = convertView.findViewById(R.id.txtUbicacion);
         Button btnElegir = convertView.findViewById(R.id.btnElegir);
+        txtubicacion.setVisibility(View.GONE);
+        btnElegir.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
 
         LocalidadNegocio localidadNegocio = new LocalidadNegocio();
-        View finalConvertView = convertView;
         localidadNegocio.traerLocalidadPorId(PuntoVerde.getIdLocalidad(), new LocalidadNegocio.LocalidadCallback() {
             @Override
             public void onSuccess(String mensaje) {
@@ -70,7 +76,6 @@ public class PuntoVerdeAdapterCanje extends ArrayAdapter<PuntoVerde> {
 
             @Override
             public void onError(String error) {
-
             }
 
             @Override
@@ -92,8 +97,10 @@ public class PuntoVerdeAdapterCanje extends ArrayAdapter<PuntoVerde> {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
-                                txtubicacion.setText( provincia.getNombre()+", "+localidad.getNombre()+ ", "+ PuntoVerde.getCalleAltura());
+                                txtubicacion.setText(provincia.getNombre()+", "+localidad.getNombre()+ ", "+ PuntoVerde.getCalleAltura());
+                                txtubicacion.setVisibility(View.VISIBLE);
+                                btnElegir.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
                             }
                         });
 
@@ -125,7 +132,6 @@ public class PuntoVerdeAdapterCanje extends ArrayAdapter<PuntoVerde> {
 
                 // Inicia la actividad
                 context.startActivity(intent2);
-                btnElegir.setVisibility(View.VISIBLE);
             }
         });
 

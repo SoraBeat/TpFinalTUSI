@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -56,6 +58,10 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
         TextView canjeNumero = convertView.findViewById(R.id.txt_Numero_canje);
         ImageView productImag = convertView.findViewById(R.id.product_image);
         TextView puntoverdeDireccion = convertView.findViewById(R.id.Direccion);
+        ProgressBar progressBar = convertView.findViewById(R.id.cargando);
+        LinearLayout contenedor = convertView.findViewById(R.id.contenedor);
+        contenedor.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
         canjeNumero.setText(String.valueOf(canje.getIdCanje()));
 
@@ -144,7 +150,8 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-
+                                        contenedor.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
                                         puntoverdeDireccion.setText( provincia.getNombre()+", "+localidad.getNombre()+ ", "+ puntoVerde.getCalleAltura());
                                     }
                                 });

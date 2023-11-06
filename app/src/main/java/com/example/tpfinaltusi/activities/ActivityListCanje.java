@@ -68,7 +68,7 @@ public class ActivityListCanje extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ListItemCanjeAdapter listItemCanjeAdapter = new ListItemCanjeAdapter(ActivityListCanje.this,getApplicationContext(), canjes);
+                        ListItemCanjeAdapter listItemCanjeAdapter = new ListItemCanjeAdapter(ActivityListCanje.this,ActivityListCanje.this, canjes);
                         listView.setAdapter(listItemCanjeAdapter);
                         if (progressBar != null) {
                             progressBar.setVisibility(View.VISIBLE); // o View.GONE según tus necesidades

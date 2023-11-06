@@ -3,6 +3,7 @@ package com.example.tpfinaltusi.activities;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +25,6 @@ import java.util.List;
 public class activity_punto_verde_canje extends AppCompatActivity {
     TextView tv_puntajeActual;
     ListView listView;
-    ProgressBar progressBar;
     ImageView btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +44,9 @@ public class activity_punto_verde_canje extends AppCompatActivity {
         }
         // Inflar la vista personalizada
         View customActionBarView = getSupportActionBar().getCustomView();
-
         btnBack = customActionBarView.findViewById(R.id.btn_back);
         btnBack.setVisibility(View.VISIBLE);
 
-        progressBar = findViewById(R.id.progressBar);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,9 +59,9 @@ public class activity_punto_verde_canje extends AppCompatActivity {
 
         listView = findViewById(R.id.lvlistar);
 
-
         // Llenar el ListView con el adaptador ProductoAdapter
         PuntoVerdeNegocio PuntoVerdeNegocio = new PuntoVerdeNegocio();
+        activity_punto_verde_canje currentActivity = this;
 
         Intent intent = getIntent();
         PuntoVerdeNegocio.traerTodosLosPuntosVerdesCS(intent.getIntExtra("idPremio", -1),new PuntoVerdeNegocio.PuntoVerdesCallback() {
@@ -74,9 +72,7 @@ public class activity_punto_verde_canje extends AppCompatActivity {
                         public void run() {
                             // Crear una instancia del adaptador y establecer la lista de productos
                             PuntoVerdeAdapterCanje PuntoVerdeAdapter = new PuntoVerdeAdapterCanje(activity_punto_verde_canje.this,activity_punto_verde_canje.this, puntosVerdes);
-                            System.out.println(puntosVerdes.toString());
                             listView.setAdapter(PuntoVerdeAdapter);
-                            progressBar.setVisibility(View.GONE);
                         }
                     });
             }
