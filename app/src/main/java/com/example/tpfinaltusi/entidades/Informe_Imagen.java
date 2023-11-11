@@ -11,6 +11,10 @@ public class Informe_Imagen {
         this.idInforme = idInforme;
         this.imagen = imagen;
     }
+    public Informe_Imagen(int idInforme, String imagen) {
+        this.idInforme = idInforme;
+        this.imagen = imagen;
+    }
 
     // Getters y Setters
     public int getIdInformeImagen() {

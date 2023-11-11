@@ -63,5 +63,6 @@ dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.paging:paging-runtime:3.0.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
 

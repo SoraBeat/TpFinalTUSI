@@ -44,6 +44,11 @@ public class Informe {
         this.longitud = longitud;
         this.imagen = imagen;
     }
+
+    public Informe() {
+
+    }
+
     // Getters y Setters
     public int getIdInforme() {
         return idInforme;

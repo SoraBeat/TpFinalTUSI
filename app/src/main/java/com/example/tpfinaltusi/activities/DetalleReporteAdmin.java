@@ -8,33 +8,50 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.tpfinaltusi.Negocio.InformeImagenNegocio;
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
+import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Imagen;
+import com.example.tpfinaltusi.entidades.Usuario;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class DetalleReporteAdmin extends AppCompatActivity {
     TextView tvTitulo;
     TextView tvDescripcion;
     TextView tvInfo;
     ImageView ivImagen;
+    DialogViewImage dialogViewImage;
+    Bitmap bitmap = null;
+    Bitmap prueba = null;
+    FragmentActivity activity;
     ProgressBar progressBar;
     LinearLayout layoutInvisible;
     ImageView btnBack;
     LinearLayout btnGoogleMaps;
     Button btnAprobarInforme;
     Button btnCancelarInforme;
-
+    Button btnVerPrueba;
+    EditText etPuntos;
+    TextView tvPuntos;
+    Informe inf;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //////////////////////////////////CONFIGURACION ACTION BAR////////////////////////////////////////////
@@ -68,16 +85,194 @@ public class DetalleReporteAdmin extends AppCompatActivity {
             tvTitulo = findViewById(R.id.tv_titulo);
             tvDescripcion = findViewById(R.id.tv_cuerpo);
             ivImagen = findViewById(R.id.iv_imagen);
+            ivImagen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(dialogViewImage == null || dialogViewImage.getDialog() == null || !dialogViewImage.getDialog().isShowing()){
+                        FragmentManager fm = getSupportFragmentManager();
+                        Bundle arguments = new Bundle();
+
+                        arguments.putParcelable("PICTURE_SELECTED", bitmap);
+                        dialogViewImage = DialogViewImage.newInstance(arguments);
+                        dialogViewImage.show(fm,"DialogViewImage");
+                    }
+                }
+            });
+
             tvInfo = findViewById(R.id.infoTextView);
+            tvPuntos = findViewById(R.id.tvPuntos);
             progressBar = findViewById(R.id.progressBar);
             layoutInvisible = findViewById(R.id.layoutInvisible);
             btnGoogleMaps = findViewById(R.id.btn_verMaps);
+            etPuntos = findViewById(R.id.editTextPuntos);
             btnAprobarInforme = findViewById(R.id.btn_aprobarInforme);
             btnCancelarInforme = findViewById(R.id.btn_cancelarInforme);
+            btnVerPrueba = findViewById(R.id.btn_verPrueba);
             /////////////////////////////////////OBTENER DATOS///////////////////////////////////////////////
             int id = intent.getIntExtra("id_informe", -1);
             cargarReporte(id);
         }
+    }
+
+    private void cargarReporteRevision(){
+        new InformeImagenNegocio().traerTodasLasInformeImagenes(new InformeImagenNegocio.InformeImagenesCallback() {
+            @Override
+            public void onInformeImagenesLoaded(List<Informe_Imagen> informeImagenes) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (informeImagenes.stream().filter(img -> img.getIdInforme() == getIntent().getIntExtra("id_informe", -1)).count() > 0) {
+                            String pureBase64Encoded = informeImagenes.get(0).getImagen().substring(informeImagenes.get(0).getImagen().indexOf(",") + 1);
+                            byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                            prueba = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        }
+                        layoutInvisible.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
+        btnAprobarInforme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!etPuntos.getText().toString().isEmpty()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnAprobarInforme.setEnabled(false);
+                    btnCancelarInforme.setEnabled(false);
+                    Informe informe = new Informe();
+                    informe.setIdInforme(getIntent().getIntExtra("id_informe", -1));
+                    informe.setPuntosRecompensa(Integer.parseInt(etPuntos.getText().toString()));
+                    new InformeNegocio().CerrarInforme(informe, new InformeNegocio.InformeCallback() {
+                        @Override
+                        public void onSuccess(String mensaje) {
+                            Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onInformeLoaded(Informe informe) {
+
+                        }
+                    });
+                } else {
+                    etPuntos.setError("Debe ingresar una recompensa");
+                }
+            }
+        });
+        btnVerPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dialogViewImage == null || dialogViewImage.getDialog() == null || !dialogViewImage.getDialog().isShowing()){
+                    FragmentManager fm = getSupportFragmentManager();
+                    Bundle arguments = new Bundle();
+
+                    arguments.putParcelable("PICTURE_SELECTED", prueba);
+                    dialogViewImage = DialogViewImage.newInstance(arguments);
+                    dialogViewImage.show(fm,"DialogViewImage");
+                }
+            }
+        });
+        btnCancelarInforme.setText("Rechazar");
+        btnCancelarInforme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inf.setFechaBaja(null);
+                inf.setUsuarioBaja(-1);
+                inf.setIdEstado(1);
+                new InformeNegocio().editarInforme(inf, new InformeNegocio.InformeCallback() {
+                    @Override
+                    public void onSuccess(String mensaje) {
+                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onInformeLoaded(Informe informe) {
+
+                    }
+                });
+            }
+        });
+        tvPuntos.setText("Defina puntos de recompensa (Recomendados " + inf.getPuntosRecompensa() + "):");
+        etPuntos.setText(inf.getPuntosRecompensa());
+    }
+    private void cargarReportePendiente(){
+        btnVerPrueba.setVisibility(View.GONE);
+        btnAprobarInforme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!etPuntos.getText().toString().isEmpty()){
+
+                progressBar.setVisibility(View.VISIBLE);
+                btnAprobarInforme.setEnabled(false);
+                btnCancelarInforme.setEnabled(false);
+                inf.setPuntosRecompensa(Integer.parseInt(etPuntos.getText().toString()));
+                inf.setIdEstado(1);
+                if(inf.getPuntosRecompensa()<50)
+                    inf.setIdNivel(1);
+                if(inf.getPuntosRecompensa()>=50 && inf.getPuntosRecompensa() <150)
+                    inf.setIdNivel(2);
+                if(inf.getPuntosRecompensa()>=150)
+                    inf.setIdNivel(3);
+                new InformeNegocio().editarInforme(inf, new InformeNegocio.InformeCallback() {
+                    @Override
+                    public void onSuccess(String mensaje) {
+                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                        startActivity(i);
+                    }
+                    @Override
+                    public void onError(String error) {
+                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                        startActivity(i);
+                    }
+                    @Override
+                    public void onInformeLoaded(Informe informe) {
+
+                    }
+                });
+
+                } else {
+                    etPuntos.setError("Debe ingresar una recompensa");
+                }
+            }
+        });
+        btnCancelarInforme.setText("Rechazar");
+        btnCancelarInforme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnAprobarInforme.setEnabled(false);
+                btnCancelarInforme.setEnabled(false);
+                new InformeNegocio().borrarInforme(inf.getIdInforme(), new InformeNegocio.InformeCallback() {
+                    @Override
+                    public void onSuccess(String mensaje) {
+                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onInformeLoaded(Informe informe) {
+
+                    }
+                });
+            }
+        });
     }
 
     private void cargarReporte(int id) {
@@ -99,13 +294,27 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        layoutInvisible.setVisibility(View.VISIBLE);
                         tvTitulo.setText(informe.getTitulo());
                         tvDescripcion.setText(informe.getCuerpo());
-                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta()));
+                        String descripcionEstado = "";
+                        switch (informe.getIdEstado()){
+                            case 1:
+                                descripcionEstado = "Activo";
+                                break;
+                            case 2:
+                                descripcionEstado = "Pendiente";
+                                break;
+                            case 3:
+                                descripcionEstado = "Revisión";
+                                break;
+                            case 4:
+                                descripcionEstado = "Terminado";
+                                break;
+                        }
+                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta()) + " - " + descripcionEstado);
                         String pureBase64Encoded = informe.getImagen().substring(informe.getImagen().indexOf(",") + 1);
                         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         ivImagen.setImageBitmap(bitmap);
                         progressBar.setVisibility(View.GONE);
                         btnGoogleMaps.setOnClickListener(new View.OnClickListener() {
@@ -122,22 +331,26 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                                 }
                             }
                         });
-                        btnAprobarInforme.setOnClickListener(new View.OnClickListener(){
-                            @Override
-                            public void onClick(View view) {
-                                finish();
-                            }
-                        });
                         btnCancelarInforme.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view) {
-                                finish();
+                                Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                startActivity(i);
                             }
                         });
+                        inf = informe;
+                        if(inf.getIdEstado() == 2){
+                            cargarReportePendiente();
+                        } else if (inf.getIdEstado() == 3){
+                            cargarReporteRevision();
+                        } else {
+                            finish();
+                        }
                     }
                 });
             }
         });
+
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

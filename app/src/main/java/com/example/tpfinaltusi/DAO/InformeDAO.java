@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -71,17 +72,24 @@ public class InformeDAO {
     // Editar un informe existente
     public boolean editarInforme(Informe informe) {
         esperarConexion();
-        String sql = "UPDATE informes SET Titulo=?, Cuerpo=?, IdNivel=?, FechaAlta=?, UsuarioAlta=?, FechaBaja=?, UsuarioBaja=?, PuntosRecompensa=? WHERE IdInforme=?";
+        String sql = "UPDATE informes SET Titulo=?, Cuerpo=?, IdNivel=?, FechaAlta=?, UsuarioAlta=?, FechaBaja=?, UsuarioBaja=?, PuntosRecompensa=?, IdEstado=? WHERE IdInforme=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, informe.getTitulo());
             statement.setString(2, informe.getCuerpo());
             statement.setInt(3, informe.getIdNivel());
             statement.setDate(4, new java.sql.Date(informe.getFechaAlta().getTime()));
             statement.setInt(5, informe.getUsuarioAlta());
-            statement.setDate(6, new java.sql.Date(informe.getFechaBaja().getTime()));
-            statement.setInt(7, informe.getUsuarioBaja());
+
+            if(informe.getUsuarioBaja()==-1){
+                statement.setNull(6, 0);
+                statement.setNull(7,0);
+            } else{
+                statement.setDate(6, new java.sql.Date(System.currentTimeMillis()));
+                statement.setInt(7, informe.getUsuarioBaja());
+            }
             statement.setInt(8, informe.getPuntosRecompensa());
-            statement.setInt(9, informe.getIdInforme());
+            statement.setInt(9, informe.getIdEstado());
+            statement.setInt(10, informe.getIdInforme());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {

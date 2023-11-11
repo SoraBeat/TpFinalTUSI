@@ -97,6 +97,9 @@ public class DetalleReporte extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(informe.getIdEstado()!=1){
+                            finish();
+                        }
                         layoutInvisible.setVisibility(View.VISIBLE);
                         tvTitulo.setText(informe.getTitulo());
                         tvDescripcion.setText(informe.getCuerpo());

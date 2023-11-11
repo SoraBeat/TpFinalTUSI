@@ -31,6 +31,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceColor</item>
     </style>
+
     <style name="myPopupMenuTextAppearanceColor" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/darkGrey</item>
     </style>
@@ -52,6 +53,7 @@
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:background">@color/white</item>
     </style>
+
     <style name="TabIconStyle">
         <item name="android:layout_width">100dp</item> <!-- Ancho deseado del icono -->
         <item name="android:layout_height">100dp</item> <!-- Alto deseado del icono -->
@@ -61,6 +63,7 @@
         <item name="android:textColor">@color/darkGrey</item> <!-- Cambiar color del texto -->
         <item name="android:elevation">0dp</item> <!-- Eliminar la elevación -->
     </style>
+
     <style name="TextOnlyButton">
         <item name="android:background">@color/white</item> <!-- Fondo transparente -->
         <item name="android:textColor">@color/green</item> <!-- Color del texto -->
@@ -68,8 +71,14 @@
         <item name="android:clickable">false</item> <!-- Deshabilita la interacción táctil -->
         <item name="android:focusable">false</item>
     </style>
+
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TpFinalTUSI" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

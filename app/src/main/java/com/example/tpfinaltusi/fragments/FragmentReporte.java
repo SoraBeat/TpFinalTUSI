@@ -1,9 +1,12 @@
 package com.example.tpfinaltusi.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
@@ -13,12 +16,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.GraficoContaminacion;
+import com.example.tpfinaltusi.activities.HomeActivity;
 import com.example.tpfinaltusi.adicionales.ReporteAdapter;
 import com.example.tpfinaltusi.entidades.Informe;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +35,7 @@ public class FragmentReporte extends Fragment {
 
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    ImageView ivGraficoContaminacion;
     public FragmentReporte() {
         // Required empty public constructor
     }
@@ -50,12 +56,22 @@ public class FragmentReporte extends Fragment {
         View view= inflater.inflate(R.layout.fragment_reporte, container, false);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swapRefresh);
-        //swipeRefreshLayout.setProgressViewEndTarget(false, 0);
+        //swipeRefreshLayout.setProgress ViewEndTarget(false, 0);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 cargarListaDeReportes(view);
+            }
+        });
+
+        ivGraficoContaminacion = view.findViewById(R.id.ivGraficoContaminacion);
+        ivGraficoContaminacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = requireContext();
+                Intent i = new Intent(context, GraficoContaminacion.class);
+                context.startActivity(i);
             }
         });
 
@@ -81,6 +97,7 @@ public class FragmentReporte extends Fragment {
                                 return informe2.getFechaAlta().compareTo(informe1.getFechaAlta());
                             }
                         });
+                        informes.removeIf(informe -> informe.getIdEstado() != 1);
                         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewReportes);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         ReporteAdapter adapter = new ReporteAdapter(requireContext(), informes);
