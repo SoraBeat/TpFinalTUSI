@@ -58,7 +58,7 @@ public class activity_canjear_puntos extends AppCompatActivity {
         });
         // Configurar el título centrado (opcional)
         TextView actionBarTitle = customActionBarView.findViewById(R.id.action_bar_title);
-        actionBarTitle.setText("Canjer Puntos");
+        actionBarTitle.setText("Canjear Puntos");
 
         tv_puntajeActual = findViewById(R.id.tv_puntajeActual);
         listView = findViewById(R.id.lvlistar);

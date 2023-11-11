@@ -50,12 +50,11 @@ public class PuntoVerdeDAO {
     // Crear un nuevo punto verde
     public boolean crearPuntoVerde(PuntoVerde puntoVerde) {
         esperarConexion();
-        String sql = "INSERT INTO puntos_verdes (IdPuntoVerde, Titulo, IdLocalidad, CalleAltura) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO puntos_verdes (idpuntoverde,idlocalidad, callealtura) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, puntoVerde.getIdPuntoVerde());
-            statement.setString(2, puntoVerde.getTitulo());
-            statement.setInt(3, puntoVerde.getIdLocalidad());
-            statement.setString(4, puntoVerde.getCalleAltura());
+            statement.setInt(2, puntoVerde.getIdLocalidad());
+            statement.setString(3, puntoVerde.getCalleAltura());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -67,9 +66,8 @@ public class PuntoVerdeDAO {
     // Editar un punto verde existente
     public boolean editarPuntoVerde(PuntoVerde puntoVerde) {
         esperarConexion();
-        String sql = "UPDATE puntos_verdes SET Titulo=?, IdLocalidad=?, CalleAltura=? WHERE IdPuntoVerde=?";
+        String sql = "UPDATE punto_verde SET idlocalidad=?, callealtura=? WHERE idpuntoverde=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, puntoVerde.getTitulo());
             statement.setInt(2, puntoVerde.getIdLocalidad());
             statement.setString(3, puntoVerde.getCalleAltura());
             statement.setInt(4, puntoVerde.getIdPuntoVerde());
@@ -84,7 +82,7 @@ public class PuntoVerdeDAO {
     // Borrar un punto verde por IdPuntoVerde
     public boolean borrarPuntoVerde(int idPuntoVerde) {
         esperarConexion();
-        String sql = "DELETE FROM puntos_verdes WHERE IdPuntoVerde=?";
+        String sql = "DELETE FROM punto_verde WHERE idpuntoverde=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idPuntoVerde);
             int filasAfectadas = statement.executeUpdate();
@@ -98,7 +96,7 @@ public class PuntoVerdeDAO {
     // Traer un punto verde por IdPuntoVerde
     public PuntoVerde traerPuntoVerdePorId(int idPuntoVerde) {
         esperarConexion();
-        String sql = "SELECT * FROM puntos_verdes WHERE IdPuntoVerde=?";
+        String sql = "SELECT * FROM punto_verde WHERE idpuntoverde=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idPuntoVerde);
             ResultSet resultSet = statement.executeQuery();
@@ -111,12 +109,29 @@ public class PuntoVerdeDAO {
         return null;
     }
 
+
     // Traer todos los puntos verdes
     public List<PuntoVerde> traerTodosLosPuntosVerdes() {
         esperarConexion();
         List<PuntoVerde> puntosVerdes = new ArrayList<>();
-        String sql = "SELECT * FROM puntos_verdes";
+        String sql = "SELECT * FROM punto_verde";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                puntosVerdes.add(crearPuntoVerdeDesdeResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return puntosVerdes;
+    }
+
+    public List<PuntoVerde> traerTodosLosPuntosVerdesCS(int idPremio) {
+        esperarConexion();
+        List<PuntoVerde> puntosVerdes = new ArrayList<>();
+        String sql = "SELECT a.* FROM punto_verde a join punto_verde_premio b on b.idpuntoverde = a.idpuntoverde and b.idpremio = ? and b.stock>0";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idPremio);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 puntosVerdes.add(crearPuntoVerdeDesdeResultSet(resultSet));
@@ -130,9 +145,8 @@ public class PuntoVerdeDAO {
     // Método auxiliar para crear un objeto PuntoVerde desde un ResultSet
     private PuntoVerde crearPuntoVerdeDesdeResultSet(ResultSet resultSet) throws SQLException {
         int idPuntoVerde = resultSet.getInt("IdPuntoVerde");
-        String titulo = resultSet.getString("Titulo");
         int idLocalidad = resultSet.getInt("IdLocalidad");
         String calleAltura = resultSet.getString("CalleAltura");
-        return new PuntoVerde(idPuntoVerde, titulo, idLocalidad, calleAltura);
+        return new PuntoVerde(idPuntoVerde, idLocalidad, calleAltura);
     }
 }

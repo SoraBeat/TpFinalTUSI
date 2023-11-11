@@ -2,14 +2,12 @@ package com.example.tpfinaltusi.entidades;
 
 public class PuntoVerde {
     private int idPuntoVerde;
-    private String titulo;
     private int idLocalidad;
     private String calleAltura;
 
     // Constructor
-    public PuntoVerde(int idPuntoVerde, String titulo, int idLocalidad, String calleAltura) {
+    public PuntoVerde(int idPuntoVerde,int idLocalidad, String calleAltura) {
         this.idPuntoVerde = idPuntoVerde;
-        this.titulo = titulo;
         this.idLocalidad = idLocalidad;
         this.calleAltura = calleAltura;
     }
@@ -21,14 +19,6 @@ public class PuntoVerde {
 
     public void setIdPuntoVerde(int idPuntoVerde) {
         this.idPuntoVerde = idPuntoVerde;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
     }
 
     public int getIdLocalidad() {
@@ -51,7 +41,6 @@ public class PuntoVerde {
     public String toString() {
         return "PuntoVerde{" +
                 "idPuntoVerde=" + idPuntoVerde +
-                ", titulo='" + titulo + '\'' +
                 ", idLocalidad=" + idLocalidad +
                 ", calleAltura='" + calleAltura + '\'' +
                 '}';

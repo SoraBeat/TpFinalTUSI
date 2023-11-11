@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.ActivityListCanje;
 import com.example.tpfinaltusi.activities.Login;
 import com.example.tpfinaltusi.activities.activity_canjear_puntos;
 import com.example.tpfinaltusi.entidades.Usuario;
@@ -172,9 +173,9 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                             imgPersona.setImageBitmap(bitmap);
                         }
-                        if (usuario.getCantPuntos()>=10000){
+                        if (usuario.getPuntosTotalesObtenidos()>=10000){
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.gold_medall));
-                        }else if (usuario.getCantPuntos()<10000 && usuario.getCantPuntos()>=5000){
+                        }else if (usuario.getPuntosTotalesObtenidos()<10000 && usuario.getCantPuntos()>=5000){
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.silver_medal));
                         }else {
                             imgMedal.setForeground(getContext().getDrawable(R.drawable.bronze_medal));
@@ -203,6 +204,11 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
 
             // Asegúrate de que el fragmento se cierre o se realice alguna acción adicional si es necesario
             // return true; // Dependiendo de tus necesidades
+        }
+        if (itemId == R.id.menu_btn_Listar_Canje) {
+            //Listar Canje
+            Intent intent = new Intent(requireContext(), ActivityListCanje.class);
+            startActivity(intent);
         }
 
         // Maneja otras acciones de menú si es necesario

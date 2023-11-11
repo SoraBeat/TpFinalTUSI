@@ -49,10 +49,10 @@ public class PuntoVerde_PremioNegocio {
         }).start();
     }
 
-    public void traerPuntoVerde_PremioPorId(int idPuntoVerdePremio, PuntoVerde_PremioCallback callback) {
+    public void traerPuntoVerde_PremioPorId(int idPuntoVerde, int idPremio, PuntoVerde_PremioCallback callback) {
         // Realizar la operación de traer PuntoVerde_Premio por IdPuntoVerdePremio en un hilo o AsyncTask
         new Thread(() -> {
-            PuntoVerde_Premio puntoVerde_Premio = puntoVerde_PremioDAO.traerPuntoVerde_PremioPorId(idPuntoVerdePremio);
+            PuntoVerde_Premio puntoVerde_Premio = puntoVerde_PremioDAO.traerPuntoVerde_PremioPorId(idPuntoVerde,idPremio);
             if (puntoVerde_Premio != null) {
                 callback.onPuntoVerde_PremioLoaded(puntoVerde_Premio);
             } else {
@@ -66,6 +66,18 @@ public class PuntoVerde_PremioNegocio {
         new Thread(() -> {
             List<PuntoVerde_Premio> puntosVerdes_Premios = puntoVerde_PremioDAO.traerTodasLasPuntosVerdes_Premios();
             callback.onPuntoVerde_PremiosLoaded(puntosVerdes_Premios);
+        }).start();
+    }
+
+    public void restarStockPuntoVerde(int Arestar,int idPuntoVerde, int idPremio,PuntoVerde_PremioCallback callback){
+        // Realizar la operación de restar stock en un hilo o AsyncTask
+        new Thread(() -> {
+            boolean resultado = puntoVerde_PremioDAO.restarStock(Arestar,idPuntoVerde,idPremio);
+            if (resultado) {
+                callback.onSuccess("Puntos restados con éxito");
+            } else {
+                callback.onError("Error al restados puntos");
+            }
         }).start();
     }
 

@@ -46,13 +46,13 @@ public class HomeActivityAdmin extends AppCompatActivity  {
         /////////////////////////////////////OBTENER ELEMENTOS///////////////////////////////////////////////
         tabLayout = findViewById(R.id.tl_tablayout);
         viewPager = findViewById(R.id.vp_viewpager);
-        pagerController = new PagerControllerAdmin(getSupportFragmentManager(),4);
+        pagerController = new PagerControllerAdmin(getSupportFragmentManager(),5);
         /////////////////////////////////////FUNCIONES COMPORTAMIENTO////////////////////////////////////////
         comportamientoTabLayout();
     }
     private void comportamientoTabLayout(){
         viewPager.setAdapter(pagerController);
-        int[] iconos = {R.drawable.baseline_event_24, R.drawable.baseline_qr_code_scanner_24, R.drawable.baseline_people_alt_24,R.drawable.baseline_calendar_month_24};
+        int[] iconos = {R.drawable.baseline_event_24, R.drawable.baseline_qr_code_scanner_24, R.drawable.baseline_people_alt_24,R.drawable.baseline_calendar_month_24,R.drawable.baseline_add_shopping_cart_24};
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -81,6 +81,10 @@ public class HomeActivityAdmin extends AppCompatActivity  {
                 if(tab.getPosition()==3) {
                     pagerController.notifyDataSetChanged();
                     actionBarTitle.setText("Crear Noticia");
+                }
+                if(tab.getPosition()==3) {
+                    pagerController.notifyDataSetChanged();
+                    actionBarTitle.setText("Retirar canje");
                 }
             }
 

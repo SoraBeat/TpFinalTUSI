@@ -50,7 +50,7 @@ public class PuntoVerde_PremioDAO {
     // Crear una nueva relación PuntoVerde_Premio
     public boolean crearPuntoVerde_Premio(PuntoVerde_Premio puntoVerde_Premio) {
         esperarConexion();
-        String sql = "INSERT INTO puntosverdes_premios (IdPuntoVerdePremio, IdPuntoVerde, IdPremio, Stock) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO punto_verde_premio (idpuntoverdepremio, idpuntoverde, idpremio, stock) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, puntoVerde_Premio.getIdPuntoVerdePremio());
             statement.setInt(2, puntoVerde_Premio.getIdPuntoVerde());
@@ -64,10 +64,25 @@ public class PuntoVerde_PremioDAO {
         }
     }
 
+    public boolean restarStock(int Arestar,int idPuntoVerde, int idPremio) {
+        esperarConexion();
+        String sql = "UPDATE punto_verde_premio SET stock = stock - ? WHERE idpuntoverde = ? and idpremio = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, Arestar);
+            statement.setInt(2, idPuntoVerde);
+            statement.setInt(3, idPremio);
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // Editar una relación PuntoVerde_Premio existente
     public boolean editarPuntoVerde_Premio(PuntoVerde_Premio puntoVerde_Premio) {
         esperarConexion();
-        String sql = "UPDATE puntosverdes_premios SET IdPuntoVerde=?, IdPremio=?, Stock=? WHERE IdPuntoVerdePremio=?";
+        String sql = "UPDATE punto_verde_premio SET idpuntoverde=?, idpremio=?, stock=? WHERE idpuntoverdepremio=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, puntoVerde_Premio.getIdPuntoVerde());
             statement.setInt(2, puntoVerde_Premio.getIdPremio());
@@ -84,7 +99,7 @@ public class PuntoVerde_PremioDAO {
     // Borrar una relación PuntoVerde_Premio por IdPuntoVerdePremio
     public boolean borrarPuntoVerde_Premio(int idPuntoVerdePremio) {
         esperarConexion();
-        String sql = "DELETE FROM puntosverdes_premios WHERE IdPuntoVerdePremio=?";
+        String sql = "DELETE FROM punto_verde_premio WHERE idpuntoverdepremio=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idPuntoVerdePremio);
             int filasAfectadas = statement.executeUpdate();
@@ -96,11 +111,12 @@ public class PuntoVerde_PremioDAO {
     }
 
     // Traer una relación PuntoVerde_Premio por IdPuntoVerdePremio
-    public PuntoVerde_Premio traerPuntoVerde_PremioPorId(int idPuntoVerdePremio) {
+    public PuntoVerde_Premio traerPuntoVerde_PremioPorId(int idPuntoVerde, int idPremio) {
         esperarConexion();
-        String sql = "SELECT * FROM puntosverdes_premios WHERE IdPuntoVerdePremio=?";
+        String sql = "SELECT * FROM punto_verde_premio WHERE idpuntoverde=? and idpremio=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, idPuntoVerdePremio);
+            statement.setInt(1, idPuntoVerde);
+            statement.setInt(2, idPremio);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return crearPuntoVerde_PremioDesdeResultSet(resultSet);
@@ -115,7 +131,7 @@ public class PuntoVerde_PremioDAO {
     public List<PuntoVerde_Premio> traerTodasLasPuntosVerdes_Premios() {
         esperarConexion();
         List<PuntoVerde_Premio> puntosVerdes_Premios = new ArrayList<>();
-        String sql = "SELECT * FROM puntosverdes_premios";
+        String sql = "SELECT * FROM punto_verde_premio";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -129,10 +145,10 @@ public class PuntoVerde_PremioDAO {
 
     // Método auxiliar para crear un objeto PuntoVerde_Premio desde un ResultSet
     private PuntoVerde_Premio crearPuntoVerde_PremioDesdeResultSet(ResultSet resultSet) throws SQLException {
-        int idPuntoVerdePremio = resultSet.getInt("IdPuntoVerdePremio");
-        int idPuntoVerde = resultSet.getInt("IdPuntoVerde");
-        int idPremio = resultSet.getInt("IdPremio");
-        int stock = resultSet.getInt("Stock");
+        int idPuntoVerdePremio = resultSet.getInt("idpuntoverdepremio");
+        int idPuntoVerde = resultSet.getInt("idpuntoverde");
+        int idPremio = resultSet.getInt("idpremio");
+        int stock = resultSet.getInt("stock");
         return new PuntoVerde_Premio(idPuntoVerdePremio, idPuntoVerde, idPremio, stock);
     }
 }

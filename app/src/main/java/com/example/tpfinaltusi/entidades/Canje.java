@@ -7,18 +7,37 @@ public class Canje {
     private int idPuntoVerde;
     private int cantidad;
     private int precio;
+    private boolean estado;
 
     // Constructor
-    public Canje(int idCanje, int idUsuario, int idPremio, int idPuntoVerde, int cantidad, int precio) {
+    public Canje(int idCanje, int idUsuario, int idPremio, int idPuntoVerde, int cantidad, int precio,boolean estado) {
         this.idCanje = idCanje;
         this.idUsuario = idUsuario;
         this.idPremio = idPremio;
         this.idPuntoVerde = idPuntoVerde;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.estado = estado;
     }
 
+    public Canje( int idUsuario, int idPremio, int idPuntoVerde, int cantidad, int precio, boolean estado) {;
+        this.idUsuario = idUsuario;
+        this.idPremio = idPremio;
+        this.idPuntoVerde = idPuntoVerde;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.estado = estado;
+    }
     // Getters y Setters
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
     public int getIdCanje() {
         return idCanje;
     }

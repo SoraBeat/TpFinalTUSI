@@ -50,14 +50,14 @@ public class CanjeDAO {
     // Crear un nuevo Canje
     public boolean crearCanje(Canje canje) {
         esperarConexion();
-        String sql = "INSERT INTO canjes (IdCanje, IdUsuario, IdPremio, IdPuntoVerde, Cantidad, Precio) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "insert into canjes ( idusuario, idpremio, idpuntoverde, cantidad, precio,estado) values (?, ?, ?, ?, ?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, canje.getIdCanje());
-            statement.setInt(2, canje.getIdUsuario());
-            statement.setInt(3, canje.getIdPremio());
-            statement.setInt(4, canje.getIdPuntoVerde());
-            statement.setInt(5, canje.getCantidad());
-            statement.setInt(6, canje.getPrecio());
+            statement.setInt(1, canje.getIdUsuario());
+            statement.setInt(2, canje.getIdPremio());
+            statement.setInt(3, canje.getIdPuntoVerde());
+            statement.setInt(4, canje.getCantidad());
+            statement.setInt(5, canje.getPrecio());
+            statement.setBoolean(6, canje.isEstado());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -69,14 +69,15 @@ public class CanjeDAO {
     // Editar un Canje existente
     public boolean editarCanje(Canje canje) {
         esperarConexion();
-        String sql = "UPDATE canjes SET IdUsuario=?, IdPremio=?, IdPuntoVerde=?, Cantidad=?, Precio=? WHERE IdCanje=?";
+        String sql = "UPDATE canjes SET idusuario=?, idpremio=?, idpuntoverde=?, cantidad=?, precio=?, estado=? WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, canje.getIdUsuario());
             statement.setInt(2, canje.getIdPremio());
             statement.setInt(3, canje.getIdPuntoVerde());
             statement.setInt(4, canje.getCantidad());
             statement.setInt(5, canje.getPrecio());
-            statement.setInt(6, canje.getIdCanje());
+            statement.setBoolean(6,canje.isEstado());
+            statement.setInt(7, canje.getIdCanje());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -88,7 +89,7 @@ public class CanjeDAO {
     // Borrar un Canje por IdCanje
     public boolean borrarCanje(int idCanje) {
         esperarConexion();
-        String sql = "DELETE FROM canjes WHERE IdCanje=?";
+        String sql = "DELETE FROM canjes WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idCanje);
             int filasAfectadas = statement.executeUpdate();
@@ -102,7 +103,7 @@ public class CanjeDAO {
     // Traer un Canje por IdCanje
     public Canje traerCanjePorId(int idCanje) {
         esperarConexion();
-        String sql = "SELECT * FROM canjes WHERE IdCanje=?";
+        String sql = "SELECT * FROM canjes WHERE idcanje=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idCanje);
             ResultSet resultSet = statement.executeQuery();
@@ -115,6 +116,21 @@ public class CanjeDAO {
         return null;
     }
 
+    public List<Canje> traerCanjePorIdUsuario(int idUsuario) {
+        esperarConexion();
+        List<Canje> canjes = new ArrayList<>();
+        String sql = "SELECT * FROM canjes WHERE idusuario=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idUsuario);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                canjes.add(crearCanjeDesdeResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return canjes;
+    }
     // Traer todos los Canjes
     public List<Canje> traerTodosLosCanjes() {
         esperarConexion();
@@ -133,12 +149,14 @@ public class CanjeDAO {
 
     // Método auxiliar para crear un objeto Canje desde un ResultSet
     private Canje crearCanjeDesdeResultSet(ResultSet resultSet) throws SQLException {
-        int idCanje = resultSet.getInt("IdCanje");
-        int idUsuario = resultSet.getInt("IdUsuario");
-        int idPremio = resultSet.getInt("IdPremio");
-        int idPuntoVerde = resultSet.getInt("IdPuntoVerde");
-        int cantidad = resultSet.getInt("Cantidad");
-        int precio = resultSet.getInt("Precio");
-        return new Canje(idCanje, idUsuario, idPremio, idPuntoVerde, cantidad, precio);
+        int idCanje = resultSet.getInt("idcanje");
+        int idUsuario = resultSet.getInt("idusuario");
+        int idPremio = resultSet.getInt("idpremio");
+        int idPuntoVerde = resultSet.getInt("idpuntoVerde");
+        int cantidad = resultSet.getInt("cantidad");
+        int precio = resultSet.getInt("precio");
+        boolean estado = resultSet.getBoolean("estado");
+        return new Canje(idCanje, idUsuario, idPremio, idPuntoVerde, cantidad, precio, estado);
     }
 }
+
