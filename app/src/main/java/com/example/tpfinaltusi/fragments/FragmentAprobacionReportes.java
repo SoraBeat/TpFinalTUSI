@@ -128,6 +128,7 @@ public class FragmentAprobacionReportes extends Fragment implements PopupMenu.On
                             return informe2.getFechaAlta().compareTo(informe1.getFechaAlta());
                         }
                     });
+                    informes.removeIf(informe -> informe.getIdEstado() != 3 && informe.getIdEstado() != 2);
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerViewReportes);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     ReporteAdapterAdmin adapter = new ReporteAdapterAdmin(requireContext(), informes);

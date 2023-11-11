@@ -76,6 +76,18 @@
                     android:textColor="@color/darkGrey" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_verPrueba"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:backgroundTint="@color/green"
+                android:text="Ver Prueba"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -106,23 +118,24 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvPuntos"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/darkGrey"
-                    android:text="Defina puntos de recompensa:" />
+                    android:text="Defina puntos de recompensa:"
+                    android:textColor="@color/darkGrey" />
 
                 <EditText
-                    android:id="@+id/editTextNumber"
+                    android:id="@+id/editTextPuntos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:ems="10"
                     android:hint="Puntos"
                     android:inputType="number"
+                    android:text=""
                     android:textColor="@color/darkGrey"
-                    android:textColorHint="@color/darkGrey"
-                    android:text="" />
+                    android:textColorHint="@color/darkGrey" />
 
 
             </LinearLayout>

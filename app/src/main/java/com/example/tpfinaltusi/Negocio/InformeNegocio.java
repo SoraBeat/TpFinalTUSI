@@ -4,7 +4,10 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.example.tpfinaltusi.DAO.InformeDAO;
+import com.example.tpfinaltusi.DAO.Informe_ImagenDAO;
+import com.example.tpfinaltusi.DAO.UsuarioDAO;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Imagen;
 
 import java.util.List;
 
@@ -34,6 +37,58 @@ public class InformeNegocio {
         }).start();
     }
 
+    public void revisionInforme(int IdInforme, int IdUsuario, String imgPrueba){
+        //Pasa el informe a estado 3 (Revision)
+        new Thread(()->{
+            Informe informe = informeDAO.traerInformePorId(IdInforme);
+            if (informe != null) {
+                informe.setIdEstado(3);
+                informe.setUsuarioBaja(IdUsuario);
+                informeDAO.editarInforme(informe);
+                Informe_Imagen img = new Informe_Imagen(IdInforme,imgPrueba);
+                new Informe_ImagenDAO().crearInforme_Imagen(img);
+            }
+
+        }).start();
+    }
+    public void AprobarInforme(Informe informe, InformeCallback callback){
+        //Pasa el informe a estado 1 (Activo)
+        new Thread(()->{
+            Informe informeAUX = informeDAO.traerInformePorId(informe.getIdInforme());
+
+            if (informeAUX != null) {
+                informeAUX.setPuntosRecompensa(informe.getPuntosRecompensa());
+                informeAUX.setIdEstado(1);
+                if(informeDAO.editarInforme(informeAUX)){
+                    callback.onSuccess("Informe aprobado");
+                } else {
+                    callback.onError("Hubo un error inesperado");
+                }
+            }
+
+        }).start();
+    }
+    public void CerrarInforme(Informe informe,InformeCallback callback){
+        //Pasa a estado 4 (Cerrado) y da los puntos
+        new Thread(()->{
+            Informe informeAUX = informeDAO.traerInformePorId(informe.getIdInforme());
+            if (informeAUX !=null){
+                informeAUX.setPuntosRecompensa(informe.getPuntosRecompensa());
+                informeAUX.setIdEstado(4);
+                if(informeDAO.editarInforme(informeAUX)){
+                    if(new UsuarioDAO().sumarPuntosAUsuario(informeAUX.getUsuarioBaja(),informeAUX.getPuntosRecompensa())){
+                        callback.onSuccess("");
+                    } else{
+                        callback.onError("");
+                    }
+                } else {
+                    callback.onError("");
+                }
+            } else {
+                callback.onError("");
+            }
+        }).start();
+    }
     public void borrarInforme(int idInforme, InformeCallback callback) {
         // Realizar la operación de borrado de Informe por IdInforme en un hilo o AsyncTask
         new Thread(() -> {

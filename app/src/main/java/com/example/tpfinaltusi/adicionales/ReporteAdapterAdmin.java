@@ -45,6 +45,22 @@ public class ReporteAdapterAdmin extends RecyclerView.Adapter<ReporteAdapterAdmi
         // Configurar los datos de la noticia en la vista personalizada
         int mes = informe.getFechaAlta().getMonth();
         String fecha = new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta());
+        String descripcionEstado = "";
+        switch (informe.getIdEstado()){
+            case 1:
+                descripcionEstado = "Activo";
+                break;
+            case 2:
+                descripcionEstado = "Pendiente";
+                break;
+            case 3:
+                descripcionEstado = "Revisión";
+                break;
+            case 4:
+                descripcionEstado = "Terminado";
+                break;
+        }
+        fecha += " - " + descripcionEstado;
         holder.infoTextView.setText(fecha);
         holder.titleTextView.setText(informe.getTitulo());
         holder.descriptionTextView.setText(informe.getCuerpo());
