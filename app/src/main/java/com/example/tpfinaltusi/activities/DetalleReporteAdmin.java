@@ -273,6 +273,7 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                 });
             }
         });
+        layoutInvisible.setVisibility(View.VISIBLE);
     }
 
     private void cargarReporte(int id) {
