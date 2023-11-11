@@ -41,7 +41,6 @@ public class DetalleReporteAdmin extends AppCompatActivity {
     DialogViewImage dialogViewImage;
     Bitmap bitmap = null;
     Bitmap prueba = null;
-    FragmentActivity activity;
     ProgressBar progressBar;
     LinearLayout layoutInvisible;
     ImageView btnBack;
@@ -52,6 +51,7 @@ public class DetalleReporteAdmin extends AppCompatActivity {
     EditText etPuntos;
     TextView tvPuntos;
     Informe inf;
+    int idInformeImagen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //////////////////////////////////CONFIGURACION ACTION BAR////////////////////////////////////////////
@@ -121,12 +121,14 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (informeImagenes.stream().filter(img -> img.getIdInforme() == getIntent().getIntExtra("id_informe", -1)).count() > 0) {
-                            String pureBase64Encoded = informeImagenes.get(0).getImagen().substring(informeImagenes.get(0).getImagen().indexOf(",") + 1);
+                        Informe_Imagen imagen = informeImagenes.stream().filter(img -> img.getIdInforme() == getIntent().getIntExtra("id_informe", -1)).findFirst().get();
+                            String pureBase64Encoded = imagen.getImagen().substring(informeImagenes.get(0).getImagen().indexOf(",") + 1);
                             byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
                             prueba = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                        }
+
+                            idInformeImagen = imagen.getIdInformeImagen();
                         layoutInvisible.setVisibility(View.VISIBLE);
+                        btnVerPrueba.setVisibility(View.GONE);
                     }
                 });
             }
@@ -135,6 +137,7 @@ public class DetalleReporteAdmin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!etPuntos.getText().toString().isEmpty()) {
+                    btnVerPrueba.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     btnAprobarInforme.setEnabled(false);
                     btnCancelarInforme.setEnabled(false);
@@ -178,6 +181,7 @@ public class DetalleReporteAdmin extends AppCompatActivity {
             }
         });
         btnCancelarInforme.setText("Rechazar");
+
         btnCancelarInforme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,8 +191,25 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                 new InformeNegocio().editarInforme(inf, new InformeNegocio.InformeCallback() {
                     @Override
                     public void onSuccess(String mensaje) {
-                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
-                        startActivity(i);
+                        new InformeImagenNegocio().borrarInformeImagen(idInformeImagen, new InformeImagenNegocio.InformeImagenCallback() {
+                            @Override
+                            public void onSuccess(String mensaje) {
+                                Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onInformeImagenLoaded(Informe_Imagen informeImagen) {
+
+                            }
+                        });
+
                     }
 
                     @Override
@@ -202,13 +223,12 @@ public class DetalleReporteAdmin extends AppCompatActivity {
 
                     }
                 });
+
             }
         });
         tvPuntos.setText("Defina puntos de recompensa (Recomendados " + inf.getPuntosRecompensa() + "):");
-        etPuntos.setText(inf.getPuntosRecompensa());
     }
     private void cargarReportePendiente(){
-        btnVerPrueba.setVisibility(View.GONE);
         btnAprobarInforme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

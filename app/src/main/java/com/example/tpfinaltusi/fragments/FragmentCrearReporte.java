@@ -22,9 +22,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.HomeActivity;
+import com.example.tpfinaltusi.activities.HomeActivityAdmin;
 import com.example.tpfinaltusi.activities.MapsActivity;
 import com.example.tpfinaltusi.entidades.Informe;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -156,14 +159,39 @@ public class FragmentCrearReporte extends Fragment {
     public void btnCrear_Click(){
         etTitulo = view.findViewById(R.id.et_Titulo);
         etDescripcion = view.findViewById(R.id.et_Descripcion);
+        txtUbicacion = view.findViewById(R.id.txt_Ubicacion);
         //etUbicacion = view.findViewById(R.id.et_Ubicacion);
 
         ///TODO: TIENE QUE OBTENER EL USUARIO LOGUEADO
         int idusuario = 1;
-
-        Informe informe = new Informe(etTitulo.getText().toString(), etDescripcion.getText().toString(), idusuario, 2, latitud, longitud, IMG);
-        InformeNegocio informeNegocio = new InformeNegocio();
-        informeNegocio.crearInforme(informe);
+        boolean error = false;
+        boolean toast = false;
+        if(IMG == null || IMG.isEmpty()){
+            Toast.makeText(getContext(),"Debe elegir una imagen de prueba",Toast.LENGTH_LONG);
+            error = true;
+            toast = true;
+        }
+        if(etTitulo.getText().toString().isEmpty()){
+            etTitulo.setError("Debe ingresar un titulo");
+            error = true;
+        }
+        if(etDescripcion.getText().toString().isEmpty()){
+            etDescripcion.setError("Debe ingresar una descripcion");
+            error = true;
+        }
+        if(latitud == 0 && longitud == 0){
+            error = true;
+            txtUbicacion.setError("Debe ingresar una ubicacion");
+        } else {
+            txtUbicacion.setError(null);
+        }
+        if(!error){
+            Informe informe = new Informe(etTitulo.getText().toString(), etDescripcion.getText().toString(), idusuario, 2, latitud, longitud, IMG);
+            InformeNegocio informeNegocio = new InformeNegocio();
+            informeNegocio.crearInforme(informe);
+            Intent i = new Intent(getContext(), HomeActivity.class);
+            startActivity(i);
+        }
     }
 
 
