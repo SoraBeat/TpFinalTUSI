@@ -80,7 +80,7 @@ public class InformeDAO {
             statement.setDate(4, new java.sql.Date(informe.getFechaAlta().getTime()));
             statement.setInt(5, informe.getUsuarioAlta());
 
-            if(informe.getUsuarioBaja()==-1){
+            if(informe.getUsuarioBaja()==-1 || informe.getUsuarioBaja() == 0){
                 statement.setNull(6, 0);
                 statement.setNull(7,0);
             } else{
