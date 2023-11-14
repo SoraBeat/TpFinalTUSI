@@ -128,7 +128,6 @@ public class DetalleReporteAdmin extends AppCompatActivity {
 
                             idInformeImagen = imagen.getIdInformeImagen();
                         layoutInvisible.setVisibility(View.VISIBLE);
-                        btnVerPrueba.setVisibility(View.GONE);
                     }
                 });
             }
@@ -137,7 +136,6 @@ public class DetalleReporteAdmin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!etPuntos.getText().toString().isEmpty()) {
-                    btnVerPrueba.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     btnAprobarInforme.setEnabled(false);
                     btnCancelarInforme.setEnabled(false);
@@ -229,6 +227,7 @@ public class DetalleReporteAdmin extends AppCompatActivity {
         tvPuntos.setText("Defina puntos de recompensa (Recomendados " + inf.getPuntosRecompensa() + "):");
     }
     private void cargarReportePendiente(){
+        btnVerPrueba.setVisibility(View.GONE);
         btnAprobarInforme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

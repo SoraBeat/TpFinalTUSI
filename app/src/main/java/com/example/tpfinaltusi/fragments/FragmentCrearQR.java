@@ -203,7 +203,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
                         listaFiltrada.add(codigoQR);
                     }
                 }
-                codigoQRAdapter = new CustomListAdapter(getActivity(), listaFiltrada);
+                codigoQRAdapter = new CustomListAdapter(getActivity(), getFragmentManager(),listaFiltrada);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
