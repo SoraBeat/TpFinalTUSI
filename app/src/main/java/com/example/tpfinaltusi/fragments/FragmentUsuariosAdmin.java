@@ -157,10 +157,14 @@ public class FragmentUsuariosAdmin extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        pagedListLiveData.observe(getViewLifecycleOwner(), pagedList -> {
-                            // Actualizar tu adaptador con la nueva lista paginada
-                            adapter.submitList(pagedList);
-                        });
+                        try {
+                            pagedListLiveData.observe(getViewLifecycleOwner(), pagedList -> {
+                                // Actualizar tu adaptador con la nueva lista paginada
+                                adapter.submitList(pagedList);
+                            });
+                        }catch (Exception e){
+                            System.out.println(e);
+                        }
                     }
                 });
 

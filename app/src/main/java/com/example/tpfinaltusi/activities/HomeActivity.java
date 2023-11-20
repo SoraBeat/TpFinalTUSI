@@ -8,15 +8,22 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.PagerController;
+import com.example.tpfinaltusi.entidades.Usuario;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -63,67 +70,130 @@ public class HomeActivity extends AppCompatActivity {
                 tab.setCustomView(customTabView);
             }
         }
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        usuarioNegocio.buscarUsuarioPorId(UsuarioNegocio.obtenerIDUsuario(getApplicationContext()), new UsuarioNegocio.UsuarioCallback() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                if(tab.getPosition()==0){
-                    pagerController.notifyDataSetChanged();
-                    actionBarTitle.setText("Noticias");
-                    ActionBar actionBar = getSupportActionBar();
-                    // Inflar la vista personalizada
-                    View customActionBarView = actionBar.getCustomView();
-
-                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
-                    img_config.setVisibility(View.GONE);
-                }
-                if(tab.getPosition()==1) {
-                    pagerController.notifyDataSetChanged();
-                    actionBarTitle.setText("Reportes");
-                    ActionBar actionBar = getSupportActionBar();
-                    // Inflar la vista personalizada
-                    View customActionBarView = actionBar.getCustomView();
-
-                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
-                    img_config.setVisibility(View.GONE);
-                }
-                if(tab.getPosition()==2){
-                    pagerController.notifyDataSetChanged();
-                    actionBarTitle.setText("QR");
-                    ActionBar actionBar = getSupportActionBar();
-                    // Inflar la vista personalizada
-                    View customActionBarView = actionBar.getCustomView();
-
-                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
-                    img_config.setVisibility(View.GONE);
-                }
-                if(tab.getPosition()==3){
-                    pagerController.notifyDataSetChanged();
-                    actionBarTitle.setText("Crear reporte");
-                    ActionBar actionBar = getSupportActionBar();
-                    // Inflar la vista personalizada
-                    View customActionBarView = actionBar.getCustomView();
-
-                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
-                    img_config.setVisibility(View.GONE);
-                }
-                if(tab.getPosition()==4){
-                    pagerController.notifyDataSetChanged();
-                    actionBarTitle.setText("Perfil");
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+            public void onSuccess(String mensaje) {
 
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onError(String error) {
 
+            }
+
+            @Override
+            public void onUsuarioLoaded(Usuario usuario) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ActionBar actionBar = getSupportActionBar();
+                        // Inflar la vista personalizada
+                        View customActionBarView = actionBar.getCustomView();
+                        ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                        img_config.setVisibility(View.GONE);
+                        ImageView img_perfil = customActionBarView.findViewById(R.id.imagenperfil);
+                        String pureBase64Encoded = usuario.getImagen().substring(usuario.getImagen().indexOf(",") + 1);
+                        byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        img_perfil.setVisibility(View.VISIBLE);
+                        img_perfil.setImageBitmap(bitmap);
+                        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                            @Override
+                            public void onTabSelected(TabLayout.Tab tab) {
+                                viewPager.setCurrentItem(tab.getPosition());
+                                if(tab.getPosition()==0){
+                                    pagerController.notifyDataSetChanged();
+                                    actionBarTitle.setText("Noticias");
+                                    ActionBar actionBar = getSupportActionBar();
+                                    // Inflar la vista personalizada
+                                    View customActionBarView = actionBar.getCustomView();
+
+                                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                                    img_config.setVisibility(View.GONE);
+                                    ImageView img_perfil = customActionBarView.findViewById(R.id.imagenperfil);
+                                    String pureBase64Encoded = usuario.getImagen().substring(usuario.getImagen().indexOf(",") + 1);
+                                    byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                    img_perfil.setVisibility(View.VISIBLE);
+                                    img_perfil.setImageBitmap(bitmap);
+                                }
+                                if(tab.getPosition()==1) {
+                                    pagerController.notifyDataSetChanged();
+                                    actionBarTitle.setText("Reportes");
+                                    ActionBar actionBar = getSupportActionBar();
+                                    // Inflar la vista personalizada
+                                    View customActionBarView = actionBar.getCustomView();
+
+                                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                                    img_config.setVisibility(View.GONE);
+                                    ImageView img_perfil = customActionBarView.findViewById(R.id.imagenperfil);
+                                    String pureBase64Encoded = usuario.getImagen().substring(usuario.getImagen().indexOf(",") + 1);
+                                    byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                    img_perfil.setVisibility(View.VISIBLE);
+                                    img_perfil.setImageBitmap(bitmap);
+                                }
+                                if(tab.getPosition()==2){
+                                    pagerController.notifyDataSetChanged();
+                                    actionBarTitle.setText("QR");
+                                    ActionBar actionBar = getSupportActionBar();
+                                    // Inflar la vista personalizada
+                                    View customActionBarView = actionBar.getCustomView();
+
+                                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                                    img_config.setVisibility(View.GONE);
+                                    ImageView img_perfil = customActionBarView.findViewById(R.id.imagenperfil);
+                                    String pureBase64Encoded = usuario.getImagen().substring(usuario.getImagen().indexOf(",") + 1);
+                                    byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                    img_perfil.setVisibility(View.VISIBLE);
+                                    img_perfil.setImageBitmap(bitmap);
+                                }
+                                if(tab.getPosition()==3){
+                                    pagerController.notifyDataSetChanged();
+                                    actionBarTitle.setText("Crear reporte");
+                                    ActionBar actionBar = getSupportActionBar();
+                                    // Inflar la vista personalizada
+                                    View customActionBarView = actionBar.getCustomView();
+
+                                    ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
+                                    img_config.setVisibility(View.GONE);
+                                    ImageView img_perfil = customActionBarView.findViewById(R.id.imagenperfil);
+                                    String pureBase64Encoded = usuario.getImagen().substring(usuario.getImagen().indexOf(",") + 1);
+                                    byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                    img_perfil.setVisibility(View.VISIBLE);
+                                    img_perfil.setImageBitmap(bitmap);
+                                }
+                                if(tab.getPosition()==4){
+                                    pagerController.notifyDataSetChanged();
+                                    actionBarTitle.setText("Perfil");
+                                    ActionBar actionBar = getSupportActionBar();
+                                    View customActionBarView = actionBar.getCustomView();
+
+                                    ImageView img_perfil = customActionBarView.findViewById(R.id.imagenperfil);
+                                    img_perfil.setVisibility(View.GONE);
+
+                                }
+                            }
+
+                            @Override
+                            public void onTabUnselected(TabLayout.Tab tab) {
+
+                            }
+
+                            @Override
+                            public void onTabReselected(TabLayout.Tab tab) {
+
+                            }
+                        });
+                        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                    }
+                });
             }
         });
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
     }
     @Override
     public void onBackPressed() {
