@@ -27,7 +27,12 @@
         android:theme="@style/Theme.TpFinalTUSI"
         tools:replace="android:allowBackup"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.ActivityModificarNoticia"
+            android:exported="false"
+            android:label="Modificar_Noticia"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/MainThemeWhite"/>
         <activity
             android:name=".activities.ActivityListCanje"
             android:exported="false"
@@ -44,12 +49,12 @@
             android:name=".activities.CrearNoticia"
             android:exported="false"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/MainThemeWhite"/>
+            android:theme="@style/MainThemeWhite" />
         <activity
             android:name=".activities.DetalleNoticiaAdmin"
             android:exported="false"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/MainThemeWhite"/>
+            android:theme="@style/MainThemeWhite" />
         <activity
             android:name=".activities.activity_canje_exitoso"
             android:exported="false"
