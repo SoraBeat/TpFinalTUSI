@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_btn_cerrar"
-        android:title="Cerrar"
-
+        android:title="Cerrar sesion"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_btn_Listar_Canje"
-        android:title="Canje"
-        
+        android:title="Canjes"
+        android:visible="false"
         app:showAsAction="always"/>
 </menu>

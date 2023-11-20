@@ -98,6 +98,7 @@ public class FragmentPerfil extends Fragment implements PopupMenu.OnMenuItemClic
                 // Obtiene los elementos de menú y establece un color para el texto
                 for (int i = 0; i < menu.size(); i++) {
                     MenuItem menuItem = menu.getItem(i);
+                    menuItem.setVisible(true);
                     SpannableString spannableString = new SpannableString(menuItem.getTitle());
                     spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannableString.length(), 0);
                     menuItem.setTitle(spannableString);
