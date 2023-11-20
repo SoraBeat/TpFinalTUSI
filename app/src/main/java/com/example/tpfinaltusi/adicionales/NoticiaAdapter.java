@@ -87,7 +87,11 @@ public class NoticiaAdapter extends RecyclerView.Adapter<NoticiaAdapter.NoticiaV
         }
         holder.dateTextView.setText(fecha);
         holder.titleTextView.setText(noticia.getTitulo());
-        holder.descriptionTextView.setText(noticia.getCuerpo().substring(0,130)+"...");
+        if(noticia.getCuerpo().length()>130){
+            holder.descriptionTextView.setText(noticia.getCuerpo().substring(0,130)+"...");
+        }else{
+            holder.descriptionTextView.setText(noticia.getCuerpo());
+        }
         String pureBase64Encoded = noticia.getImagen().substring(noticia.getImagen().indexOf(",")  + 1);
         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
