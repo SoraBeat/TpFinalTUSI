@@ -21,6 +21,7 @@ import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.adicionales.ListItemCanjeAdapter;
 import com.example.tpfinaltusi.entidades.Canje;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityListCanje extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class ActivityListCanje extends AppCompatActivity {
     ProgressBar progressBar;
     ImageView btnBack;
     Spinner spinnerFiltro;
+    private List<Canje> canjesFiltrados;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +103,8 @@ public class ActivityListCanje extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ListItemCanjeAdapter listItemCanjeAdapter = new ListItemCanjeAdapter(ActivityListCanje.this,ActivityListCanje.this, canjes, finalValorNumerico);
+
+                                ListItemCanjeAdapter listItemCanjeAdapter = new ListItemCanjeAdapter(ActivityListCanje.this,ActivityListCanje.this,  filtrarPorEstado(canjes, finalValorNumerico), finalValorNumerico);
                                 listView.setAdapter(listItemCanjeAdapter);
                                 if (progressBar != null) {
                                     progressBar.setVisibility(View.VISIBLE); // o View.GONE según tus necesidades
@@ -121,8 +124,29 @@ public class ActivityListCanje extends AppCompatActivity {
             }
         });
 
+    }
+    public List<Canje> filtrarPorEstado(List<Canje> canjes, int filtro) {
+        if (canjesFiltrados == null) {
+            canjesFiltrados = new ArrayList<>();
+        } else {
+            canjesFiltrados.clear();
+        }
 
 
+        for (Canje canje : canjes) {
 
+            if(filtro == 1){
+                canjesFiltrados.add(canje);
+            }
+            else if(filtro == 2 && canje.isEstado() == false){
+                canjesFiltrados.add(canje);
+
+            }
+            else if(filtro == 3 && canje.isEstado() == true){
+                canjesFiltrados.add(canje);
+            }
+
+        }
+        return canjesFiltrados;
     }
 }

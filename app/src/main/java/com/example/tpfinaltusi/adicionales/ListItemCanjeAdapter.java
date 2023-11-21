@@ -39,7 +39,6 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
     private ActivityListCanje activity;
     private int filtro;
     private List<Canje> canjes;
-    private List<Canje> canjesFiltrados; // Lista filtrada
 
     public ListItemCanjeAdapter(ActivityListCanje activity, Context context, List<Canje> canjes, int filtro) {
         super(context, 0, canjes);
@@ -57,11 +56,10 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
             convertView = inflater.inflate(R.layout.adapter_list_item_canjes, parent, false);
         }
 
-        filtrarPorEstado();
 
 
         // Obtener una instancia del Producto en la posición actual
-        Canje canje = getItemFromFiltrados(position);
+        Canje canje = getItem(position);
 
         // Obtener referencias a las vistas dentro del elemento personalizado
         TextView productTitle = convertView.findViewById(R.id.product_title);
@@ -179,33 +177,4 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
         return convertView;
     }
 
-    public List<Canje> filtrarPorEstado() {
-        if (canjesFiltrados == null) {
-            canjesFiltrados = new ArrayList<>();
-        } else {
-            canjesFiltrados.clear();
-        }
-
-
-        for (Canje canje : canjes) {
-
-            if(filtro == 1){
-                canjesFiltrados.add(canje);
-            }
-            else if(filtro == 2 && canje.isEstado() == true){
-                canjesFiltrados.add(canje);
-
-            }
-            else if(filtro == 3 && canje.isEstado() == false){
-                canjesFiltrados.add(canje);
-            }
-
-        }
-
-        notifyDataSetChanged();
-        return canjesFiltrados;
-    }
-    private Canje getItemFromFiltrados(int position) {
-        return canjesFiltrados.get(position);
-    }
 }
