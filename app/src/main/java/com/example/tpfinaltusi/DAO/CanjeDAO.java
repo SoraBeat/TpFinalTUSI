@@ -119,7 +119,7 @@ public class CanjeDAO {
     public List<Canje> traerCanjePorIdUsuario(int idUsuario) {
         esperarConexion();
         List<Canje> canjes = new ArrayList<>();
-        String sql = "SELECT * FROM canjes WHERE idusuario=?";
+        String sql = "SELECT * FROM canjes WHERE idusuario=? order by idcanje desc";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idUsuario);
             ResultSet resultSet = statement.executeQuery();
