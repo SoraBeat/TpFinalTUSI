@@ -45,6 +45,18 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:visibility="gone"/>
+        <Button
+            android:id="@+id/btn_listadocanjes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:text="Listado de QR canjeados"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            android:layout_marginVertical="10dp"
+            android:textAllCaps="false"
+            />
         <ListView
             android:id="@+id/lv_listaqr"
             android:layout_width="wrap_content"

@@ -18,17 +18,15 @@ import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.activities.DialogViewImage;
 import com.example.tpfinaltusi.entidades.CodigoQR;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-public class CustomListAdapter extends BaseAdapter {
+public class CustomListAdapterQRListComplete extends BaseAdapter {
     private Context context;
     private FragmentManager fragmentManager;
     private List<CodigoQR> data;
     private DialogViewImage dialogViewImage;
 
-    public CustomListAdapter(Context context, FragmentManager fragmentManager, List<CodigoQR> data) {
+    public CustomListAdapterQRListComplete(Context context, FragmentManager fragmentManager, List<CodigoQR> data) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.data = data;
@@ -52,13 +50,14 @@ public class CustomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_qr, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_qr_complete, parent, false);
         }
 
         ImageView imageView = convertView.findViewById(R.id.img_qr);
         TextView tvCodigo = convertView.findViewById(R.id.tv_codigo);
         TextView tvPuntos = convertView.findViewById(R.id.tv_puntos);
         TextView tvAdmin = convertView.findViewById(R.id.tv_admin);
+        TextView tvUsuario = convertView.findViewById(R.id.tv_usuario);
 
         CodigoQR item = data.get(position);
         String pureBase64Encoded = item.getImagen().substring(item.getImagen().indexOf(",") + 1);
@@ -68,6 +67,7 @@ public class CustomListAdapter extends BaseAdapter {
         tvCodigo.setText(item.getCodigo());
         tvPuntos.setText(String.valueOf(item.getPuntos()));
         tvAdmin.setText("ID Admin: "+item.getUsuarioQueLoCreo());
+        tvUsuario.setText("ID Usuario: "+item.getIdusuario());
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

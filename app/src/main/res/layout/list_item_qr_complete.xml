@@ -47,6 +47,16 @@
             android:textAlignment="textStart"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/tv_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:textColor="@color/darkGrey"
+            android:text="ID Usuario: "
+            android:textAlignment="textStart"
+            android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
