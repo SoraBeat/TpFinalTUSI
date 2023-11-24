@@ -31,24 +31,33 @@ import com.example.tpfinaltusi.entidades.Premio;
 import com.example.tpfinaltusi.entidades.Provincia;
 import com.example.tpfinaltusi.entidades.PuntoVerde;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
     private Context context;
     private ActivityListCanje activity;
+    private int filtro;
+    private List<Canje> canjes;
 
-    public ListItemCanjeAdapter(ActivityListCanje activity, Context context, List<Canje> canjes) {
+    public ListItemCanjeAdapter(ActivityListCanje activity, Context context, List<Canje> canjes, int filtro) {
         super(context, 0, canjes);
         this.context = context;
         this.activity = activity;
+        this.filtro = filtro;
+        this.canjes = canjes;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.adapter_list_item_canjes, parent, false);
         }
+
+
+
         // Obtener una instancia del Producto en la posición actual
         Canje canje = getItem(position);
 
@@ -60,12 +69,11 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
         TextView puntoverdeDireccion = convertView.findViewById(R.id.Direccion);
         ProgressBar progressBar = convertView.findViewById(R.id.cargando);
         LinearLayout contenedor = convertView.findViewById(R.id.contenedor);
+
         contenedor.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
         canjeNumero.setText(String.valueOf(canje.getIdCanje()));
-
-
         if(canje.isEstado()){
             canjeEstado.setText("Retirado");
         }
@@ -164,6 +172,7 @@ public class ListItemCanjeAdapter extends ArrayAdapter<Canje> {
                 });
             }
         });
+
 
         return convertView;
     }

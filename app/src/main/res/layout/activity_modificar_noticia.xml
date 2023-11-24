@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ActivityModificarNoticia">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="20dp"
+            android:indeterminateTint="@color/green"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/contenedor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgElegida"
+                android:layout_width="300dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/upload_icon_1" />
+
+            <Button
+                android:id="@+id/btn_ElegirArchivo"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/green"
+                android:text="Elegir archivo"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_Titulo"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rec_rounded"
+                android:hint="Titulo"
+                android:maxLength="30"
+                android:padding="10dp"
+                android:textColor="@color/darkGrey"
+                android:textColorHint="@color/grey"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_Descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rec_rounded"
+                android:gravity="top"
+                android:hint="Descripcion"
+                android:maxLength="1000"
+                android:padding="10dp"
+                android:textColor="@color/darkGrey"
+                android:textColorHint="@color/grey"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerTipo"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/rec_rounded" />
+
+            <EditText
+                android:id="@+id/et_NombreUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rec_rounded"
+                android:hint="Nombre ubicación"
+                android:maxLength="50"
+                android:padding="10dp"
+                android:textColor="@color/darkGrey"
+                android:textColorHint="@color/grey"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_Latitud"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rec_rounded"
+                android:hint="Latitud ubicación"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textColor="@color/darkGrey"
+                android:textColorHint="@color/grey"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_Longitud"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rec_rounded"
+                android:hint="Longitud ubicación"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textColor="@color/darkGrey"
+                android:textColorHint="@color/grey"
+                android:textStyle="bold" />
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="10dp"
+                android:datePickerMode="calendar" />
+
+            <Button
+                android:id="@+id/btn_ModificarNoticia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:backgroundTint="@color/green"
+                android:text="Modificar"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -109,12 +109,24 @@ tools:context=".activities.DetalleNoticiaAdmin">
         </LinearLayout>
 
         <Button
+            android:id="@+id/btnModificarNoticia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modificar Noticia"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:backgroundTint="@color/yellow"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:textColor="@color/darkGrey"
+            android:textStyle="bold" />
+        <Button
             android:id="@+id/btnEliminarNoticia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Eliminar Noticia"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
+
             android:backgroundTint="@color/red"
             android:textAllCaps="false"
             android:textSize="15sp"

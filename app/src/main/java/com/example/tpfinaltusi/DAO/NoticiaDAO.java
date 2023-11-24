@@ -85,7 +85,7 @@ public class NoticiaDAO {
             statement.setFloat(7, noticia.getLatitud());
             statement.setFloat(8, noticia.getLongitud());
             statement.setString(9, noticia.getTagMaps());
-            statement.setInt(7, noticia.getIdNoticia());
+            statement.setInt(10, noticia.getIdNoticia());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {

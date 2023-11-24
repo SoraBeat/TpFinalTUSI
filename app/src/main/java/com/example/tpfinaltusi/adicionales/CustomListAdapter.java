@@ -3,6 +3,7 @@ package com.example.tpfinaltusi.adicionales;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +12,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.DialogViewImage;
 import com.example.tpfinaltusi.entidades.CodigoQR;
 
 import java.util.List;
 
 public class CustomListAdapter extends BaseAdapter {
     private Context context;
-    private List<CodigoQR> data; // Reemplaza YourDataModel con tu modelo de datos
+    private FragmentManager fragmentManager;
+    private List<CodigoQR> data;
+    private DialogViewImage dialogViewImage;
 
-    public CustomListAdapter(Context context, List<CodigoQR> data) {
+    public CustomListAdapter(Context context, FragmentManager fragmentManager, List<CodigoQR> data) {
         this.context = context;
+        this.fragmentManager = fragmentManager;
         this.data = data;
     }
 
@@ -57,6 +64,19 @@ public class CustomListAdapter extends BaseAdapter {
         imageView.setImageBitmap(bitmap);
         tvCodigo.setText(item.getCodigo());
         tvPuntos.setText(String.valueOf(item.getPuntos()));
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dialogViewImage == null || dialogViewImage.getDialog() == null || !dialogViewImage.getDialog().isShowing()) {
+                    // Utiliza el fragmentManager que recibiste en el constructor
+                    Bundle arguments = new Bundle();
+                    arguments.putParcelable("PICTURE_SELECTED", bitmap);
+                    dialogViewImage = DialogViewImage.newInstance(arguments);
+                    dialogViewImage.show(fragmentManager, "DialogViewImage");
+                }
+            }
+        });
 
         return convertView;
     }

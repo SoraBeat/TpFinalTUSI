@@ -34,6 +34,7 @@ public class DetalleNoticiaAdmin extends AppCompatActivity {
     ImageView btnBack;
     LinearLayout btnGoogleMaps;
     Button buttonEliminar;
+    Button buttonModificar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class DetalleNoticiaAdmin extends AppCompatActivity {
             progressBar = findViewById(R.id.progressBar);
             layoutInvisible = findViewById(R.id.layoutInvisible);
             btnGoogleMaps = findViewById(R.id.btn_verMaps);
+            buttonModificar = findViewById(R.id.btnModificarNoticia);
             /////////////////////////////////////OBTENER DATOS///////////////////////////////////////////////
             int id = intent.getIntExtra("id_noticia", -1);
             cargarNoticia(id);
@@ -154,6 +156,14 @@ public class DetalleNoticiaAdmin extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        buttonModificar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(getApplicationContext(), ActivityModificarNoticia.class);
+                                i.putExtra("idNoticia", String.valueOf(noticia.getIdNoticia()));
+                                startActivity(i);
+                            }
+                        });
                         layoutInvisible.setVisibility(View.VISIBLE);
                         tvTitulo.setText(noticia.getTitulo());
                         tvDescripcion.setText(noticia.getCuerpo());
