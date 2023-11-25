@@ -144,7 +144,7 @@ public class FragmentQR extends Fragment {
                                         @Override
                                         public void onSuccess(String mensaje) {
                                             CodigoQRNegocio codigoQRNegocio = new CodigoQRNegocio();
-                                            codigoQRNegocio.editarEstadoCanjeado(scanResult, true, new CodigoQRNegocio.CodigoQRCallback() {
+                                            codigoQRNegocio.editarEstadoCanjeado(scanResult, true,UsuarioNegocio.obtenerIDUsuario(getContext()), new CodigoQRNegocio.CodigoQRCallback() {
                                                 @Override
                                                 public void onSuccess(String mensaje) {
                                                     // Manejar el éxito, por ejemplo, mostrar un mensaje al usuario

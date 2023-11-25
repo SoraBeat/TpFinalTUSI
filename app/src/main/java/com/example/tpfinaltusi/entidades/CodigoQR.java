@@ -6,16 +6,17 @@ public class CodigoQR {
     private String imagen;
     private int puntos;
     private boolean canjeado;
-
     private int usuarioQueLoCreo;
+    private int idusuario;
 
-    public CodigoQR(int idCodigoQR, String codigo, String imagen, int puntos, boolean canjeado, int usuarioQueLoCreo) {
+    public CodigoQR(int idCodigoQR, String codigo, String imagen, int puntos, boolean canjeado, int usuarioQueLoCreo,int idusuario) {
         this.idCodigoQR = idCodigoQR;
         this.codigo = codigo;
         this.imagen = imagen;
         this.puntos = puntos;
         this.canjeado = canjeado;
         this.usuarioQueLoCreo = usuarioQueLoCreo;
+        this.idusuario = idusuario;
     }
 
     public int getIdCodigoQR() {
@@ -63,6 +64,13 @@ public class CodigoQR {
     public void setCanjeado(boolean canjeado) {
         this.canjeado = canjeado;
     }
+    public int getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(int idusuario) {
+        this.idusuario = idusuario;
+    }
 
     @Override
     public String toString() {
@@ -73,6 +81,7 @@ public class CodigoQR {
                 ", puntos=" + puntos +
                 ", canjeado=" + canjeado +
                 ", usuarioQueLoCreo=" + usuarioQueLoCreo +
+                ", idusuario=" + idusuario +
                 '}';
     }
 }
