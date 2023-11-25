@@ -18,8 +18,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
+import com.example.tpfinaltusi.Negocio.Informe_HistorialNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Historial;
 
 import java.text.SimpleDateFormat;
 
@@ -33,6 +35,8 @@ public class DetalleReporte extends AppCompatActivity {
     ImageView btnBack;
     LinearLayout btnGoogleMaps;
     Button btnCerrarInforme;
+    TextView tvPuntos;
+    TextView tvPuntosInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +76,13 @@ public class DetalleReporte extends AppCompatActivity {
             layoutInvisible = findViewById(R.id.layoutInvisible);
             btnGoogleMaps = findViewById(R.id.btn_verMaps);
             btnCerrarInforme = findViewById(R.id.btn_cerrarInforme);
+            tvPuntos = findViewById(R.id.tvPuntos);
+            tvPuntosInfo = findViewById(R.id.tvPuntosInfo);
             /////////////////////////////////////OBTENER DATOS///////////////////////////////////////////////
             int id = intent.getIntExtra("id_informe", -1);
-            cargarReporte(id);
+            int idInformeHistorial = intent.getIntExtra("idinforme_historial", -1);
+            if(id != -1) cargarReporte(id);
+            if(idInformeHistorial != -1) cargarHistorial(idInformeHistorial);
         }
     }
 
@@ -97,18 +105,30 @@ public class DetalleReporte extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(informe.getIdEstado()!=1){
-                            finish();
-                        }
                         layoutInvisible.setVisibility(View.VISIBLE);
                         tvTitulo.setText(informe.getTitulo());
                         tvDescripcion.setText(informe.getCuerpo());
-                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta()));
+                        switch (informe.getIdEstado()){
+                            case 1:
+                                tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta())+ " - Activo");
+                                break;
+                            case 2:
+                                tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta())+ " - Pendiente");
+                                break;
+                            case 3:
+                                tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta())+ " - En Revision");
+                                break;
+                            case 4:
+                                tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta())+ " - Terminado");
+                                break;
+                        }
                         String pureBase64Encoded = informe.getImagen().substring(informe.getImagen().indexOf(",") + 1);
                         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         ivImagen.setImageBitmap(bitmap);
                         progressBar.setVisibility(View.GONE);
+                        layoutInvisible.setVisibility(View.VISIBLE);
+                        tvPuntos.setText(informe.getPuntosRecompensa());
                         btnGoogleMaps.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -123,21 +143,97 @@ public class DetalleReporte extends AppCompatActivity {
                                 }
                             }
                         });
-                        btnCerrarInforme.setOnClickListener(new View.OnClickListener(){
+                        if(informe.getIdEstado()==1){
+                            btnCerrarInforme.setOnClickListener(new View.OnClickListener(){
+
+                                @Override
+                                public void onClick(View view) {
+                                    try{
+                                        Intent i = new Intent(getApplicationContext(), CerrarInforme.class);
+                                        i.putExtra("id_informe",getIntent().getIntExtra("id_informe", -1));
+                                        startActivity(i);
+                                    } catch(Exception e){
+                                        System.out.println(e);
+                                    }
+                                }
+                            });
+                        } else {
+                            btnCerrarInforme.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    private void cargarHistorial(int id){
+        progressBar.setVisibility(View.VISIBLE);
+        new Informe_HistorialNegocio().traerInformeHistorialPorId(id, new Informe_HistorialNegocio.Informe_HistorialCallback() {
+            @Override
+            public void onSuccess(String mensaje) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+
+            @Override
+            public void onInformeHistorialLoaded(Informe_Historial informeHistorial) {
+                tvTitulo.setText(informeHistorial.getTitulo());
+                String pureBase64Encoded = informeHistorial.getIMG().substring(informeHistorial.getIMG().indexOf(",") + 1);
+                byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                ivImagen.setImageBitmap(bitmap);
+                switch (informeHistorial.getIdEstado()){
+                    case 0:
+                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informeHistorial.getFecha())+ " - El reporte fue rechazado");
+                        break;
+                    case 1:
+                        if(informeHistorial.isResultado()){
+                            tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informeHistorial.getFecha())+ " - El reporte fue aprobado");
+                        } else {
+                            tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informeHistorial.getFecha())+ " - El reporte fue rechazado");
+                        }
+                        break;
+                    case 2:
+                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informeHistorial.getFecha())+ " - El reporte será revisado");
+                        break;
+                    case 3:
+                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informeHistorial.getFecha())+ " - El reporte será revisado");
+                        break;
+                    case 4:
+                        tvInfo.setText(new SimpleDateFormat("dd/MM/yyyy").format(informeHistorial.getFecha())+ " - El reporte se cerró exitosamente");
+                        break;
+                }
+                tvDescripcion.setText(informeHistorial.getCuerpo());
+                btnGoogleMaps.setVisibility(View.GONE);
+                tvPuntos.setVisibility(View.GONE);
+                tvPuntosInfo.setVisibility(View.GONE);
+                btnCerrarInforme.setText("Cerrar Novedad");
+                btnCerrarInforme.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new Informe_HistorialNegocio().ocultarInforme_Historial(informeHistorial.getIdInforme_Historial(), new Informe_HistorialNegocio.Informe_HistorialCallback() {
+                            @Override
+                            public void onSuccess(String mensaje) {
+                                finish();
+                            }
 
                             @Override
-                            public void onClick(View view) {
-                                try{
-                                    Intent i = new Intent(getApplicationContext(), CerrarInforme.class);
-                                    i.putExtra("id_informe",getIntent().getIntExtra("id_informe", -1));
-                                    startActivity(i);
-                                } catch(Exception e){
-                                    System.out.println(e);
-                                }
+                            public void onError(String error) {
+
+                            }
+
+                            @Override
+                            public void onInformeHistorialLoaded(Informe_Historial informeHistorial) {
+
                             }
                         });
                     }
                 });
+                progressBar.setVisibility(View.GONE);
+                layoutInvisible.setVisibility(View.VISIBLE);
             }
         });
     }
