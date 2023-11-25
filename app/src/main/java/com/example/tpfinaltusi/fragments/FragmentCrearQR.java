@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import com.example.tpfinaltusi.Negocio.CodigoQRNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
+import com.example.tpfinaltusi.activities.ActivityListadoDeQR;
 import com.example.tpfinaltusi.activities.Login;
 import com.example.tpfinaltusi.adicionales.CustomListAdapter;
 import com.example.tpfinaltusi.entidades.CodigoQR;
@@ -55,6 +56,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
     private CodigoQRNegocio codigoQRNegocio;
     private CustomListAdapter codigoQRAdapter;
     ProgressBar progressBar;
+    private Button btnListado;
 
     public FragmentCrearQR() {
     }
@@ -80,6 +82,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
         progressBar = view.findViewById(R.id.cargando);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
+        btnListado = view.findViewById(R.id.btn_listadocanjes);
 
         // Inflar la vista personalizada
         View customActionBarView = actionBar.getCustomView();
@@ -87,6 +90,14 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
         ImageButton img_config = customActionBarView.findViewById(R.id.menu_overflow);
 
         img_config.setVisibility(view.VISIBLE);
+
+        btnListado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), ActivityListadoDeQR.class);
+                startActivity(i);
+            }
+        });
 
         img_config.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +152,7 @@ public class FragmentCrearQR extends Fragment implements PopupMenu.OnMenuItemCli
                         System.out.println("ID USUARIO: " + idUsuario);
                         // Ahora puedes usar la cadena base64 como desees
                         CodigoQRNegocio codigoQRNegocio = new CodigoQRNegocio();
-                        CodigoQR codigoQR = new CodigoQR(0, uniqueCode, "data:image/png;base64," + base64Image, puntaje, false, idUsuario);
+                        CodigoQR codigoQR = new CodigoQR(0, uniqueCode, "data:image/png;base64," + base64Image, puntaje, false, idUsuario, 0);
                         codigoQRNegocio.crearCodigoQR(codigoQR, new CodigoQRNegocio.CodigoQRCallback() {
                             @Override
                             public void onSuccess(String mensaje) {

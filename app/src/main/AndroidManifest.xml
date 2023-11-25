@@ -28,11 +28,17 @@
         tools:replace="android:allowBackup"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ActivityListadoDeQR"
+            android:exported="false"
+            android:label="ListarQR"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainThemeWhite"/>
+        <activity
             android:name=".activities.ActivityModificarNoticia"
             android:exported="false"
             android:label="Modificar_Noticia"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/MainThemeWhite"/>
+            android:theme="@style/MainThemeWhite" />
         <activity
             android:name=".activities.ActivityListCanje"
             android:exported="false"
