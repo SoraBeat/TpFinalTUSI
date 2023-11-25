@@ -40,9 +40,13 @@ public class InformeNegocio {
                 informe_historial.setResultado(true);
                 informe_historial.setIdUsuario(in.getUsuarioAlta());
                 new Informe_HistorialDAO().crearInforme_Historial(informe_historial);
-                callback.onSuccess("Informe editado con éxito");
+                runOnUiThread(()->{
+                    callback.onSuccess("Informe editado con éxito");
+                });
             } else {
-                callback.onError("Error al crear el informe");
+                runOnUiThread(()-> {
+                    callback.onError("Error al crear el informe");
+                });
             }
         }).start();
     }

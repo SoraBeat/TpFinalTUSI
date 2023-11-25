@@ -113,7 +113,7 @@ public class FragmentAprobacionReportes extends Fragment implements PopupMenu.On
                 cargarListaDeReportes(view);
             }
         });
-
+        cargarListaDeReportes(view);
         spinnerEstados = view.findViewById(R.id.spinner);
         spinnerEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

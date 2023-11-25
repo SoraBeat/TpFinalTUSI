@@ -33,9 +33,13 @@ public class Informe_HistorialNegocio {
         new Thread(() -> {
             boolean resultado = informeHistorialDAO.ocultarInforme_Imagen(idInformeHistorial);
             if (resultado) {
-                callback.onSuccess("Informe_Historial ocultado con éxito");
+                runOnUiThread(()-> {
+                    callback.onSuccess("Informe_Historial ocultado con éxito");
+                });
             } else {
-                callback.onError("Error al ocultar Informe_Historial");
+                runOnUiThread(()-> {
+                    callback.onError("Error al ocultar Informe_Historial");
+                });
             }
         }).start();
     }
@@ -44,9 +48,13 @@ public class Informe_HistorialNegocio {
         new Thread(() -> {
             Informe_Historial informe_historial = informeHistorialDAO.traerInforme_HistorialPorId(idInformeHistorial);
             if (informe_historial != null) {
-                callback.onInformeHistorialLoaded(informe_historial);
+                runOnUiThread(()->{
+                    callback.onInformeHistorialLoaded(informe_historial);
+                });
             } else {
-                callback.onError("Informe_Historial no encontrado");
+                runOnUiThread(()-> {
+                    callback.onError("Informe_Historial no encontrado");
+                });
             }
         }).start();
     }
@@ -55,7 +63,9 @@ public class Informe_HistorialNegocio {
         // Realizar la operación de traer todas las Informe_Imagen en un hilo o AsyncTask
         new Thread(() -> {
             List<Informe_Historial> informeHistoriales = informeHistorialDAO.traerTodosLosInformes_Historial();
-            callback.onInformeHistorialesLoaded(informeHistoriales);
+            runOnUiThread(() -> {
+                callback.onInformeHistorialesLoaded(informeHistoriales);
+            });
         }).start();
     }
     private void runOnUiThread(Runnable action) {
