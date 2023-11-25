@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
+import com.example.tpfinaltusi.Negocio.Informe_HistorialNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.activities.HomeActivity;
 import com.example.tpfinaltusi.activities.HomeActivityAdmin;
 import com.example.tpfinaltusi.activities.MapsActivity;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Historial;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -187,10 +189,23 @@ public class FragmentCrearReporte extends Fragment {
         }
         if(!error){
             Informe informe = new Informe(etTitulo.getText().toString(), etDescripcion.getText().toString(), idusuario, 2, latitud, longitud, IMG);
-            InformeNegocio informeNegocio = new InformeNegocio();
-            informeNegocio.crearInforme(informe);
-            Intent i = new Intent(getContext(), HomeActivity.class);
-            startActivity(i);
+            new InformeNegocio().crearInforme(informe, new InformeNegocio.InformeCallback() {
+                @Override
+                public void onSuccess(String mensaje) {
+                    Toast.makeText(getContext(),mensaje,Toast.LENGTH_LONG);
+                    Intent i = new Intent(getContext(), HomeActivity.class);
+                    startActivity(i);
+                }
+                @Override
+                public void onError(String error) {
+                    Toast.makeText(getContext(),error,Toast.LENGTH_LONG);
+                }
+
+                @Override
+                public void onInformeLoaded(Informe informe) {
+
+                }
+            });
         }
     }
 

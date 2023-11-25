@@ -19,9 +19,14 @@ public class InformeNegocio {
         informeDAO = new InformeDAO();
     }
 
-    public void crearInforme(Informe informe) {
+    public void crearInforme(Informe informe, InformeCallback callback) {
         new Thread(() -> {
             boolean resultado = informeDAO.crearInforme(informe);
+            if(resultado){
+                callback.onSuccess("Informe creado con éxito");
+            } else {
+                callback.onError("Error al crear el informe");
+            }
         }).start();
     }
 

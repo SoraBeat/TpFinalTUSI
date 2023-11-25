@@ -24,12 +24,15 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.tpfinaltusi.Negocio.InformeImagenNegocio;
 import com.example.tpfinaltusi.Negocio.InformeNegocio;
+import com.example.tpfinaltusi.Negocio.Informe_HistorialNegocio;
 import com.example.tpfinaltusi.Negocio.UsuarioNegocio;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Historial;
 import com.example.tpfinaltusi.entidades.Informe_Imagen;
 import com.example.tpfinaltusi.entidades.Usuario;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -145,8 +148,35 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                     new InformeNegocio().CerrarInforme(informe, new InformeNegocio.InformeCallback() {
                         @Override
                         public void onSuccess(String mensaje) {
-                            Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
-                            startActivity(i);
+                            Informe_Historial informe_historial = new Informe_Historial();
+                            informe_historial.setIdInforme(informe.getIdInforme());
+                            informe_historial.setIMG(inf.getImagen());
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            prueba.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            byte[] byteArray = byteArrayOutputStream .toByteArray();
+                            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                            informe_historial.setIMG_Prueba(encoded);
+                            informe_historial.setIdEstado(4);
+                            informe_historial.setTitulo(inf.getTitulo());
+                            informe_historial.setCuerpo(inf.getCuerpo());
+                            informe_historial.setOcultar(false);
+                            new Informe_HistorialNegocio().crearInforme_Historial(informe_historial, new Informe_HistorialNegocio.Informe_HistorialCallback() {
+                                @Override
+                                public void onSuccess(String mensaje) {
+                                    Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                    startActivity(i);
+                                }
+
+                                @Override
+                                public void onError(String error) {
+
+                                }
+
+                                @Override
+                                public void onInformeHistorialLoaded(Informe_Historial informeHistorial) {
+
+                                }
+                            });
                         }
 
                         @Override
@@ -247,8 +277,30 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                 new InformeNegocio().editarInforme(inf, new InformeNegocio.InformeCallback() {
                     @Override
                     public void onSuccess(String mensaje) {
-                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
-                        startActivity(i);
+                        Informe_Historial informe_historial = new Informe_Historial();
+                        informe_historial.setIdInforme(inf.getIdInforme());
+                        informe_historial.setIMG(inf.getImagen());
+                        informe_historial.setIdEstado(4);
+                        informe_historial.setTitulo(inf.getTitulo());
+                        informe_historial.setCuerpo(inf.getCuerpo());
+                        informe_historial.setOcultar(false);
+                        new Informe_HistorialNegocio().crearInforme_Historial(informe_historial, new Informe_HistorialNegocio.Informe_HistorialCallback() {
+                            @Override
+                            public void onSuccess(String mensaje) {
+                                Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+
+                            @Override
+                            public void onInformeHistorialLoaded(Informe_Historial informeHistorial) {
+
+                            }
+                        });
                     }
                     @Override
                     public void onError(String error) {
@@ -294,7 +346,50 @@ public class DetalleReporteAdmin extends AppCompatActivity {
         });
         layoutInvisible.setVisibility(View.VISIBLE);
     }
+    private void cargarReporteActivo(){
+        btnVerPrueba.setVisibility(View.GONE);
+        btnAprobarInforme.setVisibility(View.GONE);
+        btnCancelarInforme.setVisibility(View.GONE);
+        tvPuntos.setVisibility(View.GONE);
+        etPuntos.setVisibility(View.GONE);
+        layoutInvisible.setVisibility(View.VISIBLE);
+    }
+    private void cargarReporteTerminado(){
+        btnAprobarInforme.setVisibility(View.GONE);
+        btnCancelarInforme.setVisibility(View.GONE);
+        tvPuntos.setText("Se otorgaron " + inf.getPuntosRecompensa() + " puntos al usuario " + inf.getUsuarioBaja());
+        etPuntos.setVisibility(View.GONE);
+        new InformeImagenNegocio().traerTodasLasInformeImagenes(new InformeImagenNegocio.InformeImagenesCallback() {
+            @Override
+            public void onInformeImagenesLoaded(List<Informe_Imagen> informeImagenes) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Informe_Imagen imagen = informeImagenes.stream().filter(img -> img.getIdInforme() == getIntent().getIntExtra("id_informe", -1)).findFirst().get();
+                        String pureBase64Encoded = imagen.getImagen().substring(informeImagenes.get(0).getImagen().indexOf(",") + 1);
+                        byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                        prueba = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 
+                        idInformeImagen = imagen.getIdInformeImagen();
+                        layoutInvisible.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
+        btnVerPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dialogViewImage == null || dialogViewImage.getDialog() == null || !dialogViewImage.getDialog().isShowing()){
+                    FragmentManager fm = getSupportFragmentManager();
+                    Bundle arguments = new Bundle();
+
+                    arguments.putParcelable("PICTURE_SELECTED", prueba);
+                    dialogViewImage = DialogViewImage.newInstance(arguments);
+                    dialogViewImage.show(fm,"DialogViewImage");
+                }
+            }
+        });
+    }
     private void cargarReporte(int id) {
         InformeNegocio informeNegocio = new InformeNegocio();
         progressBar.setVisibility(View.VISIBLE);
@@ -336,7 +431,7 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
                         bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         ivImagen.setImageBitmap(bitmap);
-                        progressBar.setVisibility(View.GONE);
+
                         btnGoogleMaps.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -359,13 +454,24 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                             }
                         });
                         inf = informe;
-                        if(inf.getIdEstado() == 2){
-                            cargarReportePendiente();
-                        } else if (inf.getIdEstado() == 3){
-                            cargarReporteRevision();
-                        } else {
-                            finish();
+                        switch (informe.getIdEstado()){
+                            case 1:
+                                cargarReporteActivo();
+                                break;
+                            case 2:
+                                cargarReportePendiente();
+                                break;
+                            case 3:
+                                cargarReporteRevision();
+                                break;
+                            case 4:
+                                cargarReporteTerminado();
+                                break;
+                            default:
+                                finish();
+                                break;
                         }
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }
