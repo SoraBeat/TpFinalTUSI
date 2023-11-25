@@ -160,6 +160,8 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                             informe_historial.setTitulo(inf.getTitulo());
                             informe_historial.setCuerpo(inf.getCuerpo());
                             informe_historial.setOcultar(false);
+                            informe_historial.setResultado(true);
+                            informe_historial.setIdUsuario(inf.getUsuarioBaja());
                             new Informe_HistorialNegocio().crearInforme_Historial(informe_historial, new Informe_HistorialNegocio.Informe_HistorialCallback() {
                                 @Override
                                 public void onSuccess(String mensaje) {
@@ -213,6 +215,8 @@ public class DetalleReporteAdmin extends AppCompatActivity {
         btnCancelarInforme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Informe_Historial informe_historial = new Informe_Historial();
+                informe_historial.setIdUsuario(inf.getUsuarioBaja());
                 inf.setFechaBaja(null);
                 inf.setUsuarioBaja(-1);
                 inf.setIdEstado(1);
@@ -222,8 +226,35 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                         new InformeImagenNegocio().borrarInformeImagen(idInformeImagen, new InformeImagenNegocio.InformeImagenCallback() {
                             @Override
                             public void onSuccess(String mensaje) {
-                                Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
-                                startActivity(i);
+                                informe_historial.setIdInforme(inf.getIdInforme());
+                                informe_historial.setIMG(inf.getImagen());
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                prueba.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                                informe_historial.setIMG_Prueba(encoded);
+                                informe_historial.setIdEstado(1);
+                                informe_historial.setTitulo(inf.getTitulo());
+                                informe_historial.setCuerpo(inf.getCuerpo());
+                                informe_historial.setOcultar(false);
+                                informe_historial.setResultado(false);
+                                new Informe_HistorialNegocio().crearInforme_Historial(informe_historial, new Informe_HistorialNegocio.Informe_HistorialCallback() {
+                                    @Override
+                                    public void onSuccess(String mensaje) {
+                                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                        startActivity(i);
+                                    }
+
+                                    @Override
+                                    public void onError(String error) {
+
+                                    }
+
+                                    @Override
+                                    public void onInformeHistorialLoaded(Informe_Historial informeHistorial) {
+
+                                    }
+                                });
                             }
 
                             @Override
@@ -280,10 +311,12 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                         Informe_Historial informe_historial = new Informe_Historial();
                         informe_historial.setIdInforme(inf.getIdInforme());
                         informe_historial.setIMG(inf.getImagen());
-                        informe_historial.setIdEstado(4);
+                        informe_historial.setIdEstado(1);
                         informe_historial.setTitulo(inf.getTitulo());
                         informe_historial.setCuerpo(inf.getCuerpo());
                         informe_historial.setOcultar(false);
+                        informe_historial.setResultado(true);
+                        informe_historial.setIdUsuario(inf.getUsuarioAlta());
                         new Informe_HistorialNegocio().crearInforme_Historial(informe_historial, new Informe_HistorialNegocio.Informe_HistorialCallback() {
                             @Override
                             public void onSuccess(String mensaje) {
@@ -327,8 +360,32 @@ public class DetalleReporteAdmin extends AppCompatActivity {
                 new InformeNegocio().borrarInforme(inf.getIdInforme(), new InformeNegocio.InformeCallback() {
                     @Override
                     public void onSuccess(String mensaje) {
-                        Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
-                        startActivity(i);
+                        Informe_Historial informe_historial = new Informe_Historial();
+                        informe_historial.setIdInforme(inf.getIdInforme());
+                        informe_historial.setIMG(inf.getImagen());
+                        informe_historial.setIdEstado(0);
+                        informe_historial.setTitulo(inf.getTitulo());
+                        informe_historial.setCuerpo(inf.getCuerpo());
+                        informe_historial.setOcultar(false);
+                        informe_historial.setResultado(false);
+                        informe_historial.setIdUsuario(inf.getUsuarioAlta());
+                        new Informe_HistorialNegocio().crearInforme_Historial(informe_historial, new Informe_HistorialNegocio.Informe_HistorialCallback() {
+                            @Override
+                            public void onSuccess(String mensaje) {
+                                Intent i = new Intent(getApplicationContext(), HomeActivityAdmin.class);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+
+                            @Override
+                            public void onInformeHistorialLoaded(Informe_Historial informeHistorial) {
+
+                            }
+                        });
                     }
 
                     @Override

@@ -1,5 +1,8 @@
 package com.example.tpfinaltusi.Negocio;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.example.tpfinaltusi.DAO.Informe_HistorialDAO;
 import com.example.tpfinaltusi.DAO.Informe_ImagenDAO;
 import com.example.tpfinaltusi.entidades.Informe_Historial;
@@ -36,10 +39,10 @@ public class Informe_HistorialNegocio {
             }
         }).start();
     }
-    public void traerInformeHistorialPorId(int idInformeImagen, Informe_HistorialCallback callback) {
+    public void traerInformeHistorialPorId(int idInformeHistorial, Informe_HistorialCallback callback) {
         // Realizar la operación de traer Informe_Imagen por IdInformeImagen en un hilo o AsyncTask
         new Thread(() -> {
-            Informe_Historial informe_historial = informeHistorialDAO.traerInforme_HistorialPorId(idInformeImagen);
+            Informe_Historial informe_historial = informeHistorialDAO.traerInforme_HistorialPorId(idInformeHistorial);
             if (informe_historial != null) {
                 callback.onInformeHistorialLoaded(informe_historial);
             } else {
@@ -55,7 +58,9 @@ public class Informe_HistorialNegocio {
             callback.onInformeHistorialesLoaded(informeHistoriales);
         }).start();
     }
-
+    private void runOnUiThread(Runnable action) {
+        new Handler(Looper.getMainLooper()).post(action);
+    }
     public interface Informe_HistorialCallback {
         void onSuccess(String mensaje);
 

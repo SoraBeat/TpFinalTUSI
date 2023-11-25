@@ -17,50 +17,55 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tpfinaltusi.R;
 import com.example.tpfinaltusi.activities.DetalleReporte;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Historial;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteViewHolder> {
-    private List<Informe> informes;
+public class NovedadAdapter extends RecyclerView.Adapter<NovedadAdapter.NovedadViewHolder>{
+    private List<Informe_Historial> informes;
     private Context context;
 
-    public ReporteAdapter(Context context, List<Informe> informes) {
+    public NovedadAdapter(Context context, List<Informe_Historial> informes){
         this.context = context;
         this.informes = informes;
     }
 
     @NonNull
     @Override
-    public ReporteAdapter.ReporteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_view_reporte, parent, false);
-        return new ReporteAdapter.ReporteViewHolder(view);
+    public NovedadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_view_novedad, parent, false);
+        return new NovedadAdapter.NovedadViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReporteAdapter.ReporteViewHolder holder, int position) {
-        Informe informe = informes.get(position);
+    public void onBindViewHolder(@NonNull NovedadViewHolder holder, int position) {
+        Informe_Historial informe = informes.get(position);
 
         // Configurar los datos de la noticia en la vista personalizada
-        int mes = informe.getFechaAlta().getMonth();
-        String fecha = new SimpleDateFormat("dd/MM/yyyy").format(informe.getFechaAlta());
-        switch (informe.getIdEstado()){
-            case 1:
-                holder.infoTextView.setText(fecha + " - Activo");
-                break;
-            case 2:
-                holder.infoTextView.setText(fecha + " - Pendiente");
-                break;
-            case 3:
-                holder.infoTextView.setText(fecha + " - Revision");
-                break;
-            case 4:
-                holder.infoTextView.setText(fecha + " - Cerrado");
-                break;
+        String fecha = new SimpleDateFormat("dd/MM/yyyy").format(informe.getFecha());
+        if(informe.getIdEstado()==0){
+            holder.infoTextView.setText(fecha + " - Reporte rechazado");
+        }
+        if(informe.getIdEstado() == 1){
+            if(informe.isResultado()){
+                holder.infoTextView.setText(fecha + " - Reporte aprobado");
+            } else {
+                holder.infoTextView.setText(fecha + " - Reporte rechazado");
+            }
+        }
+        if(informe.getIdEstado() == 2){
+            holder.infoTextView.setText(fecha + " - Reporte en revision");
+        }
+        if(informe.getIdEstado() == 3){
+            holder.infoTextView.setText(fecha + " - Reporte en revision para cerrar");
+        }
+        if(informe.getIdEstado() == 4){
+            holder.infoTextView.setText(fecha + " - Reporte cerrado exitosamente");
         }
         holder.titleTextView.setText(informe.getTitulo());
         holder.descriptionTextView.setText(informe.getCuerpo());
-        String pureBase64Encoded = informe.getImagen().substring(informe.getImagen().indexOf(",")  + 1);
+        String pureBase64Encoded = informe.getIMG().substring(informe.getIMG().indexOf(",")  + 1);
         byte[] imageBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         holder.image.setImageBitmap(bitmap);
@@ -70,25 +75,23 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
                 // Cuando se hace clic en un elemento, abrir la actividad de detalles de noticia
                 Intent intent = new Intent(context, DetalleReporte.class);
                 // Puedes pasar datos adicionales a la actividad si es necesario
-                intent.putExtra("id_informe", informe.getIdInforme());
+                intent.putExtra("idinforme_historial", informe.getIdInforme_Historial());
                 context.startActivity(intent);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return informes.size();
     }
-
-    public static class ReporteViewHolder extends RecyclerView.ViewHolder {
+    public static class NovedadViewHolder extends RecyclerView.ViewHolder {
         TextView infoTextView;
         TextView titleTextView;
         TextView descriptionTextView;
         ImageView image;
 
-        public ReporteViewHolder(@NonNull View itemView) {
+        public NovedadViewHolder(@NonNull View itemView) {
             super(itemView);
             infoTextView = itemView.findViewById(R.id.infoTextView);
             titleTextView = itemView.findViewById(R.id.titleTextView);

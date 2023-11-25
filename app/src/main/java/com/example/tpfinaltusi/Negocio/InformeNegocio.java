@@ -4,9 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.example.tpfinaltusi.DAO.InformeDAO;
+import com.example.tpfinaltusi.DAO.Informe_HistorialDAO;
 import com.example.tpfinaltusi.DAO.Informe_ImagenDAO;
 import com.example.tpfinaltusi.DAO.UsuarioDAO;
 import com.example.tpfinaltusi.entidades.Informe;
+import com.example.tpfinaltusi.entidades.Informe_Historial;
 import com.example.tpfinaltusi.entidades.Informe_Imagen;
 
 import java.util.List;
@@ -23,7 +25,22 @@ public class InformeNegocio {
         new Thread(() -> {
             boolean resultado = informeDAO.crearInforme(informe);
             if(resultado){
-                callback.onSuccess("Informe creado con éxito");
+                List<Informe> list = informeDAO.traerTodosLosInformes();
+                Informe in = list.stream()
+                        .filter(inf -> inf.getCuerpo().equals(informe.getCuerpo())
+                        && inf.getTitulo().equals(informe.getTitulo())
+                        && inf.getIdEstado() == 2).findFirst().orElse(new Informe());;
+                Informe_Historial informe_historial = new Informe_Historial();
+                informe_historial.setIdInforme(in.getIdInforme());
+                informe_historial.setIMG(in.getImagen());
+                informe_historial.setIdEstado(2);
+                informe_historial.setTitulo(in.getTitulo());
+                informe_historial.setCuerpo(in.getCuerpo());
+                informe_historial.setOcultar(false);
+                informe_historial.setResultado(true);
+                informe_historial.setIdUsuario(in.getUsuarioAlta());
+                new Informe_HistorialDAO().crearInforme_Historial(informe_historial);
+                callback.onSuccess("Informe editado con éxito");
             } else {
                 callback.onError("Error al crear el informe");
             }
@@ -51,7 +68,21 @@ public class InformeNegocio {
                 informe.setUsuarioBaja(IdUsuario);
                 informeDAO.editarInforme(informe);
                 Informe_Imagen img = new Informe_Imagen(IdInforme,imgPrueba);
+
+                Informe inf = informeDAO.traerInformePorId(IdInforme);
+
                 new Informe_ImagenDAO().crearInforme_Imagen(img);
+                Informe_Historial informe_historial = new Informe_Historial();
+                informe_historial.setIdInforme(IdInforme);
+                informe_historial.setIMG(inf.getImagen());
+                informe_historial.setIMG_Prueba(imgPrueba);
+                informe_historial.setIdEstado(3);
+                informe_historial.setTitulo(inf.getTitulo());
+                informe_historial.setCuerpo(inf.getCuerpo());
+                informe_historial.setOcultar(false);
+                informe_historial.setResultado(true);
+                informe_historial.setIdUsuario(IdUsuario);
+                new Informe_HistorialDAO().crearInforme_Historial(informe_historial);
             }
 
         }).start();

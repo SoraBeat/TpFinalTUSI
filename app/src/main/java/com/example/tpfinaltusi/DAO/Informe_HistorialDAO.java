@@ -47,7 +47,7 @@ public class Informe_HistorialDAO {
     }
     public boolean crearInforme_Historial(Informe_Historial informe_historial) {
         esperarConexion();
-        String sql = "INSERT INTO informe_historial (idinforme, imagen, imagenprueba, fecha, idestado, titulo, cuerpo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO informe_historial (idinforme, imagen, imagenprueba, fecha, idestado, titulo, cuerpo, resultado, idusuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, informe_historial.getIdInforme());
             statement.setString(2, informe_historial.getIMG());
@@ -56,6 +56,8 @@ public class Informe_HistorialDAO {
             statement.setInt(5, informe_historial.getIdEstado());
             statement.setString(6, informe_historial.getTitulo());
             statement.setString(7, informe_historial.getCuerpo());
+            statement.setBoolean(8, informe_historial.isResultado());
+            statement.setInt(9,informe_historial.getIdUsuario());
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -76,11 +78,11 @@ public class Informe_HistorialDAO {
             return false;
         }
     }
-    public Informe_Historial traerInforme_HistorialPorId(int idInforme) {
+    public Informe_Historial traerInforme_HistorialPorId(int idInformeHistorial) {
         esperarConexion();
-        String sql = "SELECT * FROM informe_historial WHERE IdInforme=?";
+        String sql = "SELECT * FROM informe_historial WHERE idinforme_historial=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, idInforme);
+            statement.setInt(1, idInformeHistorial);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return crearInforme_HistorialDesdeResultSet(resultSet);
@@ -115,6 +117,8 @@ public class Informe_HistorialDAO {
         informe_historial.setTitulo(resultSet.getString("Titulo"));
         informe_historial.setCuerpo(resultSet.getString("Cuerpo"));
         informe_historial.setOcultar(resultSet.getBoolean("Ocultar"));
+        informe_historial.setResultado(resultSet.getBoolean("Resultado"));
+        informe_historial.setIdUsuario(resultSet.getInt("idUsuario"));
         return informe_historial;
     }
 }

@@ -5,7 +5,9 @@ import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +61,7 @@ public class FragmentCrearReporte extends Fragment {
     private double latitud;
     private double longitud;
     private FusedLocationProviderClient fusedLocationClient;
+    private ProgressBar progressBar;
     public FragmentCrearReporte() {
     }
     public static FragmentCrearReporte newInstance(String param1, String param2) {
@@ -162,10 +166,11 @@ public class FragmentCrearReporte extends Fragment {
         etTitulo = view.findViewById(R.id.et_Titulo);
         etDescripcion = view.findViewById(R.id.et_Descripcion);
         txtUbicacion = view.findViewById(R.id.txt_Ubicacion);
+        progressBar = view.findViewById(R.id.progressBar);
         //etUbicacion = view.findViewById(R.id.et_Ubicacion);
 
-        ///TODO: TIENE QUE OBTENER EL USUARIO LOGUEADO
-        int idusuario = 1;
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("UsuarioGuardado", Context.MODE_PRIVATE);
+        int idusuario = sharedPreferences.getInt("idUsuario",-1);
         boolean error = false;
         boolean toast = false;
         if(IMG == null || IMG.isEmpty()){
@@ -189,10 +194,11 @@ public class FragmentCrearReporte extends Fragment {
         }
         if(!error){
             Informe informe = new Informe(etTitulo.getText().toString(), etDescripcion.getText().toString(), idusuario, 2, latitud, longitud, IMG);
+            progressBar.setVisibility(View.VISIBLE);
             new InformeNegocio().crearInforme(informe, new InformeNegocio.InformeCallback() {
                 @Override
                 public void onSuccess(String mensaje) {
-                    Toast.makeText(getContext(),mensaje,Toast.LENGTH_LONG);
+                    progressBar.setVisibility(View.GONE);
                     Intent i = new Intent(getContext(), HomeActivity.class);
                     startActivity(i);
                 }
