@@ -28,6 +28,7 @@
             android:minHeight="40dp"
             android:entries="@array/opciones_filtro_reportes"
             android:textAlignment="center"
+            android:visibility="gone"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReportes"

@@ -12,8 +12,10 @@ public class Informe_Historial {
     private String titulo;
     private String cuerpo;
     private boolean ocultar;
+    private boolean resultado;
+    private int idUsuario;
 
-    public Informe_Historial(int idInforme_Historial, int idInforme, String IMG, String IMG_Prueba, Date fecha, int idEstado, String titulo, String cuerpo, boolean ocultar) {
+    public Informe_Historial(int idInforme_Historial, int idInforme, String IMG, String IMG_Prueba, Date fecha, int idEstado, String titulo, String cuerpo, boolean ocultar, boolean resultado, int idUsuario) {
         this.idInforme_Historial = idInforme_Historial;
         this.idInforme = idInforme;
         this.IMG = IMG;
@@ -23,6 +25,8 @@ public class Informe_Historial {
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.ocultar = ocultar;
+        this.resultado = resultado;
+        this.idUsuario = idUsuario;
     }
     public Informe_Historial(){
 
@@ -98,5 +102,21 @@ public class Informe_Historial {
 
     public void setOcultar(boolean ocultar) {
         this.ocultar = ocultar;
+    }
+
+    public boolean isResultado() {
+        return resultado;
+    }
+
+    public void setResultado(boolean resultado) {
+        this.resultado = resultado;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

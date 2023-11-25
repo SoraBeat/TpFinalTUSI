@@ -183,6 +183,7 @@ public class FragmentAprobacionReportes extends Fragment implements PopupMenu.On
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
+                    spinnerEstados.setVisibility(View.VISIBLE);
                 } else {
                     // Maneja el caso en el que no se obtuvieron noticias
                     progressBar.setVisibility(View.GONE);

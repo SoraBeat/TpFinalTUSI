@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">EcoSostenible</string>
     <string name="terminos_condicones">Términos y Condiciones de Uso de la Plataforma EcoSostenible\n
     \n
@@ -98,6 +98,14 @@
         <item>Retirado</item>
     </string-array>
     <string-array name="opciones_filtro_reportes">
+        <item>Todos</item>
+        <item>Activos</item>
+        <item>Pendientes</item>
+        <item>Revisiones</item>
+        <item>Terminados</item>
+    </string-array>
+    <string-array name="opciones_filtro_reportes_usuario">
+        <item>Novedades</item>
         <item>Todos</item>
         <item>Activos</item>
         <item>Pendientes</item>
