@@ -47,12 +47,12 @@ public class Informe_HistorialDAO {
     }
     public boolean crearInforme_Historial(Informe_Historial informe_historial) {
         esperarConexion();
-        String sql = "INSERT INTO informe_historial (IdInforme, Imagen, imagenPrueba, fecha, idEstado, titulo, cuerpo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO informe_historial (idinforme, imagen, imagenprueba, fecha, idestado, titulo, cuerpo) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, informe_historial.getIdInforme());
             statement.setString(2, informe_historial.getIMG());
             statement.setString(3, informe_historial.getIMG_Prueba());
-            statement.setDate(4,  new java.sql.Date(informe_historial.getFecha().getTime()));
+            statement.setDate(4,  new java.sql.Date(System.currentTimeMillis()));
             statement.setInt(5, informe_historial.getIdEstado());
             statement.setString(6, informe_historial.getTitulo());
             statement.setString(7, informe_historial.getCuerpo());

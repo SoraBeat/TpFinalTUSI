@@ -13,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +46,8 @@ public class FragmentAprobacionReportes extends Fragment implements PopupMenu.On
 
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
+    Spinner spinnerEstados;
+    int filtradoEstado = 0;
 
     public FragmentAprobacionReportes() {
         // Required empty public constructor
@@ -109,13 +113,44 @@ public class FragmentAprobacionReportes extends Fragment implements PopupMenu.On
                 cargarListaDeReportes(view);
             }
         });
-        cargarListaDeReportes(view);
+
+        spinnerEstados = view.findViewById(R.id.spinner);
+        spinnerEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View vieww, int position, long id) {
+                // Obtener la opción seleccionada en el Spinner
+                String opcion = adapterView.getItemAtPosition(position).toString();
+                switch (opcion){
+                    case "Activos":
+                        filtradoEstado = 1;
+                        break;
+                    case "Pendientes":
+                        filtradoEstado = 2;
+                        break;
+                    case "Revisiones":
+                        filtradoEstado = 3;
+                        break;
+                    case "Terminados":
+                        filtradoEstado = 4;
+                        break;
+                    default:
+                        filtradoEstado = 0;
+                        break;
+                }
+                cargarListaDeReportes(view);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         return  view;
     }
-
     private void cargarListaDeReportes(View view) {
         progressBar.setVisibility(View.VISIBLE);
         InformeNegocio informeNegocio = new InformeNegocio();
+
         informeNegocio.traerTodosLosInformes(new InformeNegocio.InformesCallback() {
             @Override
             public void onInformesLoaded(List<Informe> informes) {
@@ -128,7 +163,20 @@ public class FragmentAprobacionReportes extends Fragment implements PopupMenu.On
                             return informe2.getFechaAlta().compareTo(informe1.getFechaAlta());
                         }
                     });
-                    informes.removeIf(informe -> informe.getIdEstado() != 3 && informe.getIdEstado() != 2);
+                    switch (filtradoEstado){
+                        case 1:
+                            informes.removeIf(informe -> informe.getIdEstado() != 1);
+                            break;
+                        case 2:
+                            informes.removeIf(informe -> informe.getIdEstado() != 2);
+                            break;
+                        case 3:
+                            informes.removeIf(informe -> informe.getIdEstado() != 3);
+                            break;
+                        case 4:
+                            informes.removeIf(informe -> informe.getIdEstado() != 4);
+                            break;
+                    }
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerViewReportes);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     ReporteAdapterAdmin adapter = new ReporteAdapterAdmin(requireContext(), informes);

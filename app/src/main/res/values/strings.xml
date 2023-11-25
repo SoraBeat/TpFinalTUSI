@@ -97,4 +97,11 @@
         <item>Pendiente</item>
         <item>Retirado</item>
     </string-array>
+    <string-array name="opciones_filtro_reportes">
+        <item>Todos</item>
+        <item>Activos</item>
+        <item>Pendientes</item>
+        <item>Revisiones</item>
+        <item>Terminados</item>
+    </string-array>
 </resources>

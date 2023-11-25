@@ -20,14 +20,23 @@
             android:layout_marginTop="40dp"
             android:background="@color/transparent"
             android:visibility="gone" />
-
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:minHeight="40dp"
+            android:entries="@array/opciones_filtro_reportes"
+            android:textAlignment="center"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReportes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:scrollbars="vertical" />
+
+
     </LinearLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
